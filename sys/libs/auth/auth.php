@@ -26,7 +26,7 @@ abstract class Auth extends Application_Model {
 		if (!$db->is_table('auth')){
 			if (!file_exists($path = strtolower(AUTH.__CLASS__.'.'.$db->driver.'.sql')))
 				error("Could not find Database schema.");
-			$db->import($path);
+			if (!$db->import($path)) error('Import failed.');
 		}
 		$instance = new AuthInstance($db);
 		return $instance;
@@ -38,7 +38,10 @@ abstract class Auth extends Application_Model {
  */
 final class AuthInstance extends Library {
 
-	private $db = null;
+	private $db    = null;
+
+	public $logged = false;
+	public $pass   = false;
 
 	/**
 	 * @created 2011/AUG/26 08:40
@@ -46,6 +49,8 @@ final class AuthInstance extends Library {
 	public function __construct(&$db){
 		if (!self::samefile()) error('Direct Instancing is disabled.');
 		$this->db = &$db;
+		# check if this uuid is logged in.
+		stop($db->select('auth', 'pass', 'uuid=?',UUID));
 	}
 
 	/**
