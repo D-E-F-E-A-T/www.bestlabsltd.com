@@ -1,6 +1,0 @@
-Utils is now part of CORE, Fixed DB->import()
-
-FIX: DB->import was trying to execute a whole bunch of statements at once and didn't catch any error properly (unless it was on the first line). So, it now splits the sql into statements (using ; as delimiter) and runs one by one inside a transaction.
-FIX: Utils is now part of th CORE, more than two CORE methods are now using it now, so it seemed like the right move. The idea is to keep the Utils Libs as tidy as possible, and if anything gets big,  just move it to its own lib.
-ADD: Added Utils::firstword() and Utils::strpos_array() the first is used by DB->import and the second is used by the first. :P 
-
