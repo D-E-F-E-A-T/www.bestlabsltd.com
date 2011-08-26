@@ -1,0 +1,5 @@
+Application_Model now extends Library and other Small fixes.
+
+FIX: Application_Model now extends Library so the user is able to access its common methods.
+FIX: Reverted visibility change in Library::config, public was necessary after all.
+FIX: Updated index.php versioning style so it can hold up until 99 revisions.
