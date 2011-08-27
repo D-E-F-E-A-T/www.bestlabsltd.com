@@ -12,9 +12,8 @@ class consoleView extends View {
 	 * @created 2011/AUG/26 20:36
 	 */
 	public function console(){
-		#enable authentication library.
-		$this->auth = Auth::view($this);
-		echo "ssss";
+		# Enable view functions.
+		Auth::view($this);
 	}
 
 }
