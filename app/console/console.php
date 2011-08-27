@@ -14,7 +14,6 @@ class consoleControl extends Control{
 
 	private function login(){
 		$this->view->tag_title = "Acceso a la Consola";
-
 		$this->view->render('login');
 	}
 

@@ -14,7 +14,7 @@ class consoleModel extends Model{
 	 */
 	public function console(){
 		#enable authentication library.
-		$this->auth = Auth::load($this);
+		$this->auth = Auth::model($this);
 	}
 
 }

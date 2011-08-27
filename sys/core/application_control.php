@@ -1,5 +1,5 @@
 <?php
-class Application_Control extends Library {
+class Application_Control extends Application_Common {
 
 	public $view;
 	public $model;

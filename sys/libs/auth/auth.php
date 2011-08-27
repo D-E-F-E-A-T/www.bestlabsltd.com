@@ -4,13 +4,20 @@
  *
  * @created 2011/AUG/25 17:48
  */
-abstract class Auth extends Application_Model {
+abstract class Auth  extends Application_Common {
+
+	private static $modelinstance = null;
+
+	final public static function &view(&$app=false){
+		echo "puto";
+	}
+
 
 	/**
 	 * Does some checks before actually doing anything.
 	 * @created 2011/AUG/25 17:49
 	 */
-	final public static function &load(&$app=false){
+	final public static function &model(&$app=false){
 		# instanced from a model?
 		if (!parent::is_model($app))
 			error('Application must be provided and instantiated from a Model.');
@@ -18,7 +25,7 @@ abstract class Auth extends Application_Model {
 		if (!defined('TOKEN_SECRET') || !defined('TOKEN_PUBLIC'))
 		error('Model Tokens are required');
 		# has valid database?
-		if (!is_object($db = parent::db_look($app)))
+		if (!is_object($db = Model::db_look($app)))
 			error('A database must be instantiated before loading this.');
 		if ($db->driver !='mysql')
 			error('Support for your driver is not yet implemented');
@@ -28,7 +35,7 @@ abstract class Auth extends Application_Model {
 				error("Could not find Database schema.");
 			if (!$db->import($path)) error('Import failed.');
 		}
-		$instance = new AuthInstance($db);
+		$instance = new AuthModelInstance($db);
 		return $instance;
 	}
 }
@@ -36,7 +43,7 @@ abstract class Auth extends Application_Model {
 /**
  * @created 2011/AUG/26 08:39
  */
-final class AuthInstance extends Library {
+final class AuthModelInstance extends Library {
 
 	private $db    = null;
 
