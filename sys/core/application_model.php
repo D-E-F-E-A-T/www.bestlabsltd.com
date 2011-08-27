@@ -10,7 +10,8 @@ class Application_Model extends Library {
 		# big TODO.
 		date_default_timezone_set('America/Cancun');
 		# if run a pseudo constructor if exist.
-		if (is_callable(array($this,'_construct'))) return $this->_construct();
+		if (method_exists($this, '_construct') && is_callable(array($this,'_construct'))) 
+			return $this->_construct();
 	}
 
 	/**
