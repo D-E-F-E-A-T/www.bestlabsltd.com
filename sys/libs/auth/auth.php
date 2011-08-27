@@ -52,8 +52,12 @@ abstract class Auth  extends Application_Common {
 		if(!parent::is_view($app))
 			error('Argument must contain a View instance.');
 		# make sure model has been instanced
-		if (!self::$model instanceof AuthModelInstance)
+		if (!self::$model instanceof modelAuth)
 			error('Auth Model was not detected.');
+		# include View Instance Class
+		if (!file_exists($path = strtolower(AUTH.__CLASS__.'.view'.EXT)))
+			error('Internal View class missing.');
+		include $path;
 		# instantiate and set
 		self::$view = new viewAuth();
 		$app->auth = &self::$view;

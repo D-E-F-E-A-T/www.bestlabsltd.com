@@ -13,8 +13,8 @@ final class modelAuth extends Library {
 	 * @created 2011/AUG/26 08:40
 	 */
 	public function __construct(&$db){
-		stop(parent::class_calling());
-		if (!self::samefile()) error('Direct Instancing is disabled.');
+		if (strtolower((string)parent::class_calling()) != 'auth')
+			error('Direct Instancing is disabled.');
 		$this->db = &$db;
 		# record found for this UUID assume usser is logged and store password.
 		$this->pass   = $db->select('auth', 'pass', 'uuid=? LIMIT 1',UUID);
