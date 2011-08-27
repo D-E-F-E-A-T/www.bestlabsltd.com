@@ -40,8 +40,8 @@ final class AuthInstance extends Library {
 
 	private $db    = null;
 
-	public $logged = false;
-	public $pass   = false;
+	public $logged = null;
+	public $pass   = null;
 
 	/**
 	 * @created 2011/AUG/26 08:40
@@ -49,8 +49,9 @@ final class AuthInstance extends Library {
 	public function __construct(&$db){
 		if (!self::samefile()) error('Direct Instancing is disabled.');
 		$this->db = &$db;
-		# check if this uuid is logged in.
-		stop($db->select('auth', 'pass', 'uuid=?',UUID));
+		# record found for this UUID assume usser is logged and store password.
+		$this->pass   = $db->select('auth', 'pass', 'uuid=? LIMIT 1',UUID);
+		$this->logged = (bool)$this->pass;
 	}
 
 	/**
