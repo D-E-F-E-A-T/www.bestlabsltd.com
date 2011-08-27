@@ -8,11 +8,17 @@ class consoleControl extends Control{
 
 
 	public function console(){
-		if (!$this->model->auth->logged) return $this->login();
+		$this->common();
 		$this->view->tag_title ="Hola mundo";
 	}
 
-	private function login(){
+	private function common(){
+		if (!$this->model->auth->logged) return $this->auth();
+	}
+
+
+	public function auth(){
+		$this->model->auth->login();
 		$this->view->tag_title = "Acceso a la Consola";
 		$this->view->render('login');
 	}

@@ -25,7 +25,9 @@ final class modelAuth extends Library {
 	 * @created 2011/AUG/26 8:45
 	 */
 	public function login(){
-		stop('implement this');
+		# if no post data is being sent; do nothing.
+		if (empty($_POST)) return false;
+		stop($_POST);
 	}
 
 	/**
