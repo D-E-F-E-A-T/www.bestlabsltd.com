@@ -2,7 +2,7 @@
 /**
  * @todo rename tag methods and make sure they are not passed in App::render()
  */
-class Application_View extends Application_Commmon {
+class Application_View extends Application_Common {
 
 	/**
 	 * View Constuctor
