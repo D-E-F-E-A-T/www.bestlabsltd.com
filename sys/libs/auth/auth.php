@@ -26,11 +26,20 @@ abstract class Auth  extends Application_Common {
 			error('A database must be instantiated before loading this.');
 		if ($db->driver !='mysql')
 			error('Support for your driver is not yet implemented');
-		# does an auth table exists on database? if not create it.
-		if (!$db->is_table('auth')){
+		# does an auth table exists on database?
+		if (!$db->is_table('auth_users') || !$db->is_table('auth_login')){
 			if (!file_exists($path = strtolower(AUTH.__CLASS__.'.'.$db->driver.'.sql')))
 				error('Could not find Database schema.');
+			# import default tables
 			if (!$db->import($path)) error('Import failed.');
+			# create admin user
+			if (!is_string($user = self::config('admin_user'))) $user = 'admin';
+			if (!is_string($pass = self::config('admin_pass'))) $pass = 'admin';
+			$db->insert('auth_users', array(
+				'user' => $user,
+				'pass' => sha1($pass),
+				'date' => date(DATE_W3C)
+			)) || error('Could not create admin.');
 		}
 		# include Model Instance Class
 		if (!file_exists($path = strtolower(AUTH.__CLASS__.'.model'.EXT)))
@@ -59,7 +68,7 @@ abstract class Auth  extends Application_Common {
 			error('Internal View class missing.');
 		include $path;
 		# instantiate and set
-		self::$view = new viewAuth();
+		self::$view = new viewAuth(self::$model);
 		$app->auth = &self::$view;
 		return true;
 	}

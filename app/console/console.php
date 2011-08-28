@@ -16,11 +16,13 @@ class consoleControl extends Control{
 		if (!$this->model->auth->logged) return $this->auth();
 	}
 
-
 	public function auth(){
-		$this->model->auth->login();
-		$this->view->tag_title = "Acceso a la Consola";
-		$this->view->render('login');
+		# if not logged in or login failed, present login form.
+		if (!$this->model->auth->login()){
+			$this->view->tag_title = "Acceso a la Consola";
+			$this->view->render('login');
+		}
+		$this->reload();
 	}
 
 }

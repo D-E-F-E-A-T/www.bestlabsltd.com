@@ -1,5 +1,17 @@
+<?php
+/**
+ * Auth View HTML
+ *
+ * @working 2011/AUG/28 00:04
+ */
+?>
 <div id="auth">
 	<form autocomplete="off" method="post" action="<?=APP_URL?>auth" >
+		<?php if (AUTH_FAILED): ?>
+		<div>
+			<h2>Credenciales Inválidas</h2>
+		</div>
+		<?php endif; ?>
 		<div>
 			<label for="user">Usuario</label>
 			<input name="user"  type="text" required/>
