@@ -6,14 +6,9 @@
 */
 class consoleControl extends Control{
 
-
 	public function console(){
 		$this->common();
 		$this->view->tag_title ="Hola mundo";
-	}
-
-	private function common(){
-		if (!$this->model->auth->logged) return $this->auth();
 	}
 
 	public function auth(){
@@ -21,8 +16,13 @@ class consoleControl extends Control{
 		if (!$this->model->auth->login()){
 			$this->view->tag_title = "Acceso a la Consola";
 			$this->view->render('login');
-		}
-		$this->reload();
+		} $this->reload();
+	}
+
+	private function common(){
+		# enable Auth extension.
+		Auth::control($this);
+		if (!$this->model->auth->logged) return $this->auth();
 	}
 
 }

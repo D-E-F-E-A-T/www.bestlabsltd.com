@@ -13,7 +13,7 @@ class consoleView extends View {
 	 */
 	public function console(){
 		# Enable view functions.
-		Auth::view($this);
+		# Auth::view($this);
 	}
 
 }
