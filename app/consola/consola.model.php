@@ -1,10 +1,10 @@
 <?php
 /**
-* Console Model
+* consola Model
 *
 * @created 2011/AUG/23 23:18
 */
-class consoleModel extends Model{
+class consolaModel extends Model{
 	
 
 	/**
@@ -12,7 +12,7 @@ class consoleModel extends Model{
 	 *
 	 * @created 2011/AUG/24 00:32
 	 */
-	public function console(){
+	public function consola(){
 		#enable authentication library.
 		Auth::model($this);
 	}

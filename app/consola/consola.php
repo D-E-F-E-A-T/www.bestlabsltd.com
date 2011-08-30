@@ -1,19 +1,23 @@
 <?php
 /**
-* Administration Console controller.
+* Administration consola controller.
 *
 * @log created 2011/AUG/23 23:13
 */
-class consoleControl extends Control{
+class consolaControl extends Control{
 
-	public function console(){
+	public function consola(){
+		# if not logged in, show login form.
+		if (!$this->model->auth->logged) return $this->auth();
 		$this->common();
 		$this->view->tag_title ="Hola mundo";
 	}
 
 	public function auth(){
+		$this->common();
 		$this->view->tag_title = "Acceso a la Consola";
-		$this->view->tag_jsend(PUB_URL.'console.auth.js');
+		$this->view->tag_jsend(PUB_URL.'consola.auth.js');
+		$this->view->tag_link('stylesheet',PUB_URL.'consola.auth.css');
 		# if logged in reload app.
 		if ($this->model->auth->login()) $this->reload();
 		$this->view->render('auth');
@@ -22,9 +26,6 @@ class consoleControl extends Control{
 	private function common(){
 		$this->view->tag_link('stylesheet',PUB_URL.'jqui-theme/jquery-ui-1.8.7.custom.css');
 		$this->view->tag_jsend(PUB_URL.'jquery-ui-1.8.16.custom.min.js');
-		$this->view->tag_jsend(PUB_URL.'console.jqui.js');
-		# if not logged in, show login form.
-		if (!$this->model->auth->logged) return $this->auth();
 	}
 
 }

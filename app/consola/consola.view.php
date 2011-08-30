@@ -1,17 +1,17 @@
 <?php
 /**
-* Console View
+* consola View
 *
 * @created 2011/AUG/26 20:36
 */
-class consoleView extends View {
+class consolaView extends View {
 
 	/**
 	 * Pseudo constructor
 	 *
 	 * @created 2011/AUG/26 20:36
 	 */
-	public function console(){
+	public function consola(){
 		# Enable view functions.
 		Auth::view($this);
 	}
