@@ -1,5 +1,5 @@
 # BESTLABS LTD
-## v2.0
+## v2.0r19
 ### www.bestlabsltd.com
 
 ## TODO
@@ -9,3 +9,6 @@
 ## CHANGELOG
 
 - Updated to Palmera v2.0r12.
+- Updated to Palmera v2.1r06.
+- Working Login Form.
+- Introducing: The EXTernal folder & The jQuery-UI builder.

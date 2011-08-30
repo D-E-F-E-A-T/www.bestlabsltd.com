@@ -1,0 +1,2 @@
+# WARNING!
+## don't run build-jquery-sh from outside this folder, it has a bug and it will reset your repo with a --hard modifier.

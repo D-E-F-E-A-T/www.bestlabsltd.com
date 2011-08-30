@@ -24,8 +24,8 @@ class consolaControl extends Control{
 	}
 
 	private function common(){
-		$this->view->tag_link('stylesheet',PUB_URL.'jqui-theme/jquery-ui-1.8.7.custom.css');
-		$this->view->tag_jsend(PUB_URL.'jquery-ui-1.8.16.custom.min.js');
+		$this->view->tag_link('stylesheet',PUB_URL.'jquery-ui-theme/jquery-ui-1.8.7.custom.css');
+		$this->view->tag_jsend(PUB_URL.'jquery-ui-1.9pre-head.js');
 	}
 
 }
