@@ -8,14 +8,18 @@ class consolaControl extends Control{
 
 	public function consola(){
 		# if not logged in, show login form.
-		if (!$this->model->auth->logged) return $this->auth();
 		$this->common();
 		$this->view->tag_title = "Hola mundo";
 		$this->view->tag_jsend(PUB_URL.'consola.js');
 	}
 
-	public function auth(){
+	public function logout(){
 		$this->common();
+		$this->model->auth->logout();
+		$this->reload();
+	}
+
+	public function auth(){
 		$this->view->tag_title = "Acceso a la Consola";
 		$this->view->tag_jsend(PUB_URL.'consola.auth.js');
 		$this->view->tag_link('stylesheet',PUB_URL.'consola.auth.css');
@@ -25,9 +29,8 @@ class consolaControl extends Control{
 	}
 
 	private function common(){
-		#$this->view->tag_link('stylesheet',PUB_URL.'aristo/jquery-ui-1.8.7.custom.css');
-		#$this->view->tag_link('stylesheet',PUB_URL.'consola.css');
 		$this->view->tag_link('stylesheet',PUB_URL.'ui/ui.css');
 		$this->view->tag_jsend(PUB_URL.'ui/ui.js');
+		if (!$this->model->auth->logged) return $this->auth();
 	}
 }

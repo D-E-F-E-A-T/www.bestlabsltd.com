@@ -1,5 +1,5 @@
 # BESTLABS LTD
-## v2.0r19
+## v2.0r22
 ### www.bestlabsltd.com
 
 ## TODO
@@ -8,8 +8,26 @@
 
 ## CHANGELOG
 
+- Small Fix for Application_Model::token.
 - Updated to Palmera v2.0r12.
-- Updated to Palmera v2.1r06.
-- Working Login Form.
+- Updated .gitignore for mercurial.
+- Updated to Palmera 2.0r13
+- Updated to Palmera v2.0r14
+- Updated to Palmera v2.0r15
+- Updated to Palmera v2.0r18
+- Updated to Palmera v2.0r19
+- Updated to Palmera v2.0r20
+- Updated to Palmera v2.0r21
+- Updated to Palmera v2.1
+- Fixed READMEs
+- Updated to Palmera v2.1r1
+- updated palmera
+- Palmera v2.1r3
+- palmera v2.1r5
+- palmera 2.1r6
+- Console App Base and Login Form.
 - Introducing: The EXTernal folder & The jQuery-UI builder.
-- Replaced jQuery UI with UI.js
+- Replaced jQuery UI with UI.js.
+- having some troubles with subrepositories
+- Login and Logout working with new UI library.
+
