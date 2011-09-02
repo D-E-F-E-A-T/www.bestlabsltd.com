@@ -12,3 +12,4 @@
 - Updated to Palmera v2.1r06.
 - Working Login Form.
 - Introducing: The EXTernal folder & The jQuery-UI builder.
+- Replaced jQuery UI with UI.js

@@ -1,51 +1,24 @@
+/**
+ * @created 2011/AUG/30 20:12
+ */
+
 html.no-js .consola { display:none; }
 
-.ui-dialog-titlebar-close     { display:none !important; }
-.ui-widget-content            { border:0 !important; }
-.ui-dialog-content            { padding:1.2em 1.4em 0 1.4em !important;}
-form div { position:relative; width:100%;}
+section { max-width:12em; }
 
-form div input {
-    position:relative;
-    display:block;
-    width:100%;
-    z-index:0;
-    border:1px solid #666;
-	border-radius:4px;
-    font-size:2em !important;
-    color:#06C;
-    text-indent:.2em;
-    opacity:.33;
-    font-weight:bold;
-    font-family:serif;
-}
-
-form div input:focus {
-	opacity:1;
-}
-
-form div:first-child input {
-	margin-bottom:.6em;
-}
-
-label {
-	color:#888;
-	z-index:2;
-	display:block;
-	position:absolute;
-	font-size:.75em;
-	right:5px;
-	bottom:5px;
+footer {
+padding-top:0 !important;
 }
 
 p {
-	font-size:.8em;
-	bottom:0;
-	border:1px solid #C66;
+	position:absolute;
+	overflow:visible;
+	font-size:.85em;
+	border:1px solid #933;
 	border-radius:4px;
-	margin:15px 0 0 0 !important;
-	background:pink;
+	background:#FDD;
 	text-align:center;
-	padding:.5em 0;
 	color:#944;
+	padding:.5em 1em;
+	top:110%;
 }
