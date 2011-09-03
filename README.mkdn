@@ -1,5 +1,5 @@
 # BESTLABS LTD
-## v2.0r22
+## v2.0r23
 ### www.bestlabsltd.com
 
 ## TODO
@@ -30,4 +30,5 @@
 - Replaced jQuery UI with UI.js.
 - having some troubles with subrepositories
 - Login and Logout working with new UI library.
+- Added base database schema, modified consola.html.
 
