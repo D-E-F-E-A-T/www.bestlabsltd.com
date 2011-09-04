@@ -1,5 +1,5 @@
 # BESTLABS LTD
-## v2.0r23
+## v2.0r24
 ### www.bestlabsltd.com
 
 ## TODO
@@ -31,4 +31,4 @@
 - having some troubles with subrepositories
 - Login and Logout working with new UI library.
 - Added base database schema, modified consola.html.
-
+- Consola controller redirection enabled, menu working.
