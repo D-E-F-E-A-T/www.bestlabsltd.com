@@ -6,7 +6,54 @@
  include APP_PATH.APP_NAME.'.html'; # common.
  ?>
 <section>
-	hola  mundo.
+
+	<div class="category">
+		<label  class="ui-label" for="category">Categoría</label>
+		<select class="ui-selectbox" id="category" name="category">
+			<option value="" selected> </option>
+			<option value="uno">Categoría 1</option>
+			<option value="dos">Categoría 2</option>
+		</select>
+	</div>
+
+<?php foreach($languages as $langcode => $langname):?>
+	<fieldset class="ui-inset divide">
+		<legend><?=$langname?></legend>
+		<div>
+			<label class="ui-label" for="<?=$langcode?>_name">
+				<span>Nombre</span>
+				<span class="ui-label-count">66</span>
+			</label>
+			<input class="name ui-input" id="<?=$langcode?>_name" name="<?=$langcode?>_name" type="text">
+		</div>
+		<div>
+			<label class="ui-label" for="<?=$langcode?>_cont">
+				<span>Contenido</span>
+			</label>
+			<textarea class="cont ui-textarea" id="<?=$langcode?>_cont" name="<?=$langcode?>_cont"></textarea>
+		</div>
+		<div>
+			<label class="ui-label" for="<?=$langcode?>_desc">
+				<span>Descripción</span>
+				<span class="ui-label-count">300</span>
+			</label>
+			<textarea class="desc ui-textarea" id="<?=$langcode?>_desc" name="<?=$langcode?>_desc"></textarea>
+		</div>
+		<div>
+			<label class="ui-label" for="<?=$langcode?>_keyw">
+				<span>Keywords</span>
+				<span class="ui-label-count">300</span>
+			</label>
+			<textarea class="keyw ui-textarea" id="<?=$langcode?>_keyw" name="<?=$langcode?>_keyw"></textarea>
+		</div>
+	</fieldset>
+<?php endforeach;?>
+
+	<fieldset class="ui-inset">
+		<legend>Imagen</legend>
+		<input type="file" id="file" name="file">
+	</fieldset>
+
 </section>
 <?php
 # TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE

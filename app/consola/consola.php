@@ -67,11 +67,26 @@ class consolaControl extends Control{
 		stop('proces product');
 	}
 
+	/**
+	 * @author Hector Menendez <h@cun.mx>
+	 * @created 2011/SEP/04 13:41
+	 */
+	private function agregar_categoria(){
+		$this->view->tag_title = $this->view->title = 'Agregar Categoría';
+		# if no post is sent, just render the view;
+		if (empty($_POST)) $this->view->render('agregar.categoria');
+		stop('proces product');
+	}
+
 	private function common(){
 		$this->view->tag_link('stylesheet',PUB_URL.'ui/ui.css');
 		$this->view->tag_jsend(PUB_URL.'ui/ui.js');
 		if (!$this->model->auth->logged) return $this->auth();
+		# this will happen only if user logged in.
 		$this->view->tag_jsend(PUB_URL.'consola.js');
+		$this->view->languages = $this->model->languages();
+
+
 	}
 
 	/**

@@ -15,6 +15,5 @@ class consolaView extends View {
 		# Enable view functions.
 		Auth::view($this);
 	}
-
 }
 

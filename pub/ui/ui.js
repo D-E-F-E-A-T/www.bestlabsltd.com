@@ -16,6 +16,7 @@ ui.$overlay = null;
 ui.$loader  = null;
 
 /**
+ * GENERAL Preparations.
  * @author Hector Menendez <h@cun.mx>
  * @created 2011/SEP/01 09:02
  */
@@ -23,11 +24,31 @@ ui.$loader  = null;
 	// cache body element.
 	ui.$body = $('body');
 	// these cannot be set by the user.
-	$('.ui-overlay,.ui-hider').remove();
+	$('.ui-overlay, .ui-hider').remove();
 	// overlay and hider must alway be the only direct siblings of body.
 	ui.$body.prepend('<div class="ui-overlay"></div><div class="ui-loader"></div>');
 	ui.$overlay = ui.$body.find('.ui-overlay');
 	ui.$loader  = ui.$body.find('.ui-loader');
+	// generate adecuate padding for inputs and textareas.
+	$(
+		'.ui-textarea,'+
+		'.ui-input[type="text"],'+
+		'.ui-input[type="password"]'
+	).each(function(){
+		var self = $(this);
+		self.width('100%');
+		// get rough estimate of what .25em equals in percentage.
+		var pad = ((parseInt(ui.$body.css('font-size'),10)/4)*100)/self.width();
+		// we only need two decimal digits, get rid of everything else.
+		pad = Math.round(pad*100+((pad*1000)%10>4?1:0))/100;
+		// set css padding and width.
+		self.css({
+			'text-indent'   : '0 !important',
+			'width'         : 100-(pad*2) + '% !important',
+			'padding-left'  :        pad  + '% !important',
+			'padding-right' :        pad  + '% !important'
+		});
+	});
 	// set baseurl
 	$('script').each(function(){
 		if (this.src.substr(-5)!='ui.js') return;

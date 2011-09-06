@@ -1,0 +1,29 @@
+<?php
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @created 2011/SEP/04 00:22
+ */
+ include APP_PATH.APP_NAME.'.html'; # common.
+ ?>
+<section>
+
+<?php foreach($languages as $langcode => $langname):?>
+	<fieldset class="ui-inset divide">
+		<legend><?=$langname?></legend>
+		<div>
+			<label for="name" class="ui-label">Nombre</label>
+			<input id="name" class="ui-input" name="name" type="text">
+		</div>
+	</fieldset>
+<?php endforeach ?>
+
+	<button class="ui-button" type="submit">Agregar</button>
+
+</section>
+
+<?php
+# TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
+#       in other words: consola.html should output buffer
+#       all calls to its childs, so it can "wrap" them.
+?>
+</div>

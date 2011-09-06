@@ -1,7 +1,7 @@
 /**
  * SAYNO make an element "say no"
  *
- * v1 2011/MAY/01 Héctor Menéndez <h@cun.mx>
+ * v1 2011/MAY/01 Hector Menendez <h@cun.mx>
  *
  * @note not tested in uncontrolled environment.[css]
  * @note only tested in FF4+ Chrome12
@@ -18,8 +18,8 @@
 	});
 };})(jQuery);
 
-
 $(document).ready(function(){
+
 	// users with no javascript wont use the site.
 	$('html').removeClass('no-js');
 

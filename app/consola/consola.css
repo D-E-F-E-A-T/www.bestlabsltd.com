@@ -1,2 +1,51 @@
-#cont { position:relative; padding-left:1em; padding-top:1em; }
-#cont header h1 { margin-top:0; letter-spacing:-1px; font-size:1.3em; color:#666; text-shadow:0 1px #CCC; }
+body { background:#f0f0f0; }
+
+#cont {
+	position:relative;
+	padding:0 1em;
+}
+
+#cont > header h1 {
+	margin-top:.5em;
+	font-size:2.5em;
+	color:#eee;
+}
+
+#cont > section {
+	position:relative;
+	width:100%;
+	text-align:center;
+}
+
+#cont section > * {
+	position:relative;
+	margin-bottom:1.5em;
+	text-align:left;
+}
+
+#cont section > div.category {
+	position:absolute;
+	right:.4em;
+	top:-4em;
+}
+
+#cont section > div.category label {
+	width:auto !important;
+	display:inline-block !important;
+}
+
+#cont section > fieldset > div {
+	width:100%;
+	margin-top:1em;
+}
+
+fieldset legend + div {
+	margin-top:0 !important;
+}
+
+
+.divide { display:inline-block !important; }
+
+textarea.cont { height:11.2em; }
+
+textarea.keyw { height:1.4em; }

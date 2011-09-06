@@ -12,16 +12,20 @@
 .ui-menubar { z-index:997; }
 
 /* disable selection */
-
+/*
 .ui-loader,
 .ui-modal > header,
 .ui-modal > footer,
 .ui-label,
-.ui-menubar
+.ui-menubar,
+.ui-inset
 {
--webkit-user-select:none !important;
-   -moz-user-select:none !important;
+    cursor:default;
+-webkit-user-select:none;
+   -moz-user-select:none;
+        user-select:none;
  }
+*/
 
 /* disable default browser outline on focus */
 .ui-input:focus,
@@ -32,18 +36,27 @@
     outline:none !important;
 }
 
-/* reset default styling by applying a temporary transparent border */
-.ui-input,
-.ui-button,
-.ui-textarea,
-.ui-select
-{
-        border: 1px solid transparent;
-        border-radius:.25em;
+/*******************************************************************************
+ * INSET Structure                                                             *
+ *                                                                             *
+ * @author Hector Menendez <h@cun.mx>                                          *
+ * @created 2011/SEP/05 00:35                                                  *
+ *******************************************************************************/
+
+fieldset.ui-inset {
+    display:block;
+    position:relative;
+    padding:1em 1.5em 1.5em 1.3em;
+    border-radius:.25em;
 }
 
-.ui-label {
-    display:inline-block;
+fieldset.ui-inset > legend {
+    position:absolute;
+    display:block;
+    line-height:1em;
+    padding:0 1em;
+    top:-2.0em;
+    right:3.33em;
 }
 
 /*******************************************************************************
@@ -102,17 +115,47 @@
     bottom:0;
     right :0;
 }
+
 /*******************************************************************************
- * TEXT INPUTS                                                                 *
+ * TEXT INPUTS & LABELS                                                        *
  * @author Hector Menendez <h@cun.mx>                                          *
  * @created 2011/SEP/01 17:49                                                  *
  *******************************************************************************/
+
 .ui-input[type="text"],
-.ui-input[type="password"]
+.ui-input[type="password"],
+.ui-textarea
 {
     text-indent:.5em !important;
-    padding:.15em 0 .25em 0;
+    padding:.15em 0 .25em 0 !important;
+    display:block;
+    position:relative;
+}
+
+.ui-textarea {
+    resize:vertical;
+}
+
+.ui-label {
+    line-height:15px;
     width:100%;
+    overflow:hidden;
+    position:relative;
+    display:block;
+}
+
+.ui-label > span:first-child {
+    top:-1px;
+}
+
+.ui-label > span {
+    position:relative;
+    display:block;
+    float:left;
+}
+
+.ui-label-count {
+    float:right !important;
 }
 
 /*******************************************************************************
@@ -128,7 +171,7 @@
 {
     display:inline-block;
     position:relative;
-    padding:.25em .5em;
+    padding:.25em .5em .35em;
 }
 
 .ie-lt8 .ui-input[type="button"],

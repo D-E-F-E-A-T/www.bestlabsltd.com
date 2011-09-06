@@ -1,1 +1,4 @@
-Cursor consistency in .ui-menubar.
+Small fixes to ui-textarea, ui-input and ui-inset.
+
+FIX: Padding now in textareas and inputs is more or less homogeneous.
+

@@ -18,14 +18,14 @@ INSERT INTO `language` (`id`,`name`) VALUES
  * @created 2011/SEP/03 03:55
  */
 DROP TABLE IF EXISTS `category`;
-CREATE TABLE `category`(
+CREATE TABLE `category` (
   `id`         INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
   `lang`      CHAR(2) NOT NULL,
   `class` VARCHAR(22) NOT NULL,
   `name`  VARCHAR(22) NOT NULL,
   PRIMARY KEY(`id`),
   INDEX(`lang`),
-  INDEX(`class`),
+  INDEX(`class`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 /**
