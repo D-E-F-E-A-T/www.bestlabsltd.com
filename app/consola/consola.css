@@ -44,7 +44,10 @@ fieldset legend + div {
 }
 
 
-.divide { display:inline-block !important; }
+.divide {
+	display:inline-block !important;
+	vertical-align:top;
+}
 
 textarea.cont { height:11.2em; }
 

@@ -5,12 +5,15 @@ var ø = {};
 ø.$cont = null;
 ø.$body = null;
 ø.$sect = null;
-
+ø.ui    = null;
 /**
  * @author Hector Menendez <h@cun.mx>
  * @created 2011/SEP/04 03:35
  */
 ø.init = function(){
+
+	// show the loader until the page is fully load.
+	ø.ui = $.ui().loader.show();
 
 	ø.$cont = $('#cont');
 	ø.$body = $('body');
@@ -24,6 +27,8 @@ var ø = {};
 	// enable inset style for title.
 	$('h1.ui-inset').ui({low:0.6});
 	$('fieldset.ui-inset').ui({low:0.85});
+
+	// enable
 
 	// if divive elements found, adjust them.
 	if (ø.$cont.find('.divide').length>0) {
@@ -131,7 +136,7 @@ var ø = {};
 	}
 };
 
-$(document).ready(ø.init);
+$(document).ready(ø.init).load(function(){ ø.ui.loader.hide(); });
 
 
 })(jQuery);

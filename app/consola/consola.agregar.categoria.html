@@ -11,8 +11,17 @@
 	<fieldset class="ui-inset divide">
 		<legend><?=$langname?></legend>
 		<div>
-			<label for="name" class="ui-label">Nombre</label>
-			<input id="name" class="ui-input" name="name" type="text">
+			<label
+				for        = "<?=$langcode?>_name"
+				class      = "ui-label"
+				data-limit = "a-zA-Z"
+				data-count = "22"
+				title      =
+				"<b>Nombre de la Categoría</b>
+				Una sola palabra formada solo por letras sin espacios  que -
+				representa un grupo de productos."
+				>Nombre</label>
+			<input id="name" class="ui-input" "<?=$langcode?>_name" type="text">
 		</div>
 	</fieldset>
 <?php endforeach ?>

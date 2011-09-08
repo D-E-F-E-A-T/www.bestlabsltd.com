@@ -20,31 +20,65 @@
 	<fieldset class="ui-inset divide">
 		<legend><?=$langname?></legend>
 		<div>
-			<label class="ui-label" for="<?=$langcode?>_name">
-				<span>Nombre</span>
-				<span class="ui-label-count">66</span>
-			</label>
-			<input class="name ui-input" id="<?=$langcode?>_name" name="<?=$langcode?>_name" type="text">
+			<label
+				class      = "ui-label"
+				for        = "<?=$langcode?>_name"
+				data-count = "66"
+				data-limit = "a-zA-Z0-9 -"
+				title      =
+				"<b>Nombre del producto.</b><br>
+				 Acepta caracteres A-Z, dígitos del 0-9 y el caracter '-' (guión).
+				 La URL de su producto se generará en base a lo que escriba aquí."
+				>Nombre</label>
+			<input class="name ui-input" id="<?=$langcode?>_name" type="text">
 		</div>
 		<div>
-			<label class="ui-label" for="<?=$langcode?>_cont">
-				<span>Contenido</span>
-			</label>
-			<textarea class="cont ui-textarea" id="<?=$langcode?>_cont" name="<?=$langcode?>_cont"></textarea>
+			<label
+				class = "ui-label"
+				for   = "<?=$langcode?>_cont"
+				title =
+				"<b>Descripción completa del producto.</b><br>
+				Acepta cualquier tipo de caracter, pero elimina todo código HTML.
+				Puede usar los siguientes formatos especiales:
+				<code>
+				*palabra*       =    <i>palabra</i> (cursiva).
+				**palabra**     =    <b>palabra</b> (negrita).
+				--palabra--     =    <del>palabra</del> (tachada).
+				__palabra__     =    <ins>palabra</ins> (subrayada).
+				[palabra](link) =    <a href='link'>palabra</a> (link).
+				++palabra       =  <ul><li>palabra</li></ul> (lista).
+				</code>"
+				>Contenido</label>
+			<textarea class="cont ui-textarea" id="<?=$langcode?>_cont"></textarea>
 		</div>
 		<div>
-			<label class="ui-label" for="<?=$langcode?>_desc">
-				<span>Descripción</span>
-				<span class="ui-label-count">300</span>
-			</label>
-			<textarea class="desc ui-textarea" id="<?=$langcode?>_desc" name="<?=$langcode?>_desc"></textarea>
+			<label
+				class      = "ui-label"
+				for        = "<?=$langcode?>_desc"
+				data-count = "300"
+				title      =
+				"<b>Descripción del Producto para Buscadores</b>.
+				Aparecerá en los resultados de búsqueda, es importante darle   -
+				énfasis a las palabras que desea tengan prioridad.<br>
+				Una descripción muy corta puede afectar su posicionamiento."
+				>Descripción</label>
+			<textarea class="desc ui-textarea" id="<?=$langcode?>_desc"></textarea>
 		</div>
 		<div>
-			<label class="ui-label" for="<?=$langcode?>_keyw">
-				<span>Keywords</span>
-				<span class="ui-label-count">300</span>
-			</label>
-			<textarea class="keyw ui-textarea" id="<?=$langcode?>_keyw" name="<?=$langcode?>_keyw"></textarea>
+			<label
+				class      = "ui-label"
+				for        = "<?=$langcode?>_keyw"
+				data-count = "300"
+				title      =
+				"<b>Palabras Clave</b><br>
+				A pesar de que el título dice 'palabras', el término correcto  -
+				debería ser 'frases clave'.<br>
+				Es una lista separada por comas de las frases con las que desea -
+				encuentren su producto.<br>
+				Es importante que las palabras esten directamente relacionadas -
+				con el contenido, descripición y nombre de sus producto."
+				>Keywords</label>
+			<textarea class="keyw ui-textarea" id="<?=$langcode?>_keyw"></textarea>
 		</div>
 	</fieldset>
 <?php endforeach;?>
@@ -54,10 +88,12 @@
 		<input type="file" id="file" name="file">
 	</fieldset>
 
+	<button class="ui-button" type="submit">Agregar</button>
+
 </section>
 <?php
 # TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
-#       in other words: consola.html should output buffer
+#       in other palabras: consola.html should output buffer
 #       all calls to its childs, so it can "wrap" them.
 ?>
 </div>
