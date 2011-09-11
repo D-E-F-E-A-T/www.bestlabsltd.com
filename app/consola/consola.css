@@ -43,6 +43,7 @@ fieldset legend + div {
 	margin-top:0 !important;
 }
 
+#product-upload div { width:auto !important; padding-bottom:0 !important; }
 
 .divide {
 	display:inline-block !important;

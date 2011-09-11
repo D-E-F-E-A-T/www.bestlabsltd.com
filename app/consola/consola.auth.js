@@ -23,32 +23,19 @@ $(document).ready(function(){
 	// users with no javascript wont use the site.
 	$('html').removeClass('no-js');
 
-	$.ui({ debug:true });
+	//$.ui({ debug:true });
 
 
-	var $auth = $('#auth').ui({
-		auto:true
-	},
-	/**
-	 * UI has prepared the following objects:
-	 * $submit  = submit button (if existent)
-	 * $reset   = reset  button (if existent)
-	 * $header  = Modal Header
-	 * $footer  = Modal Footer
-	 * $section = Original Content.
-	 * Besides, you have access to the core UI object via, "core" or "this"
-	 * @author Hector Menendez <h@cun.mx>
-	 * @created 2011/SEP/01 20:24
-	 */
-	function(o){
-		o.$submit.click(function(){
+	var $auth = $('#auth').ui({auto:true},function(){
+		var self = this;
+		self.$submit.click(function(){
 			// both user and password must have values before considering sending.
 			var all = true;
-			o.$section.find('input:not([type="hidden"])').each(function(){
+			self.$section.find('input:not([type="hidden"])').each(function(){
 				if (!this.value.length) all = false;
 			});
-			if (!all) return o.sayno();
-			o.$section.find('form').submit();
+			if (!all) return self.element.sayno();
+			self.$section.find('form').submit();
 		});
 	});
 });

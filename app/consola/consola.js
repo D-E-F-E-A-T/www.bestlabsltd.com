@@ -13,7 +13,7 @@ var ø = {};
 ø.init = function(){
 
 	// show the loader until the page is fully load.
-	ø.ui = $.ui().loader.show();
+	//ø.ui = $.ui().loader.show();
 
 	ø.$cont = $('#cont');
 	ø.$body = $('body');
@@ -113,10 +113,12 @@ var ø = {};
 
 		/**
 		 * @author Hector Menendez <h@cun.mx>
-		 * @created 2011/SEP/04 03:46
+		 * @created 2011/SEP/08 15:23
 		 */
 		init:function(){
-			//var $sel = $('#sel').ui();
+			var $upload = $('#product-upload .ui-fileupload').ui({
+				url: 'hola'
+			});
 		}
 	},
 
