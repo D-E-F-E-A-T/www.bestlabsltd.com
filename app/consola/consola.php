@@ -40,7 +40,7 @@ class consolaControl extends Control{
 
 	public function auth(){
 		$this->view->tag_title = "Acceso a la Consola";
-		$this->view->tag_jsend(PUB_URL.'consola.auth.js');
+		$this->view->tag_jsini(PUB_URL.'consola.auth.js');
 		$this->view->tag_link('stylesheet',PUB_URL.'consola.auth.css');
 		# if logged in reload app.
 		if ($this->model->auth->login()) $this->reload();
@@ -80,10 +80,10 @@ class consolaControl extends Control{
 
 	private function common(){
 		$this->view->tag_link('stylesheet',PUB_URL.'ui/ui.css');
-		$this->view->tag_jsend(PUB_URL.'ui/ui.js');
+		$this->view->tag_jsini(PUB_URL.'ui/ui.js');
 		if (!$this->model->auth->logged) return $this->auth();
 		# this will happen only if user logged in.
-		$this->view->tag_jsend(PUB_URL.'consola.js');
+		$this->view->tag_jsini(PUB_URL.'consola.js');
 		$this->view->languages = $this->model->languages();
 
 

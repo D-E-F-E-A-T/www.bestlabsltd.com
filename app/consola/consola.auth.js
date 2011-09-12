@@ -23,9 +23,6 @@ $(document).ready(function(){
 	// users with no javascript wont use the site.
 	$('html').removeClass('no-js');
 
-	//$.ui({ debug:true });
-
-
 	var $auth = $('#auth').ui({auto:true},function(){
 		var self = this;
 		self.$submit.click(function(){

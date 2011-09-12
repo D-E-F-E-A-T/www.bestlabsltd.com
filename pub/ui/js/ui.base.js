@@ -13,7 +13,7 @@ fn.loader.prototype = {
 	},
 
 
-	enabled:true,
+	enabled:true, // ui starts with loader shown.
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
@@ -64,7 +64,7 @@ fn.overlay.prototype = {
 		speed:0
 	},
 
-	enabled: false,
+	enabled: true,  // ui starts with overlay shown.
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
@@ -152,7 +152,7 @@ fn.tooltip.prototype = {
 		// bind events
 		context.bind('mouseover', show);
 		context.bind('mouseout',  hide);
-		this.core.log('Enabled tooltip: "'+ message.substr(0,25) + '…".','tooltip');
+		this.core.log('Enabled "'+ message.substr(0,25) + '…".','tooltip');
 	}
 
 };
@@ -182,7 +182,7 @@ fn.textinput = function(context){
 		var fontsize = parseInt($this.css('font-size'),10);
 		if (!fontsize) fontsize = self.core.fontsize;
 		// we only need two decimal digits, get rid of everything else.
-		var pad = ((fontsize*100)/width)/2;
+		var pad = (fontsize*100)/width;
 		    pad = Math.round(pad*100+((pad*1000)%10>4?1:0))/100;
 		// set css padding and width.
 		$this.css({

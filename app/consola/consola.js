@@ -12,8 +12,7 @@ var ø = {};
  */
 ø.init = function(){
 
-	// show the loader until the page is fully load.
-	//ø.ui = $.ui().loader.show();
+	$.ui.defaults.debug = true;
 
 	ø.$cont = $('#cont');
 	ø.$body = $('body');
@@ -28,8 +27,6 @@ var ø = {};
 	$('h1.ui-inset').ui({low:0.6});
 	$('fieldset.ui-inset').ui({low:0.85});
 
-	// enable
-
 	// if divive elements found, adjust them.
 	if (ø.$cont.find('.divide').length>0) {
 		ø.divide();
@@ -39,11 +36,12 @@ var ø = {};
 	$(window).resize(ø.resize);
 	$('html').removeClass('no-js');
 
+
 	// filter behaviour according to page.
 	switch(page){
-		case 'agregar_producto'  : return ø.agregar.producto.init();
-		case 'agregar_categoria' : return ø.agregar.categoria.init();
-		default: alert('This has not been developed yet');
+		case 'agregar_producto'  : ø.agregar.producto.init();  break;
+		case 'agregar_categoria' : ø.agregar.categoria.init(); break;
+		default: console.info('This has not been developed yet');
 	}
 
 };
@@ -115,6 +113,7 @@ var ø = {};
 		 * @author Hector Menendez <h@cun.mx>
 		 * @created 2011/SEP/08 15:23
 		 */
+
 		init:function(){
 			var $upload = $('#product-upload .ui-fileupload').ui({
 				url: 'hola'
