@@ -15,6 +15,19 @@ class consolaControl extends Control{
 		$this->ver_producto();
 	}
 
+	public function test(){
+		if (
+			!isset($_SERVER['HTTP_X_FILE_NAME']) ||
+			!isset($_SERVER['CONTENT_LENGTH'])
+		) parent::error_403();
+
+		if (!(int)$_SERVER['CONTENT_LENGTH']) {
+			Core::header(500);
+			stop('Upload Failed');
+		}
+		stop('Upload Succeeded.');
+	}
+
 	/**
 	 * @author Hector Menendez <h@cun.mx>
 	 * @created 2011/SEP/04 00:26
@@ -38,7 +51,9 @@ class consolaControl extends Control{
 		$this->reload();
 	}
 
-	public function auth(){
+	public function auth($loadcommon=true){
+		# if called directly, call common.
+		if ($loadcommon) $this->common();
 		$this->view->tag_title = "Acceso a la Consola";
 		$this->view->tag_jsini(PUB_URL.'consola.auth.js');
 		$this->view->tag_link('stylesheet',PUB_URL.'consola.auth.css');
@@ -81,7 +96,7 @@ class consolaControl extends Control{
 	private function common(){
 		$this->view->tag_link('stylesheet',PUB_URL.'ui/ui.css');
 		$this->view->tag_jsini(PUB_URL.'ui/ui.js');
-		if (!$this->model->auth->logged) return $this->auth();
+		if (!$this->model->auth->logged) return $this->auth(false);
 		# this will happen only if user logged in.
 		$this->view->tag_jsini(PUB_URL.'consola.js');
 		$this->view->languages = $this->model->languages();

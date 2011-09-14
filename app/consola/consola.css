@@ -14,13 +14,13 @@ body { background:#f0f0f0; }
 #cont > section {
 	position:relative;
 	width:100%;
-	text-align:center;
 }
 
 #cont section > * {
 	position:relative;
 	margin-bottom:1.5em;
 	text-align:left;
+	overflow:visible !important;
 }
 
 #cont section > div.category {
@@ -43,13 +43,54 @@ fieldset legend + div {
 	margin-top:0 !important;
 }
 
-#product-upload div { width:auto !important; padding-bottom:0 !important; }
 
-.divide {
-	display:inline-block !important;
-	vertical-align:top;
+#product-upload { padding-top:1.5em; }
+#product-upload > * { vertical-align:top; padding-bottom:0 !important; }
+
+#product-upload .ui-fileupload {
+	width:auto !important;  margin:0;
+	float:right;
 }
+
+#product-upload .placeholder {
+	display:block;
+	position:relative;
+	border:2px dashed rgba(0,0,0, 0.15);
+	background-color: rgba(0,0,0, 0.05);
+	border-radius:.5em;
+	width:500px;
+	min-height:3em;
+	float:left;
+}
+
+#product-upload .placeholder.hasimg {
+	border:0;
+}
+
+#product-upload .placeholder img {
+	border-radius:.25em;
+	width:100%;
+	position:relative;
+	margin:0;
+	padding:0;
+	display:block;
+}
+
+.divide {float:left;}
 
 textarea.cont { height:11.2em; }
 
 textarea.keyw { height:1.4em; }
+
+#product-upload:after,
+#cont > section:after
+{
+	content:".";
+	position:relative;
+	display:block;
+	overflow:hidden;
+	width:0px;
+	height:0px;
+	clear:both;
+}
+

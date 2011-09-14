@@ -18,12 +18,14 @@
 	});
 };})(jQuery);
 
+$.ui.core.defaults.debug = true;
+
 $(document).ready(function(){
 
 	// users with no javascript wont use the site.
 	$('html').removeClass('no-js');
 
-	var $auth = $('#auth').ui({auto:true},function(){
+	var $auth = $('#auth').ui({auto:true,close:false},function(){
 		var self = this;
 		self.$submit.click(function(){
 			// both user and password must have values before considering sending.

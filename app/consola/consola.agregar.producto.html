@@ -16,6 +16,12 @@
 		</select>
 	</div>
 
+	<fieldset id="product-upload" class="ui-inset">
+		<legend>Imagen</legend>
+		<div class="placeholder"></div>
+		<div class="ui-fileupload ui-button"><img src="<?=PUB_URL?>consola.camara.png" alt="subir foto" width="36"></div>
+	</fieldset>
+
 <?php foreach($languages as $langcode => $langname):?>
 	<fieldset class="ui-inset divide">
 		<legend><?=$langname?></legend>
@@ -83,13 +89,7 @@
 	</fieldset>
 <?php endforeach;?>
 
-	<fieldset id="product-upload" class="ui-inset">
-		<legend>Imagen</legend>
-		<div class="ui-fileupload ui-button"><img src="<?=PUB_URL?>consola.camara.png" alt="subir foto" width="36"></div>
-	</fieldset>
-
 	<button class="ui-button" type="submit">Agregar</button>
-
 </section>
 <?php
 # TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE

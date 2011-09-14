@@ -9,19 +9,8 @@ fn.inset = function(){
 	var self = this;
 
 	// go up, until a background color is available.
-	var i, tmp, bg = false;
-	var parent = this.element;
-	do {
-		tmp = parent.css('background-color');
-		if (tmp == 'transparent' || tmp == 'rgba(0, 0, 0, 0)') continue;
-		bg = tmp.match(/\d+/g); // extract rgba, values.
-		break;
-	} while (
-		(parent = parent.parent()) &&
-		parent.get(0).tagName.toLowerCase() != 'html'
-	);
-	// throw error if a background-color was not available
-	if (!bg) this.core.error('Background Color unavailable', 'inset');
+	var i, tmp;
+	var bg = this.core.findbg(this.element);
 	// generate colors based upon color found.
 	var color = {
 		base : bg.map(function(a){ return      parseInt(a*self.settings.base,10); }),
@@ -63,15 +52,19 @@ fn.inset = function(){
 		$this.css(css);
 	});
 	var tag = this.element.get(0).nodeName.toLowerCase();
-	this.core.log('Constructed for "'+ tag + '".', 'inset');
+	this.core.log((this.constructed? 'Updated' : 'Constructed') + ' "'+ tag + '".', 'inset');
+	if (!this.constructed) this.constructed = true;
 };
 
 fn.inset.prototype = {
 	constructor:fn.inset,
+	constructed:false,
 
 	defaults:{
-		high : 1.25, // highlights
+		high : 1.15, // highlights
 		base : 0.90, // base color
-		low  : 0.50  // shadows
-	}
+		low  : 0.65  // shadows
+	},
+
+	update:fn.inset
 };

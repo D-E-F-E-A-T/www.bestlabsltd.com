@@ -12,8 +12,6 @@ var ø = {};
  */
 ø.init = function(){
 
-	$.ui.defaults.debug = true;
-
 	ø.$cont = $('#cont');
 	ø.$body = $('body');
 	ø.$sect = ø.$cont.find('> section');
@@ -36,6 +34,8 @@ var ø = {};
 	$(window).resize(ø.resize);
 	$('html').removeClass('no-js');
 
+	// enable global modal
+	ø.modal = $.ui.enable('modal', $('<div>').appendTo(ø.$body));
 
 	// filter behaviour according to page.
 	switch(page){
@@ -80,13 +80,14 @@ var ø = {};
 		'margin-right' : 0
 	});
 	var sec = ø.$cont.find('> section').outerWidth();
-	// calculate padding size.
-	var pad = parseInt(ø.$cont.css('padding-left'),10);
+	var pad = parseInt(div.css('padding-left'),10);
+	var dif = (div.outerWidth()-div.width())*2;
+	window.div = div;
 	// apply width
-	div.width((sec/2)+2-(pad*4));
+	div.width((sec-dif-pad)/2);
 	// if width < 350  no need of dividing.
-	if (div.width()<350) div.width(sec+2-(pad*4));
-	else div.filter(':nth-child(even)').css('margin-right',pad+'px');
+	if (div.width()<300) div.width(sec-(dif/2));
+	else div.filter(':nth-child(odd)').css('margin-right',pad+'px');
 };
 
 /**
@@ -113,10 +114,64 @@ var ø = {};
 		 * @author Hector Menendez <h@cun.mx>
 		 * @created 2011/SEP/08 15:23
 		 */
-
 		init:function(){
-			var $upload = $('#product-upload .ui-fileupload').ui({
-				url: 'hola'
+			// insert progressbar into modal.
+			ø.upbar  = $.ui.enable('progressbar', $('<div>').appendTo(ø.modal.$section).height('30px'));
+			var $pu = $('#product-upload');
+			var $fu = $pu.find('.ui-fileupload').first();
+			var $ph = $pu.find('.placeholder').first();
+			// enable uploader
+			ø.upload = $.ui.enable('fileupload', $fu,{
+				url:'../../consola/test',
+				auto:true, // auto starts upload.
+				size:60*1024, // maximum size
+				change:function(){
+					ø.modal.settings.footer = false;
+					ø.modal.settings.close  = false;
+					ø.modal.title = 'Subiendo Fotografía…';
+					ø.modal.show();
+				},
+				progress:function(percentage){
+					ø.upbar.update(percentage)
+				},
+				complete:function(){ ø.modal.hide(); },
+				success :function(){
+					// remove all existing images
+					$ph.removeClass('hasimg').find('img').remove();
+					var self = this;
+					// show new image and adjust its size.
+					var fr = new FileReader();
+					fr.file = this.$file.get(0).files[0];
+					fr.onloadend = function(e){
+						var img = new Image();
+						img.src = e.target.result;
+						$img = $(img).appendTo($ph);
+						img.onload = function(){
+							$ph.addClass('hasimg');
+							$('html, body').animate({ scrollTop : 0 });
+						};
+					}
+					fr.readAsDataURL(fr.file);
+				},
+				error:function(e, complete, message){
+					// remove all existing images
+					$ph.removeClass('hasimg').find('img').remove();
+					ø.modal.settings.footer = false;
+					ø.modal.settings.close  = true;
+					if (!complete) {
+						ø.modal.hide();
+						ø.modal.title = 'Error';
+						message = (message == 'size')?
+							'El archivo excede el tamaño ḿáximo permitido.' :
+							'Error desconocido, contacte a soporte técnico.';
+						ø.modal.$section.html(message);
+						ø.modal.show();
+						return;
+					}
+					ø.modal.title = 'La Transferencia Falló';
+					ø.modal.$section.html(this.xhr.responseText)
+					ø.modal.show();
+				}
 			});
 		}
 	},
@@ -136,6 +191,8 @@ var ø = {};
 		}
 	}
 };
+
+$.ui.core.defaults.debug = true;
 
 $(document).ready(ø.init).load(function(){ ø.ui.loader.hide(); });
 
