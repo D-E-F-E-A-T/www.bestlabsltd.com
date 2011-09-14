@@ -1,5 +1,6 @@
 /**
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/03 03:46
  */
 DROP TABLE IF EXISTS `language`;
@@ -15,6 +16,7 @@ INSERT INTO `language` (`id`,`name`) VALUES
 
 /**
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/03 03:55
  */
 DROP TABLE IF EXISTS `category`;
@@ -30,6 +32,7 @@ CREATE TABLE `category` (
 
 /**
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/03 04:09
  */
 DROP TABLE IF EXISTS `product`;

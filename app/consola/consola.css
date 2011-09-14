@@ -14,6 +14,7 @@ body { background:#f0f0f0; }
 #cont > section {
 	position:relative;
 	width:100%;
+	text-align:center;
 }
 
 #cont section > * {

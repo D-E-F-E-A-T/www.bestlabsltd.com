@@ -6,8 +6,10 @@ var ø = {};
 ø.$body = null;
 ø.$sect = null;
 ø.ui    = null;
+
 /**
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/04 03:35
  */
 ø.init = function(){
@@ -49,6 +51,7 @@ var ø = {};
 /**
  * Do stuff when window resized.
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/05 12:29
  */
 ø.resize = function(e){
@@ -61,6 +64,7 @@ var ø = {};
 /**
  * runs all callbacks "pushed" to resize.
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/05 13:14
  */
 ø.resize.run = function(){
@@ -72,14 +76,19 @@ var ø = {};
 /**
  * Adjust width and padding of .divide elements.
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/05 12:19
  */
 ø.divide = function(){
+
+	if ($(document).height() != $(window).height()) console.info($(document).width(), $(window).width());
+
+	return;
 	var div = ø.$cont.find('.divide').css({
 		'margin-left'  : 0,
 		'margin-right' : 0
 	});
-	var sec = ø.$cont.find('> section').outerWidth();
+	var sec = ø.$cont.find('> section').outerWidth()-16;
 	var pad = parseInt(div.css('padding-left'),10);
 	var dif = (div.outerWidth()-div.width())*2;
 	window.div = div;
@@ -93,6 +102,7 @@ var ø = {};
 /**
  * reduce the number of decimals to Two.
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/05 13:11
  */
 ø.divide.twodec = function(dec){
@@ -100,18 +110,21 @@ var ø = {};
 }
 /**
  * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/04 03:45
  */
 ø.agregar = {
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 03:45
 	 */
 	producto:{
 
 		/**
 		 * @author Hector Menendez <h@cun.mx>
+		 * @licence http://etor.mx/licence.txt
 		 * @created 2011/SEP/08 15:23
 		 */
 		init:function(){
@@ -124,7 +137,7 @@ var ø = {};
 			ø.upload = $.ui.enable('fileupload', $fu,{
 				url:'../../consola/test',
 				auto:true, // auto starts upload.
-				size:60*1024, // maximum size
+				size:3*1024*1024, // maximum size [3Mb]
 				change:function(){
 					ø.modal.settings.footer = false;
 					ø.modal.settings.close  = false;
@@ -136,6 +149,7 @@ var ø = {};
 				},
 				complete:function(){ ø.modal.hide(); },
 				success :function(){
+					ø.candivide = false; // don't call divide while doing this.
 					// remove all existing images
 					$ph.removeClass('hasimg').find('img').remove();
 					var self = this;
@@ -178,12 +192,14 @@ var ø = {};
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 16:24
 	 */
 	categoria:{
 
 		/**
 		 * @author Hector Menendez <h@cun.mx>
+		 * @licence http://etor.mx/licence.txt
 		 * @created 2011/SEP/04 16:24
 		 */
 		init:function(){
@@ -192,7 +208,7 @@ var ø = {};
 	}
 };
 
-$.ui.core.defaults.debug = true;
+$.ui.core.defaults.debug = false;
 
 $(document).ready(ø.init).load(function(){ ø.ui.loader.hide(); });
 

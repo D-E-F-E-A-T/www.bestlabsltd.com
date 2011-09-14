@@ -11,6 +11,8 @@ class consolaModel extends Model{
 	/**
 	 * Pseudo constructor
 	 *
+	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/AUG/24 00:32
 	 */
 	public function consola(){
@@ -23,6 +25,7 @@ class consolaModel extends Model{
 	 * Get All languages in array form.
 	 *
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 13:50
 	 */
 	public function languages(){
@@ -35,6 +38,7 @@ class consolaModel extends Model{
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 14:28
 	 */
 	public function categories(){

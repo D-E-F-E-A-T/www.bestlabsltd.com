@@ -30,6 +30,7 @@ class consolaControl extends Control{
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 00:26
 	 */
 	public function agregar($type=false){
@@ -64,6 +65,7 @@ class consolaControl extends Control{
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 01:16
 	 */
 	private function ver_producto(){
@@ -73,6 +75,7 @@ class consolaControl extends Control{
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 00:35
 	 */
 	private function agregar_producto(){
@@ -84,6 +87,7 @@ class consolaControl extends Control{
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 13:41
 	 */
 	private function agregar_categoria(){
@@ -106,6 +110,7 @@ class consolaControl extends Control{
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 00:54
 	 */
 	private function route($method){
