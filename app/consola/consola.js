@@ -79,16 +79,15 @@ var ø = {};
  * @licence http://etor.mx/licence.txt
  * @created 2011/SEP/05 12:19
  */
-ø.divide = function(){
-
-	if ($(document).height() != $(window).height()) console.info($(document).width(), $(window).width());
-
-	return;
+ø.divide = function(scroll){
+	// adjust if scrollbar present.
+	// still don't know why this 2pixels appear.
+	var scl = ($(document).height() > $(window).height())? 2 : 0;
 	var div = ø.$cont.find('.divide').css({
 		'margin-left'  : 0,
 		'margin-right' : 0
 	});
-	var sec = ø.$cont.find('> section').outerWidth()-16;
+	var sec = ø.$cont.find('> section').outerWidth()-scl;
 	var pad = parseInt(div.css('padding-left'),10);
 	var dif = (div.outerWidth()-div.width())*2;
 	window.div = div;
@@ -163,6 +162,9 @@ var ø = {};
 						img.onload = function(){
 							$ph.addClass('hasimg');
 							$('html, body').animate({ scrollTop : 0 });
+							// allow browser to scroll.
+							setTimeout(ø.divide,200)
+							//ø.divide();
 						};
 					}
 					fr.readAsDataURL(fr.file);
