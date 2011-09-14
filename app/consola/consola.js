@@ -90,12 +90,12 @@ var ø = {};
 	var sec = ø.$cont.find('> section').outerWidth()-scl;
 	var pad = parseInt(div.css('padding-left'),10);
 	var dif = (div.outerWidth()-div.width())*2;
-	window.div = div;
 	// apply width
 	div.width((sec-dif-pad)/2);
 	// if width < 350  no need of dividing.
 	if (div.width()<300) div.width(sec-(dif/2));
 	else div.filter(':nth-child(odd)').css('margin-right',pad+'px');
+	$.ui.textinput.padding(div);
 };
 
 /**
@@ -210,7 +210,7 @@ var ø = {};
 	}
 };
 
-$.ui.core.defaults.debug = false;
+$.ui.core.defaults.debug = true;
 
 $(document).ready(ø.init).load(function(){ ø.ui.loader.hide(); });
 
