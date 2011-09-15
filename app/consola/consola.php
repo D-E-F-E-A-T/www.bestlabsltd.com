@@ -68,9 +68,9 @@ class consolaControl extends Control{
 	private function agregar_producto(){
 		// is the user trying to upload a file?
 		if (isset($_SERVER['HTTP_X_FILE_NAME']) && isset($_SERVER['CONTENT_LENGTH'])){
-			if (!(int)$_SERVER['CONTENT_LENGTH']) parent::error_500('Upload failed.');
-			$file = file_get_contents('php://input');
-			stop('All good.');
+			if ( ($response = $this->model->product_image()) === true)
+				stop('{ "image" : "'.$this->model->image.'" }');
+			parent::error_500($response);
 		}
 		$this->view->tag_title = $this->view->title = 'Agregar Producto';
 		# if no post is sent, just render the view;

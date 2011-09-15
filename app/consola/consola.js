@@ -134,9 +134,10 @@ var ø = {};
 	var $ph = $pu.find('.placeholder').first();
 	// enable uploader
 	ø.upload = $.ui.enable('fileupload', $fu,{
-		url:'',
-		auto:true, // auto starts upload.
-		size:3*1024*1024, // maximum size [3Mb]
+		url  : '',
+		auto : true,                                    // auto starts upload.
+		size : 3*1024*1024,                             // maximum size [3Mb]
+		type : ['image/jpg','image/jpeg','image/png'],	// allowed mimetypes
 		change:function(){
 			ø.modal.settings.footer = false;
 			ø.modal.settings.close  = false;
@@ -147,7 +148,9 @@ var ø = {};
 			ø.upbar.value(percentage)
 		},
 		complete:function(){ ø.modal.hide(); },
-		success :function(){
+		success :function(e){
+			// update the name of the image.
+			this.name = $.parseJSON(this.xhr.responseText).image;
 			ø.candivide = false; // don't call divide while doing this.
 			// remove all existing images
 			$ph.removeClass('hasimg').find('img').remove();
@@ -162,9 +165,6 @@ var ø = {};
 				img.onload = function(){
 					$ph.addClass('hasimg');
 					$('html, body').animate({ scrollTop : 0 });
-					// allow browser to scroll.
-					setTimeout(ø.divide,200)
-					//ø.divide();
 				};
 			}
 			fr.readAsDataURL(fr.file);
@@ -177,9 +177,16 @@ var ø = {};
 			if (!complete) {
 				ø.modal.hide();
 				ø.modal.title = 'Error';
-				message = (message == 'size')?
-					'El archivo excede el tamaño ḿáximo permitido.' :
-					'Error desconocido, contacte a soporte técnico.';
+				switch(message){
+					case 'size':
+						message = 'El archivo excede el tamaño ḿáximo permitido.';
+						break;
+					case 'type':
+						message = 'El tipo de archivo no está permitido.';
+						break;
+					default:
+						message = 'Error desconocido, contacte a soporte técnico.';	
+				}
 				ø.modal.content = message;
 				ø.modal.show();
 				return;
@@ -236,7 +243,7 @@ var ø = {};
 			function(data){
 				$.ui.loader.hide();
 				ø.modal.title = "Categoría Agregada con éxito.";
-				ø.modal.content = data; //'La página será recargada.';
+				ø.modal.content = 'La página será recargada.';
 				ø.modal.settings.close  = false;
 				ø.modal.settings.submit = function(){
 					ø.modal.hide();
