@@ -39,6 +39,17 @@ var ø = {};
 	// enable global modal
 	ø.modal = $.ui.enable('modal', $('<div>').appendTo(ø.$body));
 
+	var error = function(e){
+		var ert = $(e.responseText);
+		$.ui.loader.hide();
+		ø.modal.settings.close  = true;
+		ø.modal.settings.submit = null;
+		ø.modal.settings.cancel = null;
+		ø.modal.title   = ert.filter('h1').text();
+		ø.modal.content = ert.filter('h2').text();
+		ø.modal.show();
+	};
+
 	// filter behaviour according to page.
 	switch(page){
 		case 'agregar_producto'  : ø.agregar.producto.init();  break;
@@ -107,18 +118,9 @@ var ø = {};
 ø.divide.twodec = function(dec){
 	return Math.round(dec*100+((dec*1000)%10>4?1:0))/100;
 }
-/**
- * @author Hector Menendez <h@cun.mx>
- * @licence http://etor.mx/licence.txt
- * @created 2011/SEP/04 03:45
- */
+
 ø.agregar = {
 
-	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
-	 * @created 2011/SEP/04 03:45
-	 */
 	producto:{
 
 		/**
@@ -144,7 +146,7 @@ var ø = {};
 					ø.modal.show();
 				},
 				progress:function(percentage){
-					ø.upbar.update(percentage)
+					ø.upbar.value(percentage)
 				},
 				complete:function(){ ø.modal.hide(); },
 				success :function(){
@@ -192,11 +194,6 @@ var ø = {};
 		}
 	},
 
-	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
-	 * @created 2011/SEP/04 16:24
-	 */
 	categoria:{
 
 		/**
@@ -205,6 +202,54 @@ var ø = {};
 		 * @created 2011/SEP/04 16:24
 		 */
 		init:function(){
+			var $id = $('#class');
+			var to;
+			$id.$parent = $id.parent();
+			$id.keypress(function(e){
+				if (to) clearTimeout(to);
+				// wait a second before checking value.
+				to = setTimeout(function(){
+					$.post('',{action:'catclass', value:$id.val(), token: TOKEN_PUBLIC },
+						function(data){
+							if (data == 'found') {
+								$id.$parent.addClass('error');
+								$id.ui('sayno',{distance:5});
+							}
+							else $id.$parent.removeClass('error');
+						}).error(error);
+				},333);
+			});
+
+			var $button = $('.submit button');
+			$button.click(function(){
+				var pass = true;
+				var data = { token: TOKEN_PUBLIC };
+				$('input').each(function(){
+					var $this = $(this);
+					var val = $this.val();
+					if (!val.length || $this.parent().hasClass('error'))
+						return pass = false;
+					var id = $this.attr('id');
+					data[id] = val;
+				});
+				if (!pass) return $button.ui('sayno');
+				// both inputs are filled, check if their values are valid first.
+				$.ui.loader.show();
+				$.post('', data,
+					function(data){
+						$.ui.loader.hide();
+						ø.modal.title = "Categoría Agregada con éxito.";
+						ø.modal.content = data; //'La página será recargada.';
+						ø.modal.settings.close  = false;
+						ø.modal.settings.submit = function(){
+							ø.modal.hide();
+							$.ui.loader.show();
+							window.location.reload();
+						};
+						ø.modal.show();
+					})
+					.error(error);
+			});
 
 		}
 	}

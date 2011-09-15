@@ -12,8 +12,9 @@
 		<label  class="ui-label" for="category">Categoría</label>
 		<select class="ui-selectbox" id="category" name="category">
 			<option value="" selected> </option>
-			<option value="uno">Categoría 1</option>
-			<option value="dos">Categoría 2</option>
+			<?php foreach($categories as $category):?>
+			<option value="<?=$category?>"><?=$category?></option>
+			<?php endforeach ?>
 		</select>
 	</div>
 
@@ -31,7 +32,7 @@
 				class      = "ui-label"
 				for        = "<?=$langcode?>_name"
 				data-count = "66"
-				data-limit = "a-zA-Z0-9 -"
+				data-limit = "[a-zA-Z0-9 -]|[^\x00-\x80]"
 				title      =
 				"<b>Nombre del producto.</b><br>
 				 Acepta caracteres A-Z, dígitos del 0-9 y el caracter '-' (guión).
@@ -90,7 +91,23 @@
 	</fieldset>
 <?php endforeach;?>
 
-	<button class="ui-button" type="submit">Agregar</button>
+	<fieldset class="ui-inset small">
+		<label
+			for        = "class"
+			class      = "ui-label"
+			data-limit = "[a-z]"
+			data-count = "66"
+			title      =
+			"<b>Identificador del Producto</b>
+			Nombre que los productos compartirán en la base de datos, -
+			solo minúsculas sin espacios o caracteres especiales.<br>
+			<i>Si el campo aparece en tono rojo, significa que otro producto -
+			con ese nombre ya existe en la base de datos.</i>"
+		>Identificador</label>
+		<input id="class" class="ui-input" type="text">
+	</fieldset>
+
+	<div class="submit"><button class="ui-button" type="submit">Agregar</button></div>
 </section>
 <?php
 # TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE

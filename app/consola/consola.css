@@ -45,6 +45,27 @@ fieldset legend + div {
 }
 
 
+fieldset.small {
+	width:33%;
+	min-width:175px;
+	margin:0 auto;
+}
+
+.error input {
+	border-color:#C66;
+	background-color:#FDD;
+	color:#611 !important;
+}
+.error .ui-label-help {
+	background:#C66;
+}
+
+.error label,
+.error i
+{
+	color:#611 !important;
+}
+
 #product-upload { padding-top:1.5em; }
 #product-upload > * { vertical-align:top; padding-bottom:0 !important; }
 
@@ -95,3 +116,6 @@ textarea.keyw { height:1.4em; }
 	clear:both;
 }
 
+div.submit {
+	display:inline-block;
+}

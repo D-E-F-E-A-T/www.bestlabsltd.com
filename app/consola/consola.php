@@ -16,6 +16,7 @@ class consolaControl extends Control{
 	}
 
 	public function test(){
+		stop($_POST);
 		if (
 			!isset($_SERVER['HTTP_X_FILE_NAME']) ||
 			!isset($_SERVER['CONTENT_LENGTH'])
@@ -94,7 +95,14 @@ class consolaControl extends Control{
 		$this->view->tag_title = $this->view->title = 'Agregar Categoría';
 		# if no post is sent, just render the view;
 		if (empty($_POST)) $this->view->render('agregar.categoria');
-		stop('proces product');
+		# an akax  category check request
+		if (isset($_POST['action'])){
+			$this->model->category_check();
+			stop();
+		}
+		# an empty response will tell the client everything went as expected.
+		if ( ($response = $this->model->category_add()) === true) stop();
+		parent::error_500($response);
 	}
 
 	private function common(){
@@ -103,9 +111,8 @@ class consolaControl extends Control{
 		if (!$this->model->auth->logged) return $this->auth(false);
 		# this will happen only if user logged in.
 		$this->view->tag_jsini(PUB_URL.'consola.js');
-		$this->view->languages = $this->model->languages();
-
-
+		$this->view->languages  = $this->model->languages();
+		$this->view->categories = $this->model->categories();
 	}
 
 	/**

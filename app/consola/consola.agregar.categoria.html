@@ -15,19 +15,35 @@
 			<label
 				for        = "<?=$langcode?>_name"
 				class      = "ui-label"
-				data-limit = "a-zA-Z"
+				data-limit = "[a-zA-Z]|[^\x00-\x80]"
 				data-count = "22"
 				title      =
 				"<b>Nombre de la Categoría</b>
 				Una sola palabra formada solo por letras sin espacios  que -
 				representa un grupo de productos."
 				>Nombre</label>
-			<input id="name" class="ui-input" "<?=$langcode?>_name" type="text">
+			<input class="ui-input" id="<?=$langcode?>_name" type="text">
 		</div>
 	</fieldset>
 <?php endforeach ?>
 
-	<button class="ui-button" type="submit">Agregar</button>
+	<fieldset class="ui-inset small">
+		<label
+			for        = "class"
+			class      = "ui-label"
+			data-limit = "[a-z]"
+			data-count = "22"
+			title      =
+			"<b>Identificador de las Categorías</b>
+			Nombre que las categorías compartirán en la base de datos, -
+			solo minúsculas sin espacios o caracteres especiales.<br>
+			<i>Si el campo aparece en tono rojo, significa que otra categoría -
+			con ese nombre ya existe en la base de datos.</i>"
+		>Identificador</label>
+		<input id="class" class="ui-input" type="text">
+	</fieldset>
+
+	<div class="submit"><button class="ui-button" type="submit">Agregar</button></div>
 
 </section>
 
