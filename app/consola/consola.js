@@ -39,7 +39,7 @@ var ø = {};
 	// enable global modal
 	ø.modal = $.ui.enable('modal', $('<div>').appendTo(ø.$body));
 
-	var error = function(e){
+	ø.error = function(e){
 		var ert = $(e.responseText);
 		$.ui.loader.hide();
 		ø.modal.settings.close  = true;
@@ -52,8 +52,8 @@ var ø = {};
 
 	// filter behaviour according to page.
 	switch(page){
-		case 'agregar_producto'  : ø.agregar.producto.init();  break;
-		case 'agregar_categoria' : ø.agregar.categoria.init(); break;
+		case 'agregar_producto'  : ø.agregar.producto();  break;
+		case 'agregar_categoria' : ø.agregar.categoria(); break;
 		default: console.info('This has not been developed yet');
 	}
 
@@ -119,145 +119,137 @@ var ø = {};
 	return Math.round(dec*100+((dec*1000)%10>4?1:0))/100;
 }
 
-ø.agregar = {
+ø.agregar = {};
 
-	producto:{
-
-		/**
-		 * @author Hector Menendez <h@cun.mx>
-		 * @licence http://etor.mx/licence.txt
-		 * @created 2011/SEP/08 15:23
-		 */
-		init:function(){
-			// insert progressbar into modal.
-			ø.upbar  = $.ui.enable('progressbar', $('<div>').appendTo(ø.modal.$section).height('30px'));
-			var $pu = $('#product-upload');
-			var $fu = $pu.find('.ui-fileupload').first();
-			var $ph = $pu.find('.placeholder').first();
-			// enable uploader
-			ø.upload = $.ui.enable('fileupload', $fu,{
-				url:'../../consola/test',
-				auto:true, // auto starts upload.
-				size:3*1024*1024, // maximum size [3Mb]
-				change:function(){
-					ø.modal.settings.footer = false;
-					ø.modal.settings.close  = false;
-					ø.modal.title = 'Subiendo Fotografía…';
-					ø.modal.show();
-				},
-				progress:function(percentage){
-					ø.upbar.value(percentage)
-				},
-				complete:function(){ ø.modal.hide(); },
-				success :function(){
-					ø.candivide = false; // don't call divide while doing this.
-					// remove all existing images
-					$ph.removeClass('hasimg').find('img').remove();
-					var self = this;
-					// show new image and adjust its size.
-					var fr = new FileReader();
-					fr.file = this.$file.get(0).files[0];
-					fr.onloadend = function(e){
-						var img = new Image();
-						img.src = e.target.result;
-						$img = $(img).appendTo($ph);
-						img.onload = function(){
-							$ph.addClass('hasimg');
-							$('html, body').animate({ scrollTop : 0 });
-							// allow browser to scroll.
-							setTimeout(ø.divide,200)
-							//ø.divide();
-						};
-					}
-					fr.readAsDataURL(fr.file);
-				},
-				error:function(e, complete, message){
-					// remove all existing images
-					$ph.removeClass('hasimg').find('img').remove();
-					ø.modal.settings.footer = false;
-					ø.modal.settings.close  = true;
-					if (!complete) {
-						ø.modal.hide();
-						ø.modal.title = 'Error';
-						message = (message == 'size')?
-							'El archivo excede el tamaño ḿáximo permitido.' :
-							'Error desconocido, contacte a soporte técnico.';
-						ø.modal.$section.html(message);
-						ø.modal.show();
-						return;
-					}
-					ø.modal.title = 'La Transferencia Falló';
-					ø.modal.$section.html(this.xhr.responseText)
-					ø.modal.show();
-				}
-			});
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/08 15:23
+ */
+ø.agregar.producto = function(){
+	// insert progressbar into modal.
+	ø.upbar  = $.ui.enable('progressbar', $('<div>').appendTo(ø.modal.$section).height('30px'));
+	var $pu = $('#product-upload');
+	var $fu = $pu.find('.ui-fileupload').first();
+	var $ph = $pu.find('.placeholder').first();
+	// enable uploader
+	ø.upload = $.ui.enable('fileupload', $fu,{
+		url:'',
+		auto:true, // auto starts upload.
+		size:3*1024*1024, // maximum size [3Mb]
+		change:function(){
+			ø.modal.settings.footer = false;
+			ø.modal.settings.close  = false;
+			ø.modal.title = 'Subiendo Fotografía…';
+			ø.modal.show();
+		},
+		progress:function(percentage){
+			ø.upbar.value(percentage)
+		},
+		complete:function(){ ø.modal.hide(); },
+		success :function(){
+			ø.candivide = false; // don't call divide while doing this.
+			// remove all existing images
+			$ph.removeClass('hasimg').find('img').remove();
+			var self = this;
+			// show new image and adjust its size.
+			var fr = new FileReader();
+			fr.file = this.$file.get(0).files[0];
+			fr.onloadend = function(e){
+				var img = new Image();
+				img.src = e.target.result;
+				$img = $(img).appendTo($ph);
+				img.onload = function(){
+					$ph.addClass('hasimg');
+					$('html, body').animate({ scrollTop : 0 });
+					// allow browser to scroll.
+					setTimeout(ø.divide,200)
+					//ø.divide();
+				};
+			}
+			fr.readAsDataURL(fr.file);
+		},
+		error:function(e, complete, message){
+			// remove all existing images
+			$ph.removeClass('hasimg').find('img').remove();
+			ø.modal.settings.footer = false;
+			ø.modal.settings.close  = true;
+			if (!complete) {
+				ø.modal.hide();
+				ø.modal.title = 'Error';
+				message = (message == 'size')?
+					'El archivo excede el tamaño ḿáximo permitido.' :
+					'Error desconocido, contacte a soporte técnico.';
+				ø.modal.content = message;
+				ø.modal.show();
+				return;
+			}
+			var html = $(this.xhr.responseText);
+			ø.modal.title   = html.filter('h1').text();
+			ø.modal.content = html.filter('h2').text();
+			ø.modal.show();
 		}
-	},
+	});
+}
 
-	categoria:{
 
-		/**
-		 * @author Hector Menendez <h@cun.mx>
-		 * @licence http://etor.mx/licence.txt
-		 * @created 2011/SEP/04 16:24
-		 */
-		init:function(){
-			var $id = $('#class');
-			var to;
-			$id.$parent = $id.parent();
-			$id.keypress(function(e){
-				if (to) clearTimeout(to);
-				// wait a second before checking value.
-				to = setTimeout(function(){
-					$.post('',{action:'catclass', value:$id.val(), token: TOKEN_PUBLIC },
-						function(data){
-							if (data == 'found') {
-								$id.$parent.addClass('error');
-								$id.ui('sayno',{distance:5});
-							}
-							else $id.$parent.removeClass('error');
-						}).error(error);
-				},333);
-			});
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/04 16:24
+ */
+ø.agregar.categoria = function(){
+	var $id = $('#class');
+	var to;
+	$id.$parent = $id.parent();
+	$id.keypress(function(e){
+		if (to) clearTimeout(to);
+		// wait a second before checking value.
+		to = setTimeout(function(){
+			$.post('',{action:'catclass', value:$id.val(), token: TOKEN_PUBLIC },
+				function(data){
+					if (data == 'found') {
+						$id.$parent.addClass('error');
+						$id.ui('sayno',{distance:5});
+					}
+					else $id.$parent.removeClass('error');
+				}).error(error);
+		},333);
+	});
 
-			var $button = $('.submit button');
-			$button.click(function(){
-				var pass = true;
-				var data = { token: TOKEN_PUBLIC };
-				$('input').each(function(){
-					var $this = $(this);
-					var val = $this.val();
-					if (!val.length || $this.parent().hasClass('error'))
-						return pass = false;
-					var id = $this.attr('id');
-					data[id] = val;
-				});
-				if (!pass) return $button.ui('sayno');
-				// both inputs are filled, check if their values are valid first.
-				$.ui.loader.show();
-				$.post('', data,
-					function(data){
-						$.ui.loader.hide();
-						ø.modal.title = "Categoría Agregada con éxito.";
-						ø.modal.content = data; //'La página será recargada.';
-						ø.modal.settings.close  = false;
-						ø.modal.settings.submit = function(){
-							ø.modal.hide();
-							$.ui.loader.show();
-							window.location.reload();
-						};
-						ø.modal.show();
-					})
-					.error(error);
-			});
-
-		}
-	}
-};
+	var $button = $('.submit button');
+	$button.click(function(){
+		var pass = true;
+		var data = { token: TOKEN_PUBLIC };
+		$('input').each(function(){
+			var $this = $(this);
+			var val = $this.val();
+			if (!val.length || $this.parent().hasClass('error'))
+				return pass = false;
+			var id = $this.attr('id');
+			data[id] = val;
+		});
+		if (!pass) return $button.ui('sayno');
+		// both inputs are filled, check if their values are valid first.
+		$.ui.loader.show();
+		$.post('', data,
+			function(data){
+				$.ui.loader.hide();
+				ø.modal.title = "Categoría Agregada con éxito.";
+				ø.modal.content = data; //'La página será recargada.';
+				ø.modal.settings.close  = false;
+				ø.modal.settings.submit = function(){
+					ø.modal.hide();
+					$.ui.loader.show();
+					window.location.reload();
+				};
+				ø.modal.show();
+			})
+			.error(error);
+	});
+}
 
 $.ui.core.defaults.debug = true;
-
 $(document).ready(ø.init).load(function(){ ø.ui.loader.hide(); });
-
 
 })(jQuery);

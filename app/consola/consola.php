@@ -15,20 +15,6 @@ class consolaControl extends Control{
 		$this->ver_producto();
 	}
 
-	public function test(){
-		stop($_POST);
-		if (
-			!isset($_SERVER['HTTP_X_FILE_NAME']) ||
-			!isset($_SERVER['CONTENT_LENGTH'])
-		) parent::error_403();
-
-		if (!(int)$_SERVER['CONTENT_LENGTH']) {
-			Core::header(500);
-			stop('Upload Failed');
-		}
-		stop('Upload Succeeded.');
-	}
-
 	/**
 	 * @author Hector Menendez <h@cun.mx>
 	 * @licence http://etor.mx/licence.txt
@@ -80,6 +66,12 @@ class consolaControl extends Control{
 	 * @created 2011/SEP/04 00:35
 	 */
 	private function agregar_producto(){
+		// is the user trying to upload a file?
+		if (isset($_SERVER['HTTP_X_FILE_NAME']) && isset($_SERVER['CONTENT_LENGTH'])){
+			if (!(int)$_SERVER['CONTENT_LENGTH']) parent::error_500('Upload failed.');
+			$file = file_get_contents('php://input');
+			stop('All good.');
+		}
 		$this->view->tag_title = $this->view->title = 'Agregar Producto';
 		# if no post is sent, just render the view;
 		if (empty($_POST)) $this->view->render('agregar.producto');
