@@ -7,7 +7,25 @@
  include APP_PATH.APP_NAME.'.html'; # common.
  ?>
 <section>
-	Meh.
+	<table>
+		<caption></caption>
+		<thead>
+			<tr>
+				<th class="class" scope="col">Identificador</th>
+				<th class="categ" scope="col">Categoría</th>
+				<th class="stock" scope="col">Existencia</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach($products as $product):?>
+			<tr>
+				<td class="class"><?=$product['class']?></td>
+				<td class="categ"><?=$product['categ']?></td>
+				<td class="stock">0</td>
+			</tr>
+		<?php endforeach ?>
+		</tbody>
+	</table>
 </section>
 <?php
 # TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE

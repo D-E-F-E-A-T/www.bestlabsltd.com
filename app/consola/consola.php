@@ -1,13 +1,16 @@
 <?php
 /**
-* Administration consola controller.
-*
-* @log created 2011/AUG/23 23:13
-*/
+ * Administration consola controller.
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/AUG/23 23:13
+ */
 class consolaControl extends Control{
 
-	public $notfound = "La página que ingresó, no existe.";
-
+	/**
+	 * Constructor
+	 * @created 2011/AGO/23 23:14
+	 */
 	public function consola(){
 		$this->common();
 		# default action
@@ -16,8 +19,6 @@ class consolaControl extends Control{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 00:26
 	 */
 	public function agregar($type=false){
@@ -33,12 +34,20 @@ class consolaControl extends Control{
 		$this->route($type);
 	}
 
+	/**
+	 * Close sesion.
+	 * @created 2011/SEP/02 17:12
+	 */
 	public function logout(){
 		$this->common();
 		$this->model->auth->logout();
 		$this->reload();
 	}
 
+	/**
+	 * Shows login form.
+	 * @created 2011/AUG/29 23:43
+	 */
 	public function auth($loadcommon=true){
 		# if called directly, call common.
 		if ($loadcommon) $this->common();
@@ -50,9 +59,10 @@ class consolaControl extends Control{
 		$this->view->render('auth');
 	}
 
+
+####################################################################################################
+
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 01:16
 	 */
 	private function ver_producto(){
@@ -61,8 +71,6 @@ class consolaControl extends Control{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 00:35
 	 */
 	private function agregar_producto(){
@@ -90,8 +98,6 @@ class consolaControl extends Control{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 13:41
 	 */
 	private function agregar_categoria(){
@@ -112,6 +118,24 @@ class consolaControl extends Control{
 		parent::error_500($response);
 	}
 
+	/**
+	 * @created 2011/SEP/16 06:45
+	 */
+	private function agregar_mercancia(){
+		# if no post is sent, just render the view;
+		if (empty($_POST)) {
+			$this->view->tag_title = $this->view->title = 'Agregar Mercancía';
+			$this->view->render('agregar.mercancia');
+		}
+	}
+
+
+####################################################################################################
+
+	/**
+	 * Common procedures.
+	 * @created 2011/AGO/23 23:14
+	 */
 	private function common(){
 		$this->view->tag_link('stylesheet',PUB_URL.'ui/ui.css');
 		$this->view->tag_jsini(PUB_URL.'ui/ui.js');
@@ -120,11 +144,10 @@ class consolaControl extends Control{
 		$this->view->tag_jsini(PUB_URL.'consola.js');
 		$this->view->languages  = $this->model->languages();
 		$this->view->categories = $this->model->categories();
+		$this->view->products   = $this->model->products();
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 00:54
 	 */
 	private function route($method){
@@ -135,7 +158,9 @@ class consolaControl extends Control{
 		$this->view->class = $method = "{$bt[1]['function']}_{$method}";
 		# if private method is defined run it. else, show error.
 		if (method_exists($this, $method)) $this->$method();
-		parent::error_404($this->notfound);
+		parent::error_404("La página que ingresó, no existe.");
 	}
+
+
 }
 

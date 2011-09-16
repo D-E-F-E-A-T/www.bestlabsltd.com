@@ -1,3 +1,49 @@
+/* TABLE */
+
+       thead th:first-child               { border-top-left-radius     : 0.25em; }
+       thead th:last-child                { border-top-right-radius    : 0.25em; }
+table, tbody tr:last-child td:first-child { border-bottom-left-radius  : 0.33em; }
+table, tbody tr:last-child td:last-child  { border-bottom-right-radius : 0.33em; }
+
+table {
+	margin-top:-1em;
+    border-collapse:separate;
+    border-spacing:1px 0;
+    border-bottom:1px solid rgba(0,0,0,0.2);
+}
+
+th,td { vertical-align:middle; }
+
+th { 
+	color:#FFF;
+	font-weight:bold;
+	font-size:.85em;
+	text-shadow:1px 1px 0 rgba(0,0,0,0.33), -1px -1px 3px rgba(0,0,0, .2);
+	background:rgba(0,0,0, 0.2);
+	padding:.25em 1em;
+}
+
+td { padding:.5em 1.5em; text-align:center; color:rgba(0,0,0,.80) }
+
+/*
+th { background:rgba(0,0,0,0.20); color:rgba(255,255,255, 0.9); text-shadow:0px 0px 1px rgba(0,0,0, .5), 1px 1px 0 rgba(0,0,0, 0.3); }
+*/
+
+tr:nth-child(even) td { background:rgba(0,0,0,0.066); }
+tr:nth-child(odd)  td { background:rgba(0,0,0,0.033); }
+
+td:nth-child(odd):not(:last-child),
+td:nth-child(even):not(:last-child)
+{ 
+    border-right:1px solid rgba(0,0,0, 0.2);	
+}
+
+td:first-child { border-left:1px solid rgba(0,0,0,0.2); }
+td:last-child  { border-right:1px solid rgba(0,0,0,0.2); }
+
+
+/* END TABLE */
+
 body { background:#f0f0f0; }
 
 #cont {
@@ -24,16 +70,24 @@ body { background:#f0f0f0; }
 	overflow:visible !important;
 }
 
-#cont section > div.category {
+
+
+#cont section > div.category,
+#cont section > div.product
+{
 	position:absolute;
 	right:.4em;
 	top:-4em;
 }
 
-#cont section > div.category label {
+#cont section > div.category label,
+#cont section > div.product label
+{
 	width:auto !important;
 	display:inline-block !important;
 }
+
+
 
 #cont section > fieldset > div {
 	width:100%;
@@ -50,7 +104,7 @@ fieldset.small {
 	min-width:175px;
 	margin:0 auto;
 }
-
+#mercancia-add div.cantidad { width:8em; }
 #product-upload { padding-top:1.5em; }
 #product-upload > * { vertical-align:top; padding-bottom:0 !important; }
 
@@ -124,4 +178,5 @@ div.submit {
 {
 	color:#611 !important;
 }
+
 

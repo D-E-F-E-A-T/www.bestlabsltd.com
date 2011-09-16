@@ -64,6 +64,8 @@ var ø = {};
 		ø.modal.show();
 	};
 
+	$('table .ui-inset').ui();
+
 	// filter behaviour according to page.
 	switch(page){
 		case 'agregar_producto'  : ø.agregar.producto();  break;
@@ -145,7 +147,6 @@ var ø = {};
 		to = setTimeout(function(){
 			$.post('',{action:'prodclass', value:$id.val(), token: TOKEN_PUBLIC },
 				function(data){
-					console.info(data);
 					if (data == 'found') {
 						$id.$parent.addClass('error');
 						$id.ui('sayno',{distance:5});

@@ -49,8 +49,18 @@ class consolaModel extends Model{
 	 * @created 2011/SEP/15 01:59
 	 */
 	public function categories(){
-		return $this->db->select('category', 'class','GROUP BY class ORDER BY class DESC');
+		return $this->db->select('category', '*','GROUP BY `class` ORDER BY `class` DESC');
 	}
+
+	/**
+	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
+	 * @created 2011/SEP/16 05:41
+	 */
+	public function products(){
+		return $this->db->select('product','*','GROUP BY `class` ORDER BY `class` DESC');
+	}
+
 
 	/**
 	 * @author Hector Menendez <h@cun.mx>

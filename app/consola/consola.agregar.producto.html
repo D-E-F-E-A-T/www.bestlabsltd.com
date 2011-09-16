@@ -13,7 +13,7 @@
 		<select class="ui-selectbox" id="category" name="category">
 			<option value="" selected> </option>
 			<?php foreach($categories as $category):?>
-			<option value="<?=$category?>"><?=$category?></option>
+			<option value="<?=$category['class']?>"><?=$category['class']?></option>
 			<?php endforeach ?>
 		</select>
 	</div>
