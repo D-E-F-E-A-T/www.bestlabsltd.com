@@ -9,7 +9,7 @@ class consolaModel extends Model{
 	private $languages = null;
 
 	private $image_width  = 500;
-	private $image_tmpath = 'img/original/'; // on TMP 
+	private $image_tmpath = 'consola/upload/'; // on PUB 
 	public  $image;
 
 
@@ -23,7 +23,7 @@ class consolaModel extends Model{
 	public function consola(){
 		#enable authentication library.
 		Auth::model($this);
-		$this->image_tmpath = TMP.'img/original/';
+		$this->image_tmpath = PUB.$this->image_tmpath;
 		if (!file_exists($this->image_tmpath)) mkdir($this->image_tmpath, 0777, true);
 	}
 
@@ -60,14 +60,16 @@ class consolaModel extends Model{
 	public function category_add(){
 		if (!isset($_POST['es_name']) || !isset($_POST['en_name'])) return "Faltan Datos.";
 		$this->db->insert('category', array(
-			'lang'  => 'es',
-			'class' => $_POST['class'],
-			'name'  => $_POST['es_name']
-		));
-		$this->db->insert('category', array(
-			'lang'  => 'en',
-			'class' => $_POST['class'],
-			'name'  => $_POST['en_name']
+			array(
+				'lang'  => 'es',
+				'class' => $_POST['class'],
+				'name'  => $_POST['es_name']
+			),
+			array(
+				'lang'  => 'en',
+				'class' => $_POST['class'],
+				'name'  => $_POST['en_name']
+			)
 		));
 		return true;
 	}
@@ -78,10 +80,67 @@ class consolaModel extends Model{
 	 * @created 2011/SEP/15 00:45
 	 */
 	public function category_check(){
-		if (!isset($_POST['value'])) parent::error_500('Invalid Value.');
+		if (!isset($_POST['value'])) return false;
 		$val = $_POST['value'];
-		if ($this->db->select('category','class','class=? LIMIT 1',$val))
-			echo 'found';
+		if ($a = $this->db->select('category','class','class=? LIMIT 1',$val)) return 'found';
+		return true;
+	}
+
+	/**
+	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
+	 * @created 2011/SEP/15 18:40
+	 */
+	public function product_add(){
+		# "verify" data
+		if(
+				 count($_POST) != 11
+			||	!isset($_POST['category'])
+			||	!isset($_POST['class'])
+			||	!isset($_POST['file'])
+			||	!isset($_POST['en_cont'])
+			||	!isset($_POST['en_desc'])
+			||	!isset($_POST['en_keyw'])
+			||	!isset($_POST['en_name'])
+			||	!isset($_POST['es_cont'])
+			||	!isset($_POST['es_desc'])
+			||	!isset($_POST['es_keyw'])
+			||	!isset($_POST['es_name'])
+		) return 'Faltan Datos.';
+		# insert data;
+		$this->db->insert('product',array(
+			array(
+				'lang'  => 'es',
+				'categ' => $_POST['category'],
+				'class' => $_POST['class'],
+				'name'  => $_POST['es_name'],
+				'cont'  => $_POST['es_cont'],
+				'keyw'  => $_POST['es_keyw'],
+				'desc'  => $_POST['es_desc']
+			),
+			array(
+				'lang'  => 'en',
+				'categ' => $_POST['category'],
+				'class' => $_POST['class'],
+				'name'  => $_POST['en_name'],
+				'cont'  => $_POST['en_cont'],
+				'keyw'  => $_POST['en_keyw'],
+				'desc'  => $_POST['en_desc']
+			)
+		));
+		return true;
+	}
+
+	/**
+	 * @author Hector Menendez <h@cun.mx>
+	 * @licence http://etor.mx/licence.txt
+	 * @created 2011/SEP/15 16:51
+	 */
+	public function product_check(){
+		if (!isset($_POST['value'])) return false;
+		$val = $_POST['value'];
+		if ($this->db->select('product','class','class=? LIMIT 1',$val)) return 'found';
+		return true;
 	}
 
 	/**

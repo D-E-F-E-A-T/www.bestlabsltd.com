@@ -50,6 +50,20 @@ var ø = {};
 		ø.modal.show();
 	};
 
+	ø.success = function(data){
+		$.ui.loader.hide();
+		ø.modal.settings.close  = false;
+		ø.modal.settings.cancel = null;
+		ø.modal.settings.submit = function(){
+			ø.modal.hide();
+			$.ui.loader.show();
+			window.location.reload();
+		};
+		ø.modal.title   = 'La página será recargada.';
+		ø.modal.content =  data;
+		ø.modal.show();
+	};
+
 	// filter behaviour according to page.
 	switch(page){
 		case 'agregar_producto'  : ø.agregar.producto();  break;
@@ -121,6 +135,27 @@ var ø = {};
 
 ø.agregar = {};
 
+ø.agregar.classcheck = function(){
+	var $id = $('#class');
+	var to;
+	$id.$parent = $id.parent();
+	$id.keypress(function(e){
+		if (to) clearTimeout(to);
+		// wait a second before checking value.
+		to = setTimeout(function(){
+			$.post('',{action:'prodclass', value:$id.val(), token: TOKEN_PUBLIC },
+				function(data){
+					console.info(data);
+					if (data == 'found') {
+						$id.$parent.addClass('error');
+						$id.ui('sayno',{distance:5});
+					}
+					else $id.$parent.removeClass('error');
+				}).error(ø.error);
+		},333);
+	});	
+}
+
 /**
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
@@ -132,7 +167,7 @@ var ø = {};
 	var $pu = $('#product-upload');
 	var $fu = $pu.find('.ui-fileupload').first();
 	var $ph = $pu.find('.placeholder').first();
-	// enable uploader
+	// enable image uploader
 	ø.upload = $.ui.enable('fileupload', $fu,{
 		url  : '',
 		auto : true,                                    // auto starts upload.
@@ -151,23 +186,31 @@ var ø = {};
 		success :function(e){
 			// update the name of the image.
 			this.name = $.parseJSON(this.xhr.responseText).image;
+			this.element.parentsUntil('section').last().removeClass('error');
 			ø.candivide = false; // don't call divide while doing this.
 			// remove all existing images
 			$ph.removeClass('hasimg').find('img').remove();
 			var self = this;
 			// show new image and adjust its size.
+			$.ui.loader.show();
+			var img = new Image();
+			img.src = '../../pub/consola/upload/' + this.name;
+			img.onload = function(){
+				$(img).appendTo($ph);
+				$ph.addClass('hasimg');
+				$('html, body').animate({ scrollTop : 0 });
+				$.ui.loader.hide();
+			};
+
+			/*
+			Loading the image from memory was using so much resources
+			I'm gonna use the good ol' load from url. Leaving for future reference.
+			
 			var fr = new FileReader();
 			fr.file = this.$file.get(0).files[0];
-			fr.onloadend = function(e){
-				var img = new Image();
-				img.src = e.target.result;
-				$img = $(img).appendTo($ph);
-				img.onload = function(){
-					$ph.addClass('hasimg');
-					$('html, body').animate({ scrollTop : 0 });
-				};
-			}
+			fr.onloadend = function(e){}
 			fr.readAsDataURL(fr.file);
+			*/
 		},
 		error:function(e, complete, message){
 			// remove all existing images
@@ -197,6 +240,40 @@ var ø = {};
 			ø.modal.show();
 		}
 	});
+	var removerr = function(){
+		$(this).parent().removeClass('error');
+	};
+	$('select').change(removerr);
+	$('input,textarea').keypress(removerr);
+
+	// enable class checker
+	ø.agregar.classcheck();
+	// validate form
+	var $button = $('.submit button');
+	$button.click(function(){
+		var data = { token: TOKEN_PUBLIC };
+		var pass = true;
+		var $this, val, isfile;
+		$('input,textarea,select').each(function(){
+			$this = $(this);
+			$this.$parent = $this.parent();
+			isfile = $this.is('[type=file]');
+			if (isfile)
+				$this.$parent = $this.parentsUntil('section').last();
+			val = $this.val();
+			if (!val.length || $this.$parent.hasClass('error')) {
+				$this.$parent.addClass('error');
+				return pass = false; // breaks
+			}
+			$this.$parent.removeClass('error');
+			if (isfile) data['file'] = ø.upload.name;
+			else data[$this.attr('id')] = val;
+		});
+		if (!pass) return $button.ui('sayno');
+		// post data to server.
+		$.ui.loader.show();
+		$.post('', data, ø.success).error(ø.error);
+	});
 }
 
 
@@ -206,53 +283,24 @@ var ø = {};
  * @created 2011/SEP/04 16:24
  */
 ø.agregar.categoria = function(){
-	var $id = $('#class');
-	var to;
-	$id.$parent = $id.parent();
-	$id.keypress(function(e){
-		if (to) clearTimeout(to);
-		// wait a second before checking value.
-		to = setTimeout(function(){
-			$.post('',{action:'catclass', value:$id.val(), token: TOKEN_PUBLIC },
-				function(data){
-					if (data == 'found') {
-						$id.$parent.addClass('error');
-						$id.ui('sayno',{distance:5});
-					}
-					else $id.$parent.removeClass('error');
-				}).error(error);
-		},333);
-	});
-
+	// validate category identifier
+	ø.agregar.classcheck();
+	// validate form.
 	var $button = $('.submit button');
 	$button.click(function(){
 		var pass = true;
 		var data = { token: TOKEN_PUBLIC };
+		var val, $this;
 		$('input').each(function(){
-			var $this = $(this);
-			var val = $this.val();
-			if (!val.length || $this.parent().hasClass('error'))
-				return pass = false;
-			var id = $this.attr('id');
-			data[id] = val;
+			$this = $(this);
+			val = $this.val();
+			if (!val.length || $this.parent().hasClass('error')) return pass = false; // breaks
+			data[$this.attr('id')] = val;
 		});
 		if (!pass) return $button.ui('sayno');
 		// both inputs are filled, check if their values are valid first.
 		$.ui.loader.show();
-		$.post('', data,
-			function(data){
-				$.ui.loader.hide();
-				ø.modal.title = "Categoría Agregada con éxito.";
-				ø.modal.content = 'La página será recargada.';
-				ø.modal.settings.close  = false;
-				ø.modal.settings.submit = function(){
-					ø.modal.hide();
-					$.ui.loader.show();
-					window.location.reload();
-				};
-				ø.modal.show();
-			})
-			.error(error);
+		$.post('', data, ø.success).error(ø.error);
 	});
 }
 

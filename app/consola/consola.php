@@ -72,10 +72,21 @@ class consolaControl extends Control{
 				stop('{ "image" : "'.$this->model->image.'" }');
 			parent::error_500($response);
 		}
-		$this->view->tag_title = $this->view->title = 'Agregar Producto';
 		# if no post is sent, just render the view;
-		if (empty($_POST)) $this->view->render('agregar.producto');
-		stop('proces product');
+		if (empty($_POST)) {
+			$this->view->tag_title = $this->view->title = 'Agregar Producto';
+			$this->view->render('agregar.producto');
+		}
+		# a product check request
+		if (isset($_POST['action'])){
+			if (!($response = $this->model->product_check())) parent::error_500('Invalid Value');
+			# an empty response means all ok.
+			if ($response === true) stop();
+			stop('found');
+		}
+		# a product add request.
+		if ( ($response = $this->model->product_add()) === true) stop('Producto agregado con éxito.');
+		parent::error_500($response);
 	}
 
 	/**
@@ -84,16 +95,20 @@ class consolaControl extends Control{
 	 * @created 2011/SEP/04 13:41
 	 */
 	private function agregar_categoria(){
-		$this->view->tag_title = $this->view->title = 'Agregar Categoría';
 		# if no post is sent, just render the view;
-		if (empty($_POST)) $this->view->render('agregar.categoria');
-		# an akax  category check request
-		if (isset($_POST['action'])){
-			$this->model->category_check();
-			stop();
+		if (empty($_POST)) {
+			$this->view->tag_title = $this->view->title = 'Agregar Categoría';
+			$this->view->render('agregar.categoria');
 		}
-		# an empty response will tell the client everything went as expected.
-		if ( ($response = $this->model->category_add()) === true) stop();
+		# a category check request
+		if (isset($_POST['action'])){
+			if (!($response = $this->model->category_check())) parent::error_500('Invalid Value');
+			# an empty response means all ok.
+			if ($response === true) stop();
+			stop('found');
+		}
+		# a categorory add request.
+		if ( ($response = $this->model->category_add()) === true) stop('Categoría agregada con éxito.');
 		parent::error_500($response);
 	}
 
@@ -123,3 +138,4 @@ class consolaControl extends Control{
 		parent::error_404($this->notfound);
 	}
 }
+

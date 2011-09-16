@@ -1,6 +1,7 @@
 /**
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
+ * @updated 2011/SEP/16 03:36 Fixed error, removed AUTO_INCREMENT declaration.
  * @created 2011/SEP/03 03:46
  */
 DROP TABLE IF EXISTS `language`;
@@ -8,7 +9,7 @@ CREATE TABLE `language`(
   `id`       CHAR(2) NOT NULL,
   `name` VARCHAR(12) NOT NULL,
   PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `language` (`id`,`name`) VALUES
   ('es','Español'),
@@ -33,6 +34,7 @@ CREATE TABLE `category` (
 /**
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
+ * @updayed 2011/SEP/16 03:37 Fixed error, removed `class` as UNIQUE.
  * @created 2011/SEP/03 04:09
  */
 DROP TABLE IF EXISTS `product`;
@@ -47,7 +49,7 @@ CREATE TABLE `product`(
   `desc`  VARCHAR(300) NOT NULL,
   `price` DECIMAL(9,2) NOT NULL DEFAULT 0,
   PRIMARY KEY(`id`),
-  UNIQUE `class` (`class`),
+  INDEX (`class`),
   INDEX(`lang`),
   INDEX(`categ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
