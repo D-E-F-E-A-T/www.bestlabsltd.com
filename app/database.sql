@@ -47,9 +47,11 @@ CREATE TABLE `product`(
   `cont`    MEDIUMTEXT NOT NULL,
   `keyw`  VARCHAR(300) NOT NULL,
   `desc`  VARCHAR(300) NOT NULL,
+  `path`  VARCHAR(512) NOT NULL, /*       URI */
+  `image` VARCHAR(512) NOT NULL, /* Image URL */
   `price` DECIMAL(9,2) NOT NULL DEFAULT 0,
   PRIMARY KEY(`id`),
-  INDEX (`class`),
+  INDEX(`class`),
   INDEX(`lang`),
   INDEX(`categ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;

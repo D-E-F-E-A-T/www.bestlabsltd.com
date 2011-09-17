@@ -9,30 +9,31 @@ class consolaModel extends Model{
 	private $languages = null;
 
 	private $image_width  = 500;
-	private $image_tmpath = 'consola/upload/'; // on PUB 
+	private $image_tmpath = 'consola/tmp/';  // on PUB  
+	private $image_orig   = 'consola/orig/'; // on PUB 
+	private $image_path   = 'consola/';      // on PUB 
 	public  $image;
 
 
 	/**
 	 * Pseudo constructor
-	 *
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/AUG/24 00:32
 	 */
 	public function consola(){
 		#enable authentication library.
 		Auth::model($this);
+		# make sure image  paths exists.
 		$this->image_tmpath = PUB.$this->image_tmpath;
+		$this->image_path   = PUB.$this->image_path;
+		$this->image_orig   = PUB.$this->image_orig;
 		if (!file_exists($this->image_tmpath)) mkdir($this->image_tmpath, 0777, true);
+		if (!file_exists($this->image_orig))   mkdir($this->image_orig,   0777, true);
+		if (!file_exists($this->image_path))   mkdir($this->image_path,   0777, true);
 	}
 
 
 	/**
 	 * Get All languages in array form.
-	 *
-	 * @author Hecdtor Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/04 13:50
 	 */
 	public function languages(){
@@ -44,8 +45,6 @@ class consolaModel extends Model{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/15 01:59
 	 */
 	public function categories(){
@@ -53,8 +52,6 @@ class consolaModel extends Model{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/16 05:41
 	 */
 	public function products(){
@@ -63,8 +60,6 @@ class consolaModel extends Model{
 
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/14 23:24
 	 */
 	public function category_add(){
@@ -85,8 +80,6 @@ class consolaModel extends Model{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/15 00:45
 	 */
 	public function category_check(){
@@ -97,8 +90,6 @@ class consolaModel extends Model{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/15 18:40
 	 */
 	public function product_add(){
@@ -117,33 +108,70 @@ class consolaModel extends Model{
 			||	!isset($_POST['es_keyw'])
 			||	!isset($_POST['es_name'])
 		) return 'Faltan Datos.';
+		foreach($_POST as $key => $val) $$key = $val;
+
+		if (
+			!file_exists($path = $this->image_tmpath.$file)                                     ||
+			!($ext = pathinfo($file, PATHINFO_EXTENSION))                                       ||
+			!file_exists($orig = $this->image_tmpath.str_replace('.'.$ext,'',$file).'.orig.'.$ext)
+		) return "Imagen temporal corrupta, subir una nueva.";
+		$ext = '.'.$ext;
+
+		# generate urls
+		$es_categ = $this->db->select('category','name','lang=? AND class=? LIMIT 1','es', $category);
+		$es_categ = Utils::urlify($es_categ);
+		$es_uname = Utils::urlify($es_name);
+		$es_image = PUB_URL."es/$es_categ/$es_uname$ext";
+		$es_path   = "es/$es_categ/$es_uname";
+		$en_categ = $this->db->select('category','name','lang=? AND class=? LIMIT 1','en', $category);
+		$en_categ = Utils::urlify($en_categ);
+		$en_uname = Utils::urlify($en_name);
+		$en_image = PUB_URL."en/$en_categ/$en_uname$ext";
+		$en_path   = "en/$en_categ/$en_uname";
+		# generate images
+		try {
+			# master images will preserve classname.
+			rename($orig, ($orig = $this->image_orig.$class.$ext));
+			rename($path, ($path = $this->image_path.$class.$ext));
+			# public images will be symlinks
+			$image_path_full = str_replace(PUB_URL, PUB, $en_image);
+			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
+			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
+			symlink($path, $image_path_full);
+			$image_path_full = str_replace(PUB_URL, PUB, $es_image);
+			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
+			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
+			symlink($path, $image_path_full);
+		} catch (Exception $e) { return 'Error al procesar imágen.'; }
 		# insert data;
 		$this->db->insert('product',array(
 			array(
 				'lang'  => 'es',
-				'categ' => $_POST['category'],
-				'class' => $_POST['class'],
-				'name'  => $_POST['es_name'],
-				'cont'  => $_POST['es_cont'],
-				'keyw'  => $_POST['es_keyw'],
-				'desc'  => $_POST['es_desc']
+				'categ' => $category,
+				'class' => $class,
+				'image' => $es_image,
+				'path'  => $es_path,
+				'name'  => $es_name,
+				'cont'  => $es_cont,
+				'keyw'  => $es_keyw,
+				'desc'  => $es_desc
 			),
 			array(
 				'lang'  => 'en',
-				'categ' => $_POST['category'],
-				'class' => $_POST['class'],
-				'name'  => $_POST['en_name'],
-				'cont'  => $_POST['en_cont'],
-				'keyw'  => $_POST['en_keyw'],
-				'desc'  => $_POST['en_desc']
+				'categ' => $category,
+				'class' => $class,
+				'image' => $en_image,
+				'path'  => $en_path,
+				'name'  => $en_name,
+				'cont'  => $en_cont,
+				'keyw'  => $en_keyw,
+				'desc'  => $en_desc
 			)
 		));
 		return true;
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/15 16:51
 	 */
 	public function product_check(){
@@ -154,8 +182,6 @@ class consolaModel extends Model{
 	}
 
 	/**
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/15 04:15
 	 */
 	public function product_image(){
@@ -172,10 +198,12 @@ class consolaModel extends Model{
 		$data = file_get_contents('php://input');
 		# we did the type checking on client-side.
 		# TODO: Don't be lazy and sanitize here too, don't trust the client.
-		$ext = '.'.strtolower(str_replace('image/', '', $type));
+		$ext = pathinfo($_SERVER['HTTP_X_FILE_NAME'], PATHINFO_EXTENSION);
+		if (!$ext) $ext = '.'.strtolower(str_replace('image/', '', $type));
+		else $ext = '.'.$ext;
 		$id = str_replace('.', '', (string)BMK);
 		// save original and reduced;
-		$orig = $this->image_tmpath.$id.'.original'.$ext;
+		$orig = $this->image_tmpath.$id.'.orig'.$ext;
 		$save = $this->image_tmpath.$id.$ext;
 
 		try {

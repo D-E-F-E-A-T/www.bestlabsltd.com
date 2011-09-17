@@ -88,6 +88,9 @@ var ø = {};
 			.find('li').click(function(){
 				var target = $.trim(lastrow.attr('class').replace(/\s*hover\s*/,''));
 				var action = $(this).attr('class');
+				var gonnadelete = type=='producto'?
+					'<p>Toda la mercancía relacionada, también será eliminada.</p>' :
+					'<p>Todos los productos relacionados, también serán eliminados.</p>';
 				if (action == 'delete'){
 					ø.modal.settings.close = false;
 					ø.modal.settings.cancel = function(){ ø.modal.hide(); }
@@ -95,6 +98,7 @@ var ø = {};
 					ø.modal.title   = "Se necesita confirmación";
 					ø.modal.content = 
 						"<p>¿Seguro que desea borrar <b>" + target + "</b>?</p>" +
+						gonnadelete +
 						"<p>Ésta acción es irreversible.</p>";
 					ø.modal.show();
 					return false;
@@ -245,11 +249,12 @@ var ø = {};
 			// show new image and adjust its size.
 			$.ui.loader.show();
 			var img = new Image();
-			img.src = '../../pub/consola/upload/' + this.name;
+			img.src = '../../pub/consola/tmp/' + this.name;
 			img.onload = function(){
 				$(img).appendTo($ph);
 				$ph.addClass('hasimg');
 				$('html, body').animate({ scrollTop : 0 });
+				ø.divide();
 				$.ui.loader.hide();
 			};
 
