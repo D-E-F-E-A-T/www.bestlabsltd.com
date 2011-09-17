@@ -64,15 +64,65 @@ var ø = {};
 		ø.modal.show();
 	};
 
-	$('table .ui-inset').ui();
+	if (page == 'agregar_producto')  return ø.agregar.producto();
+	if (page == 'agregar_categoria') return ø.agregar.categoria();
+	if (page.indexOf('ver_') !== -1){
 
-	// filter behaviour according to page.
-	switch(page){
-		case 'agregar_producto'  : ø.agregar.producto();  break;
-		case 'agregar_categoria' : ø.agregar.categoria(); break;
-		default: console.info('This has not been developed yet');
+		// en las acciones "ver"
+		// add action rows.
+		var $action = $('#action');
+		var timeout = null;
+		var lastrow = null;
+		var type = $.trim(page.replace('ver_',''));
+		// add class hover to action so it doesn't hide when hovering.
+		$action
+			.hover(
+				function(){
+					$action.add(lastrow).addClass('hover'); 
+				},
+				function(){
+					$action.add(lastrow).removeClass('hover');
+					$action.hide();
+				}
+			)
+			.find('li').click(function(){
+				var target = $.trim(lastrow.attr('class').replace(/\s*hover\s*/,''));
+				var action = $(this).attr('class');
+				if (action == 'delete'){
+					ø.modal.settings.close = false;
+					ø.modal.settings.cancel = function(){ ø.modal.hide(); }
+					ø.modal.settings.submit = function(){ return false; }
+					ø.modal.title   = "Se necesita confirmación";
+					ø.modal.content = 
+						"<p>¿Seguro que desea borrar <b>" + target + "</b>?</p>" +
+						"<p>Ésta acción es irreversible.</p>";
+					ø.modal.show();
+					return false;
+				}
+				// update
+				window.location.href = '../../consola/editar/' + type + '/' + target;
+			})
+		;
+		$('table tbody tr').hover(
+			// mouseover
+			function(e){
+				if (timeout) clearTimeout(timeout);
+				var $this = $(this);
+				lastrow = $this;
+				var pos = $this.offset();
+				pos.left += $this.outerWidth()-1;
+
+				$action.show().offset(pos);
+			},
+			// mouseout
+			function(){
+				timeout = setTimeout(function(){
+					if (!$action.hasClass('hover')) $action.hide();
+				},50);
+			}
+		);
+
 	}
-
 };
 
 /**

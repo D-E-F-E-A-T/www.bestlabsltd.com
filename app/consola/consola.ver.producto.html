@@ -2,7 +2,7 @@
 /**
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
- * @created 2011/SEP/04 01:18
+ * @created 2011/SEP/16 03:24
  */
  include APP_PATH.APP_NAME.'.html'; # common.
  ?>
@@ -13,20 +13,24 @@
 			<tr>
 				<th class="class" scope="col">Identificador</th>
 				<th class="categ" scope="col">Categoría</th>
-				<th class="stock" scope="col">Existencia</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach($products as $product):?>
-			<tr>
+			<tr class="<?=$product['class']?>">
 				<td class="class"><?=$product['class']?></td>
 				<td class="categ"><?=$product['categ']?></td>
-				<td class="stock">0</td>
 			</tr>
 		<?php endforeach ?>
 		</tbody>
 	</table>
 </section>
+<nav id="action">
+	<ul>
+		<li class="update">Editar</li>
+		<li class="delete">Borrar</li>
+	</ul>
+</nav>
 <?php
 # TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
 #       in other words: consola.html should output buffer

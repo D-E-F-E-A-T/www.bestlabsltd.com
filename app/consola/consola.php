@@ -14,7 +14,7 @@ class consolaControl extends Control{
 	public function consola(){
 		$this->common();
 		# default action
-		$this->view->class = "ver-producto";
+		$this->view->class = "ver_producto";
 		$this->ver_producto();
 	}
 

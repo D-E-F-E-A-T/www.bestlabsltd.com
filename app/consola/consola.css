@@ -1,3 +1,8 @@
+/* MENUBAR */
+
+.ui-menubar { position:fixed !important; top:0; left:0; width:100%; }
+body { padding-top:1.75em; }
+
 /* TABLE */
 
        thead th:first-child               { border-top-left-radius     : 0.25em; }
@@ -6,7 +11,7 @@ table, tbody tr:last-child td:first-child { border-bottom-left-radius  : 0.33em;
 table, tbody tr:last-child td:last-child  { border-bottom-right-radius : 0.33em; }
 
 table {
-	margin-top:-1em;
+	margin-top:-.5em;
     border-collapse:separate;
     border-spacing:1px 0;
     border-bottom:1px solid rgba(0,0,0,0.2);
@@ -24,16 +29,18 @@ th {
 }
 
 td { padding:.5em 1.5em; text-align:center; color:rgba(0,0,0,.80) }
-
+	
 /*
 th { background:rgba(0,0,0,0.20); color:rgba(255,255,255, 0.9); text-shadow:0px 0px 1px rgba(0,0,0, .5), 1px 1px 0 rgba(0,0,0, 0.3); }
 */
 
-tr:nth-child(even) td { background:rgba(0,0,0,0.066); }
-tr:nth-child(odd)  td { background:rgba(0,0,0,0.033); }
+tr:nth-child(even) td { background:rgba(0,0,0,0.099); }
+tr:nth-child(odd)  td { background:rgba(0,0,0,0.066); }
 
 td:nth-child(odd):not(:last-child),
-td:nth-child(even):not(:last-child)
+td:nth-child(even):not(:last-child),
+th:nth-child(odd):not(:last-child),
+th:nth-child(even):not(:last-child)
 { 
     border-right:1px solid rgba(0,0,0, 0.2);	
 }
@@ -43,6 +50,63 @@ td:last-child  { border-right:1px solid rgba(0,0,0,0.2); }
 
 
 /* END TABLE */
+
+
+#action    { position:absolute; display:none; }
+#action ul { 
+	font-size:0;
+	display:block; 
+	position:relative; 
+}
+
+#action li { 
+	display:inline-block;
+	font-size:13px;
+	padding:.5em;
+	color:#FFF;
+	font-weight:bold;
+	text-shadow:1px 1px 1px rgba(0,0,0,0.75);
+	cursor:pointer;
+	border:1px solid;
+}
+
+#action li.update { 
+	background:#3A9;
+	border-left:none;
+	border-color:#166 rgba(255,255,255,0.5); 
+}
+
+#action li.delete {
+	background:#E44;
+	border-radius:0 .25em .25em 0;
+	border-left:none;
+	border-color:#C22;
+}
+
+#action li.update:hover { background:#4CB; }
+#action li.delete:hover { background:#F44; }
+
+tr:hover td, 
+tr.hover td
+{ 
+	background:rgba(0,0,0, .175);
+	border-top:1px solid rgba(0,0,0,0.3);
+	border-bottom:1px solid rgba(0,0,0,0.3);
+	cursor:default;
+}
+
+tr:first-child:hover td,
+tr:first-child.hover td
+{
+	border-top-color:rgba(0,0,0,.2s);
+}
+
+tr:last-child:hover td:last-child, 
+tr:last-child.hover td:last-child 
+{ 
+	border-radius:0 !important; 
+}
+
 
 body { background:#f0f0f0; }
 
