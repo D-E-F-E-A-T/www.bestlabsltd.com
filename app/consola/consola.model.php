@@ -63,17 +63,31 @@ class consolaModel extends Model{
 	 * @created 2011/SEP/14 23:24
 	 */
 	public function category_add(){
-		if (!isset($_POST['es_name']) || !isset($_POST['en_name'])) return "Faltan Datos.";
+		if (
+				 count($_POST) != 7
+			||	!isset($_POST['class'])
+			||	!isset($_POST['es_name'])
+			||	!isset($_POST['es_desc'])
+			||	!isset($_POST['es_keyw'])
+			||	!isset($_POST['en_name'])
+			||	!isset($_POST['en_desc'])
+			||	!isset($_POST['en_keyw'])
+		) return "Faltan Datos.";
+		foreach($_POST as $key => $val) $$key = $val;
 		$this->db->insert('category', array(
 			array(
 				'lang'  => 'es',
-				'class' => $_POST['class'],
-				'name'  => $_POST['es_name']
+				'class' => $class,
+				'name'  => $es_name,
+				'desc'  => $es_desc,
+				'keyw'  => $es_keyw
 			),
 			array(
 				'lang'  => 'en',
-				'class' => $_POST['class'],
-				'name'  => $_POST['en_name']
+				'class' => $class,
+				'name'  => $en_name,
+				'desc'  => $en_desc,
+				'keyw'  => $en_keyw
 			)
 		));
 		return true;

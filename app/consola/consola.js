@@ -339,23 +339,36 @@ var ø = {};
  * @created 2011/SEP/04 16:24
  */
 ø.agregar.categoria = function(){
-	// validate category identifier
-	ø.agregar.classcheck();
+
 	// validate form.
 	var $button = $('.submit button');
+	var removerr = function(){
+		$(this).parent().removeClass('error');
+	};
+	$('input,textarea').keypress(removerr);
+
+	// validate category identifier
+	ø.agregar.classcheck();
+
 	$button.click(function(){
 		var pass = true;
 		var data = { token: TOKEN_PUBLIC };
 		var val, $this;
-		$('input').each(function(){
+		$('input,textarea').each(function(){
 			$this = $(this);
+			$this.$parent = $this.parent();
 			val = $this.val();
-			if (!val.length || $this.parent().hasClass('error')) return pass = false; // breaks
+			if (!val.length || $this.parent().hasClass('error')) {
+				$this.$parent.addClass('error');
+				return pass = false; // breaks
+			}
+			$this.$parent.removeClass('error');
 			data[$this.attr('id')] = val;
 		});
 		if (!pass) return $button.ui('sayno');
 		// both inputs are filled, check if their values are valid first.
 		$.ui.loader.show();
+		console.info(data);
 		$.post('', data, ø.success).error(ø.error);
 	});
 }

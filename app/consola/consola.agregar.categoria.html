@@ -24,6 +24,37 @@
 				>Nombre</label>
 			<input class="ui-input" id="<?=$langcode?>_name" type="text">
 		</div>
+		<div>
+			<label
+				class      = "ui-label"
+				for        = "<?=$langcode?>_desc"
+				data-count = "300"
+				title      =
+				"<b>Descripción de la  Categoría para Buscadores</b>.
+				Aparecerá en los resultados de búsqueda, es importante darle   -
+				énfasis a las palabras que desea tengan prioridad.<br>
+				Una descripción muy corta puede afectar su posicionamiento; -
+				300 caracteres es lo máximo permitido por Google."
+				>Descripción</label>
+			<textarea class="desc ui-textarea" id="<?=$langcode?>_desc"></textarea>
+		</div>
+		<div>
+			<label
+				class      = "ui-label"
+				for        = "<?=$langcode?>_keyw"
+				data-count = "300"
+				title      =
+				"<b>Palabras Clave</b><br>
+				A pesar de que el título dice 'palabras', el término correcto  -
+				debería ser 'frases clave'.<br>
+				Es una lista separada por comas de las frases con las que desea -
+				encuentren la categoría.<br>
+				Es importante que las palabras esten directamente relacionadas -
+				con el contenido, descripición y nombre de la categoría."
+				>Keywords</label>
+			<textarea class="keyw ui-textarea" id="<?=$langcode?>_keyw"></textarea>
+		</div>
+
 	</fieldset>
 <?php endforeach ?>
 

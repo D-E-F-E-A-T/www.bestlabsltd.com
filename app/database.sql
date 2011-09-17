@@ -26,6 +26,8 @@ CREATE TABLE `category` (
   `lang`      CHAR(2) NOT NULL,
   `class` VARCHAR(22) NOT NULL,
   `name`  VARCHAR(22) NOT NULL,
+  `keyw`  VARCHAR(300) NOT NULL,
+  `desc`  VARCHAR(300) NOT NULL,
   PRIMARY KEY(`id`),
   INDEX(`lang`),
   INDEX(`class`)
