@@ -110,7 +110,7 @@ var ø = {};
 					return false;
 				}
 				// update
-				window.location.href = '../../consola/editar/' + type + '/' + target;
+				window.location.href = APP_URL + 'editar/' + type + '/' + target;
 			})
 		;
 		$('table tbody tr').hover(
@@ -317,6 +317,7 @@ var ø = {};
 			ø.modal.show();
 		}
 	});
+	$ph.click( function(){ ø.upload.$file.click(); } );
 	var removerr = function(){
 		$(this).parent().removeClass('error');
 	};
@@ -342,6 +343,9 @@ var ø = {};
 				// ignore file while in edit mode.
 				if (!(isfile && $this.$parent.find('.isedit').length)){
 					$this.$parent.addClass('error');
+					$('html,body').animate({opacity:1}, 500, function(){
+						$(this).animate({ scrollTop: $this.$parent.scrollTop()});
+					});
 					return pass = false; // breaks
 				}
 			}
@@ -408,6 +412,7 @@ $(window).load(function(){
 	$.ui.loader.hide(); 
 	// if divive elements found, adjust them.
 	if (ø.$cont.find('.divide').length>0)  ø.divide();
+	$('html, body').animate({ scrollTop : 0 },'fast');
 });
 
 })(jQuery);
