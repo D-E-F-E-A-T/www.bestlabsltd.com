@@ -57,6 +57,12 @@ class consolaControl extends Control{
 	 * @created 2011/SEP/17 19:53
 	 */
 	public function editar($tipo=false, $target=false){
+		// is the user trying to upload a file?
+		if (isset($_SERVER['HTTP_X_FILE_NAME']) && isset($_SERVER['CONTENT_LENGTH'])){
+			if ( ($response = $this->model->product_image()) === true)
+				stop('{ "image" : "'.$this->model->image.'" }');
+			parent::error_500($response);
+		}
 		if (!is_string($tipo) || !is_string($target))	
 			parent::error_403('Petición inválida.');
 		switch($tipo){

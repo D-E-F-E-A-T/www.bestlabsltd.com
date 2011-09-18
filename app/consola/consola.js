@@ -14,6 +14,8 @@ var ø = {};
  */
 ø.init = function(){
 
+	$.ui.loader.show();
+
 	ø.$cont = $('#cont');
 	ø.$body = $('body');
 	ø.$sect = ø.$cont.find('> section');
@@ -67,6 +69,7 @@ var ø = {};
 	if (page == 'agregar_producto')  return ø.agregar.producto();
 	if (page == 'agregar_categoria') return ø.agregar.categoria();
 	if (page == 'editar_categoria')  return ø.editar.categoria();
+	if (page == 'editar_producto')    return ø.editar.producto();
 	if (page.indexOf('ver_') !== -1){
 
 		// en las acciones "ver"
@@ -165,15 +168,14 @@ var ø = {};
  */
 ø.divide = function(scroll){
 	// adjust if scrollbar present.
-	// still don't know why this 2pixels appear.
-	var scl = ($(document).height() > $(window).height())? 2 : 0;
 	var div = ø.$cont.find('.divide').css({
 		'margin-left'  : 0,
 		'margin-right' : 0
 	});
-	var sec = ø.$cont.find('> section').outerWidth()-scl;
+	var sec = ø.$cont.find('> section').outerWidth();
 	var pad = parseInt(div.css('padding-left'),10);
 	var dif = (div.outerWidth()-div.width())*2;
+
 	// apply width
 	div.width((sec-dif-pad)/2);
 	// if width < 350  no need of dividing.
@@ -255,7 +257,11 @@ var ø = {};
 		complete:function(){ ø.modal.hide(); },
 		success :function(e){
 			// update the name of the image.
-			this.name = $.parseJSON(this.xhr.responseText).image;
+			try {
+				this.name = $.parseJSON(this.xhr.responseText).image;
+			} catch (e){
+				$('section').html(this.xhr.responseText);
+			}
 			this.element.parentsUntil('section').last().removeClass('error');
 			ø.candivide = false; // don't call divide while doing this.
 			// remove all existing images
@@ -264,7 +270,7 @@ var ø = {};
 			// show new image and adjust its size.
 			$.ui.loader.show();
 			var img = new Image();
-			img.src = '../../pub/consola/tmp/' + this.name;
+			img.src = PUB_URL + 'consola/tmp/' + this.name;
 			img.onload = function(){
 				$(img).appendTo($ph);
 				$ph.addClass('hasimg');
@@ -333,14 +339,20 @@ var ø = {};
 				$this.$parent = $this.parentsUntil('section').last();
 			val = $this.val();
 			if (!val.length || $this.$parent.hasClass('error')) {
-				$this.$parent.addClass('error');
-				return pass = false; // breaks
+				// ignore file while in edit mode.
+				if (!(isfile && $this.$parent.find('.isedit').length)){
+					$this.$parent.addClass('error');
+					return pass = false; // breaks
+				}
 			}
 			$this.$parent.removeClass('error');
 			if (isfile) data['file'] = ø.upload.name;
 			else data[$this.attr('id')] = val;
 		});
 		if (!pass) return $button.ui('sayno');
+		// while in edit mode, undefined means unchanged. ;)
+		if (data.file === undefined && ø.upload.element.hasClass('isedit'))
+			data.file = '__same__'+ORIGINALUPFILE;
 		// post data to server.
 		$.ui.loader.show();
 		$.post('', data, ø.success).error(ø.error);
@@ -388,9 +400,14 @@ var ø = {};
 ø.editar = {};
 
 ø.editar.categoria = ø.agregar.categoria;
-
+ø.editar.producto = ø.agregar.producto;
 
 $.ui.core.defaults.debug = false;
-$(document).ready(ø.init).load(function(){ ø.ui.loader.hide(); });
+$(document).ready(ø.init);
+$(window).load(function(){ 
+	$.ui.loader.hide(); 
+	// if divive elements found, adjust them.
+	if (ø.$cont.find('.divide').length>0)  ø.divide();
+});
 
 })(jQuery);

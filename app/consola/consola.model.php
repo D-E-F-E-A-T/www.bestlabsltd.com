@@ -72,7 +72,9 @@ class consolaModel extends Model{
 	 * @created 2011/SEP/17 11:51
 	 */
 	public function category_delete($target=false){
-		return $this->db->delete('category', 'class=?', $target);
+		$this->db->delete('category', 'class=?', $target);
+		$this->db->delete('product',  'categ=?', $target);
+		return true;
 	}
 
 
@@ -107,7 +109,6 @@ class consolaModel extends Model{
 	public function category_update(){
 		if (true !== $this->category_post_check()) return 'Faltan Datos';
 		foreach($_POST as $key => $val) $$key = $val;
-		$qry =
 		$this->db->update('category', array(
 			'name'  => $es_name,
 			'desc'  => $es_desc,
@@ -163,8 +164,8 @@ class consolaModel extends Model{
 		if (!is_array($qry) || count($qry) != 2) return 'Clase inexistente.';
 		$product= array();
 		foreach($qry as $qry){
-			$category[$qry['lang']] = $qry;
-			unset($category[$qry['lang']]['lang']);
+			$product[$qry['lang']] = $qry;
+			unset($product[$qry['lang']]['lang']);
 		}
 		return $product;
 	}
@@ -176,60 +177,19 @@ class consolaModel extends Model{
 		return $this->db->delete('product', 'class=?', $target);
 	}
 
-
 	/**
 	 * @created 2011/SEP/15 18:40
 	 */
 	public function product_add(){
-		# "verify" data
-		if(
-				 count($_POST) != 11
-			||	!isset($_POST['category'])
-			||	!isset($_POST['class'])
-			||	!isset($_POST['file'])
-			||	!isset($_POST['en_cont'])
-			||	!isset($_POST['en_desc'])
-			||	!isset($_POST['en_keyw'])
-			||	!isset($_POST['en_name'])
-			||	!isset($_POST['es_cont'])
-			||	!isset($_POST['es_desc'])
-			||	!isset($_POST['es_keyw'])
-			||	!isset($_POST['es_name'])
-		) return 'Faltan Datos.';
+		# "verify" data and gen vars
+		if (!$this->product_post_check()) return "Faltan Datos.";
 		foreach($_POST as $key => $val) $$key = $val;
-
-		if (
-			!file_exists($path = $this->image_tmpath.$file)                                     ||
-			!($ext = pathinfo($file, PATHINFO_EXTENSION))                                       ||
-			!file_exists($orig = $this->image_tmpath.str_replace('.'.$ext,'',$file).'.orig.'.$ext)
-		) return "Imagen temporal corrupta, subir una nueva.";
-		$ext = '.'.$ext;
 		# generate urls
-		$es_categ = $this->db->select('category','name','lang=? AND class=? LIMIT 1','es', $category);
-		$es_categ = Utils::urlify($es_categ);
-		$es_uname = Utils::urlify($es_name);
-		$es_image = PUB_URL."es/$es_categ/$es_uname$ext";
-		$es_path   = "es/$es_categ/$es_uname";
-		$en_categ = $this->db->select('category','name','lang=? AND class=? LIMIT 1','en', $category);
-		$en_categ = Utils::urlify($en_categ);
-		$en_uname = Utils::urlify($en_name);
-		$en_image = PUB_URL."en/$en_categ/$en_uname$ext";
-		$en_path   = "en/$en_categ/$en_uname";
-		# generate images
-		try {
-			# master images will preserve classname.
-			rename($orig, ($orig = $this->image_orig.$class.$ext));
-			rename($path, ($path = $this->image_path.$class.$ext));
-			# public images will be symlinks
-			$image_path_full = str_replace(PUB_URL, PUB, $en_image);
-			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
-			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
-			symlink($path, $image_path_full);
-			$image_path_full = str_replace(PUB_URL, PUB, $es_image);
-			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
-			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
-			symlink($path, $image_path_full);
-		} catch (Exception $e) { return 'Error al procesar imágen.'; }
+		foreach($this->product_urls() as $key => $val) $$key = $val;
+		# obtain source file's path
+		if (!is_array($tmp = $this->product_image_move($es_image, $en_image)))
+			return 'Error procesando imagen.';
+		foreach($tmp as $key => $val) $$key = $val;		
 		# insert data;
 		$this->db->insert('product',array(
 			array(
@@ -255,6 +215,38 @@ class consolaModel extends Model{
 				'desc'  => $en_desc
 			)
 		));
+		return true;
+	}
+
+	public function product_update(){
+		# "verify" data and gen vars
+		if (!$this->product_post_check()) return "Faltan Datos.";
+		foreach($_POST as $key => $val) $$key = $val;
+		# generate urls
+		foreach($this->product_urls() as $key => $val) $$key = $val;
+		# obtain source file's path
+		if (!is_array($tmp = $this->product_image_move($es_image, $en_image)))
+			return 'Error procesando imagen.';
+		foreach($tmp as $key => $val) $$key = $val;		
+		# update data;
+		$this->db->update('product', array(
+			'categ' => $category,
+			'image' => $es_image,
+			'path'  => $es_path,
+			'name'  => $es_name,
+			'cont'  => $es_cont,
+			'keyw'  => $es_keyw,
+			'desc'  => $es_desc
+		), "lang='es' AND class=?", $class);
+		$this->db->update('product', array(
+			'categ' => $category,
+			'image' => $en_image,
+			'path'  => $en_path,
+			'name'  => $en_name,
+			'cont'  => $en_cont,
+			'keyw'  => $en_keyw,
+			'desc'  => $en_desc
+		), "lang='en' AND class=?", $class);
 		return true;
 	}
 
@@ -320,6 +312,96 @@ class consolaModel extends Model{
         // apply the matrix 
         imageconvolution($img, $matrix, $divisor, $offset);
         return $img;
+	}
+
+	/**
+	 * @created 2011/SEP/18 07:22
+	 */
+	private function product_image_move($es_image, $en_image){
+		try {
+			if (substr($_POST['file'], 0, 8) == '__same__'){
+				$file = str_replace('__same__', '',$_POST['file']);
+				$path = $this->image_path.$file;
+				$ext  = '.'.(string)pathinfo($path, PATHINFO_EXTENSION);
+				$orig = $this->image_orig.$file;
+			} else {
+				$path = $this->image_tmpath . $_POST['file'];
+				$ext  = '.'.(string)pathinfo($path, PATHINFO_EXTENSION);
+				$orig = $this->image_tmpath . str_replace($ext,'',$_POST['file']) . '.orig'.$ext;
+				rename($orig, ($orig = $this->image_orig.$_POST['class'].$ext));
+				rename($path, ($path = $this->image_path.$_POST['class'].$ext));
+			}
+		} catch (Exception $e) { return false; }
+		$en_image.=$ext;
+		$es_image.=$ext;
+		# generate symlinks
+		try {
+			# english
+			$image_path_full = str_replace(PUB_URL, PUB, $en_image);
+			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
+			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
+			if (file_exists($image_path_full)) unlink($image_path_full);
+			symlink($path, $image_path_full);
+			# spanish
+			$image_path_full = str_replace(PUB_URL, PUB, $es_image);
+			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
+			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
+			if (file_exists($image_path_full)) unlink($image_path_full);
+			symlink($path, $image_path_full);
+		} catch (Exception $e) { return false; }
+		# return updated images.
+		return array(
+			'en_image' => $en_image,
+			'es_image' => $es_image
+		);
+	}
+
+
+	/**
+	 * @created 2011/SEP/18 05:46
+	 */
+	private function product_post_check(){
+		if(
+				 count($_POST) != 11
+			||	!isset($_POST['category'])
+			||	!isset($_POST['class'])
+			||	!isset($_POST['file'])
+			||	!isset($_POST['en_cont'])
+			||	!isset($_POST['en_desc'])
+			||	!isset($_POST['en_keyw'])
+			||	!isset($_POST['en_name'])
+			||	!isset($_POST['es_cont'])
+			||	!isset($_POST['es_desc'])
+			||	!isset($_POST['es_keyw'])
+			||	!isset($_POST['es_name'])
+		) return false;
+		return true;
+	}
+
+	/**
+	 * @created 2011/SEP/18 06:04
+	 */
+	private function product_urls(){
+		$es_name = Utils::urlify($_POST['es_name']);
+		$es_cate = Utils::urlify($this->db->select(
+			'category',
+			'name',
+			'lang=? AND class=? LIMIT 1','es', $_POST['category']
+		));
+		$en_name = Utils::urlify($_POST['en_name']);
+		$en_cate = Utils::urlify($this->db->select(
+			'category',
+			'name',
+			'lang=? AND class=? LIMIT 1','es', $_POST['category']
+		));
+		$es = "es/$es_cate/$es_name";
+		$en = "es/$en_cate/$en_name";
+		return array(
+			'es_path'  => $es,
+			'es_image' => PUB_URL.$es,
+			'en_path'  => $en,
+			'en_image' => PUB_URL.$en
+		);
 	}
 
 }

@@ -1,4 +1,8 @@
-<script>var TOKEN_PUBLIC = "<?=TOKEN_PUBLIC?>"</script>
+<script>
+	var TOKEN_PUBLIC = "<?=TOKEN_PUBLIC?>";
+	var APP_URL = "<?=APP_URL?>";
+	var PUB_URL = "<?=PUB_URL?>";
+</script>
 <nav>
 	<ul class="ui-menubar">
 		<li class="agregar">
@@ -15,15 +19,24 @@
 				<li class="categoria">
 					<a href="<?=APP_URL?>ver/categoria">Categoria</a>
 					<?php if (count($categories)):?>
-					<ul><?php
-					foreach($categories as $cat):?>
-						<li><a href="<?=APP_URL?>editar/categoria/<?=$cat['class']?>"><?=$cat['class']?></a></li>
-<?php 				endforeach ?>
+					<ul>
+					<?php foreach($categories as $x):?>
+						<li><a href="<?=APP_URL?>editar/categoria/<?=$x['class']?>"><?=$x['class']?></a></li>
+					<?php endforeach ?>
 					</ul>
 					<?php endif ?>
 
 				</li>
-				<li class="producto"><a href="<?=APP_URL?>ver/producto">Producto</a></li>
+				<li class="producto">
+					<a href="<?=APP_URL?>ver/producto">Producto</a>
+					<?php if (count($products)):?>
+					<ul>
+					<?php foreach($products as $x):?>
+						<li><a href="<?=APP_URL?>editar/producto/<?=$x['class']?>"><?=$x['class']?></a></li>
+					<?php endforeach ?>
+					</ul>
+					<?php endif ?>
+				</li>
 				<li class="mercancia"><a href="<?=APP_URL?>ver/mercancia">Mercancía</a></li>
 			</ul>
 		</li>

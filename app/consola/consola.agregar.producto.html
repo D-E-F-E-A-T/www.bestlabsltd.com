@@ -5,32 +5,37 @@
  * @created 2011/SEP/04 00:22
  */
  include APP_PATH.APP_NAME.'.html'; # common.
+ $edit = isset($product);
  ?>
 <section>
 
 	<div class="category">
 		<label  class="ui-label" for="category">Categoría</label>
 		<select class="ui-selectbox" id="category" name="category">
+			<?php if (!$edit):?>
 			<option value="" selected> </option>
+			<?php endif ?>
 			<?php foreach($categories as $category):?>
-			<option value="<?=$category['class']?>"><?=$category['class']?></option>
+			<option value="<?=$category['class']?>" <?=$edit && $product['es']['categ']==$category['class']?'selected':''?>><?=$category['class']?></option>
 			<?php endforeach ?>
 		</select>
 	</div>
 
 	<fieldset id="product-upload" class="ui-inset">
 		<legend>Imagen</legend>
-		<div class="placeholder"></div>
-		<div class="ui-fileupload ui-button"><img src="<?=PUB_URL?>consola.camara.png" alt="subir foto" width="36"></div>
+		<div class="placeholder<?=$edit?' hasimg':''?>"><?php
+			if ($edit) echo '<img src="'.$product['es']['image'].'">';
+		?></div>
+		<div class="ui-fileupload ui-button <?=$edit?'isedit':''?>"><img src="<?=PUB_URL?>consola.camara.png" alt="subir foto" width="36"></div>
 	</fieldset>
 
-<?php foreach($languages as $langcode => $langname):?>
+<?php foreach($languages as $lang => $language):?>
 	<fieldset class="ui-inset divide">
-		<legend><?=$langname?></legend>
+		<legend><?=$language?></legend>
 		<div>
 			<label
 				class      = "ui-label"
-				for        = "<?=$langcode?>_name"
+				for        = "<?=$lang?>_name"
 				data-count = "66"
 				data-limit = "[a-zA-Z0-9 -]|[^\x00-\x80]"
 				title      =
@@ -38,12 +43,12 @@
 				 Acepta caracteres A-Z, dígitos del 0-9 y el caracter '-' (guión).
 				 La URL de su producto se generará en base a lo que escriba aquí."
 				>Nombre</label>
-			<input class="name ui-input" id="<?=$langcode?>_name" type="text">
+			<input class="name ui-input" id="<?=$lang?>_name" type="text" value="<?=$edit? $product[$lang]['name']:''?>">
 		</div>
 		<div>
 			<label
 				class = "ui-label"
-				for   = "<?=$langcode?>_cont"
+				for   = "<?=$lang?>_cont"
 				title =
 				"<b>Descripción completa del producto.</b><br>
 				Acepta cualquier tipo de caracter, pero elimina todo código HTML.
@@ -57,12 +62,12 @@
 				++palabra       =  <ul><li>palabra</li></ul> (lista).
 				</code>"
 				>Contenido</label>
-			<textarea class="cont ui-textarea" id="<?=$langcode?>_cont"></textarea>
+			<textarea class="cont ui-textarea" id="<?=$lang?>_cont"><?=$edit? $product[$lang]['cont']:''?></textarea>
 		</div>
 		<div>
 			<label
 				class      = "ui-label"
-				for        = "<?=$langcode?>_desc"
+				for        = "<?=$lang?>_desc"
 				data-count = "300"
 				title      =
 				"<b>Descripción del Producto para Buscadores</b>.
@@ -71,12 +76,12 @@
 				Una descripción muy corta puede afectar su posicionamiento; -
 				300 caracteres es lo máximo permitido por Google."
 				>Descripción</label>
-			<textarea class="desc ui-textarea" id="<?=$langcode?>_desc"></textarea>
+			<textarea class="desc ui-textarea" id="<?=$lang?>_desc"><?=$edit? $product[$lang]['desc']:''?></textarea>
 		</div>
 		<div>
 			<label
 				class      = "ui-label"
-				for        = "<?=$langcode?>_keyw"
+				for        = "<?=$lang?>_keyw"
 				data-count = "300"
 				title      =
 				"<b>Palabras Clave</b><br>
@@ -87,11 +92,11 @@
 				Es importante que las palabras esten directamente relacionadas -
 				con el contenido, descripición y nombre de sus producto."
 				>Keywords</label>
-			<textarea class="keyw ui-textarea" id="<?=$langcode?>_keyw"></textarea>
+			<textarea class="keyw ui-textarea" id="<?=$lang?>_keyw"><?=$edit? $product[$lang]['keyw']:''?></textarea>
 		</div>
 	</fieldset>
 <?php endforeach;?>
-
+<?php if (!$edit):?>
 	<fieldset class="ui-inset small">
 		<label
 			for        = "class"
@@ -107,8 +112,11 @@
 		>Identificador</label>
 		<input id="class" class="ui-input" type="text">
 	</fieldset>
-
-	<div class="submit"><button class="ui-button" type="submit">Agregar</button></div>
+<?php else: ?>
+	<input type="hidden" id="class" value="<?=$product[$lang]['class']?>"/>
+	<script>var ORIGINALUPFILE = "<?=$product[$lang]['class'].'.'.pathinfo($product[$lang]['image'], PATHINFO_EXTENSION);?>"; </script>
+<?php endif ?>
+	<div class="submit"><button class="ui-button" type="submit"><?=$edit?'Editar':'Agregar'?></button></div>
 </section>
 <?php
 # TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
