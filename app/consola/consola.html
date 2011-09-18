@@ -12,8 +12,18 @@
 		<li class="ver">
 			<a>Ver</a>
 			<ul>
+				<li class="categoria">
+					<a href="<?=APP_URL?>ver/categoria">Categoria</a>
+					<?php if (count($categories)):?>
+					<ul><?php
+					foreach($categories as $cat):?>
+						<li><a href="<?=APP_URL?>editar/categoria/<?=$cat['class']?>"><?=$cat['class']?></a></li>
+<?php 				endforeach ?>
+					</ul>
+					<?php endif ?>
+
+				</li>
 				<li class="producto"><a href="<?=APP_URL?>ver/producto">Producto</a></li>
-				<li class="categoria"><a href="<?=APP_URL?>ver/categoria">Categoria</a></li>
 				<li class="mercancia"><a href="<?=APP_URL?>ver/mercancia">Mercancía</a></li>
 			</ul>
 		</li>

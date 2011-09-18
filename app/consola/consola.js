@@ -66,6 +66,7 @@ var ø = {};
 
 	if (page == 'agregar_producto')  return ø.agregar.producto();
 	if (page == 'agregar_categoria') return ø.agregar.categoria();
+	if (page == 'editar_categoria')  return ø.editar.categoria();
 	if (page.indexOf('ver_') !== -1){
 
 		// en las acciones "ver"
@@ -94,7 +95,9 @@ var ø = {};
 				if (action == 'delete'){
 					ø.modal.settings.close = false;
 					ø.modal.settings.cancel = function(){ ø.modal.hide(); }
-					ø.modal.settings.submit = function(){ return false; }
+					ø.modal.settings.submit = function(){ 
+						window.location.href = '../../consola/borrar/' + type + '/' + target;
+					}
 					ø.modal.title   = "Se necesita confirmación";
 					ø.modal.content = 
 						"<p>¿Seguro que desea borrar <b>" + target + "</b>?</p>" +
@@ -180,6 +183,37 @@ var ø = {};
 };
 
 /**
+ * @created 2011/SEP/15 22:06
+ */
+ø.classcheck = function(){
+	var $id = $('#class');
+	var to;
+	var val;
+	$id.$parent = $id.parent();
+	var classcheck = function(e){
+		if (to) clearTimeout(to);
+		// wait a second before checking value.
+		to = setTimeout(function(){
+			val = $id.val();
+			$.post('',{action:'prodclass', value:val, token: TOKEN_PUBLIC },
+				function(data){
+					if (data == 'found') {
+						$id.$parent.addClass('error');
+						$id.ui('sayno',{distance:5});
+					}
+					else $id.$parent.removeClass('error');
+				}).error(ø.error);
+		},333);
+	};
+	$id.keypress(classcheck);
+	$id.keydown(function(e){
+		if (e.keyCode != 8) return;
+		classcheck.call(this, e);
+	})
+}
+
+
+/**
  * reduce the number of decimals to Two.
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
@@ -189,27 +223,8 @@ var ø = {};
 	return Math.round(dec*100+((dec*1000)%10>4?1:0))/100;
 }
 
-ø.agregar = {};
 
-ø.agregar.classcheck = function(){
-	var $id = $('#class');
-	var to;
-	$id.$parent = $id.parent();
-	$id.keypress(function(e){
-		if (to) clearTimeout(to);
-		// wait a second before checking value.
-		to = setTimeout(function(){
-			$.post('',{action:'prodclass', value:$id.val(), token: TOKEN_PUBLIC },
-				function(data){
-					if (data == 'found') {
-						$id.$parent.addClass('error');
-						$id.ui('sayno',{distance:5});
-					}
-					else $id.$parent.removeClass('error');
-				}).error(ø.error);
-		},333);
-	});	
-}
+ø.agregar = {};
 
 /**
  * @author Hector Menendez <h@cun.mx>
@@ -303,7 +318,7 @@ var ø = {};
 	$('input,textarea').keypress(removerr);
 
 	// enable class checker
-	ø.agregar.classcheck();
+	ø.classcheck();
 	// validate form
 	var $button = $('.submit button');
 	$button.click(function(){
@@ -339,7 +354,6 @@ var ø = {};
  * @created 2011/SEP/04 16:24
  */
 ø.agregar.categoria = function(){
-
 	// validate form.
 	var $button = $('.submit button');
 	var removerr = function(){
@@ -348,7 +362,7 @@ var ø = {};
 	$('input,textarea').keypress(removerr);
 
 	// validate category identifier
-	ø.agregar.classcheck();
+	ø.classcheck();
 
 	$button.click(function(){
 		var pass = true;
@@ -366,14 +380,17 @@ var ø = {};
 			data[$this.attr('id')] = val;
 		});
 		if (!pass) return $button.ui('sayno');
-		// both inputs are filled, check if their values are valid first.
 		$.ui.loader.show();
-		console.info(data);
 		$.post('', data, ø.success).error(ø.error);
 	});
 }
 
-$.ui.core.defaults.debug = true;
+ø.editar = {};
+
+ø.editar.categoria = ø.agregar.categoria;
+
+
+$.ui.core.defaults.debug = false;
 $(document).ready(ø.init).load(function(){ ø.ui.loader.hide(); });
 
 })(jQuery);

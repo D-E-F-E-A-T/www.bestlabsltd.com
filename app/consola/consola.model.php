@@ -44,6 +44,8 @@ class consolaModel extends Model{
 		return $this->languages = $languages;
 	}
 
+####################################################################################################
+
 	/**
 	 * @created 2011/SEP/15 01:59
 	 */
@@ -52,10 +54,25 @@ class consolaModel extends Model{
 	}
 
 	/**
-	 * @created 2011/SEP/16 05:41
+	 * @created 2011/SEP/17 20:18
 	 */
-	public function products(){
-		return $this->db->select('product','*','GROUP BY `class` ORDER BY `class` DESC');
+	public function category($class=false){
+		if (!is_string($class)) return 'Clase inválida.';
+		$qry = $this->db->select('category','*','class=? LIMIT 2', $class);
+		if (!is_array($qry) || count($qry) != 2) return 'Clase inexistente.';
+		$category = array();
+		foreach($qry as $qry){
+			$category[$qry['lang']] = $qry;
+			unset($category[$qry['lang']]['lang']);
+		}
+		return $category;
+	}
+
+	/**
+	 * @created 2011/SEP/17 11:51
+	 */
+	public function category_delete($target=false){
+		return $this->db->delete('category', 'class=?', $target);
 	}
 
 
@@ -63,16 +80,7 @@ class consolaModel extends Model{
 	 * @created 2011/SEP/14 23:24
 	 */
 	public function category_add(){
-		if (
-				 count($_POST) != 7
-			||	!isset($_POST['class'])
-			||	!isset($_POST['es_name'])
-			||	!isset($_POST['es_desc'])
-			||	!isset($_POST['es_keyw'])
-			||	!isset($_POST['en_name'])
-			||	!isset($_POST['en_desc'])
-			||	!isset($_POST['en_keyw'])
-		) return "Faltan Datos.";
+		if (true !== $this->category_post_check()) return 'Faltan Datos';
 		foreach($_POST as $key => $val) $$key = $val;
 		$this->db->insert('category', array(
 			array(
@@ -94,6 +102,26 @@ class consolaModel extends Model{
 	}
 
 	/**
+	 * @created 2011/SEP/17 22:46
+	 */
+	public function category_update(){
+		if (true !== $this->category_post_check()) return 'Faltan Datos';
+		foreach($_POST as $key => $val) $$key = $val;
+		$qry =
+		$this->db->update('category', array(
+			'name'  => $es_name,
+			'desc'  => $es_desc,
+			'keyw'  => $es_keyw
+		), "lang='es' AND class=?", $class);
+		$this->db->update('category', array(
+			'name'  => $en_name,
+			'desc'  => $en_desc,
+			'keyw'  => $en_keyw
+		), "lang='en' AND class=?", $class);
+		return true;
+	}
+
+	/**
 	 * @created 2011/SEP/15 00:45
 	 */
 	public function category_check(){
@@ -102,6 +130,52 @@ class consolaModel extends Model{
 		if ($a = $this->db->select('category','class','class=? LIMIT 1',$val)) return 'found';
 		return true;
 	}
+
+	private function category_post_check(){
+		if (
+				 count($_POST) != 7
+			||	!isset($_POST['class'])
+			||	!isset($_POST['es_name'])
+			||	!isset($_POST['es_desc'])
+			||	!isset($_POST['es_keyw'])
+			||	!isset($_POST['en_name'])
+			||	!isset($_POST['en_desc'])
+			||	!isset($_POST['en_keyw'])
+		) return false;
+		return true;
+	}
+
+####################################################################################################
+
+	/**
+	 * @created 2011/SEP/16 05:41
+	 */
+	public function products(){
+		return $this->db->select('product','*','GROUP BY `class` ORDER BY `class` DESC');
+	}
+
+	/**
+	 * @created 2011/SEP/18 01:46
+	 */
+	public function product($class=false){
+		if (!is_string($class)) return 'Clase inválida.';
+		$qry = $this->db->select('product','*','class=? LIMIT 2', $class);
+		if (!is_array($qry) || count($qry) != 2) return 'Clase inexistente.';
+		$product= array();
+		foreach($qry as $qry){
+			$category[$qry['lang']] = $qry;
+			unset($category[$qry['lang']]['lang']);
+		}
+		return $product;
+	}
+
+	/**
+	 * @created 2011/SEP/17 12:00
+	 */
+	public function product_delete($target=false){
+		return $this->db->delete('product', 'class=?', $target);
+	}
+
 
 	/**
 	 * @created 2011/SEP/15 18:40
@@ -130,7 +204,6 @@ class consolaModel extends Model{
 			!file_exists($orig = $this->image_tmpath.str_replace('.'.$ext,'',$file).'.orig.'.$ext)
 		) return "Imagen temporal corrupta, subir una nueva.";
 		$ext = '.'.$ext;
-
 		# generate urls
 		$es_categ = $this->db->select('category','name','lang=? AND class=? LIMIT 1','es', $category);
 		$es_categ = Utils::urlify($es_categ);

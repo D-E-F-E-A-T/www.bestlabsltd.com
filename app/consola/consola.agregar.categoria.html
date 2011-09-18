@@ -2,18 +2,20 @@
 /**
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
+ * @updated 2011/SEP/17 20:49 Added Edit mode.
  * @created 2011/SEP/04 00:22
  */
  include APP_PATH.APP_NAME.'.html'; # common.
+ $edit = isset($category);
  ?>
 <section>
 
-<?php foreach($languages as $langcode => $langname):?>
+<?php foreach($languages as $lang => $language):?>
 	<fieldset class="ui-inset divide">
-		<legend><?=$langname?></legend>
+		<legend><?=$language?></legend>
 		<div>
 			<label
-				for        = "<?=$langcode?>_name"
+				for        = "<?=$lang?>_name"
 				class      = "ui-label"
 				data-limit = "[a-zA-Z]|[^\x00-\x80]"
 				data-count = "22"
@@ -22,12 +24,12 @@
 				Una sola palabra formada solo por letras sin espacios  que -
 				representa un grupo de productos."
 				>Nombre</label>
-			<input class="ui-input" id="<?=$langcode?>_name" type="text">
+			<input class="ui-input" id="<?=$lang?>_name" type="text" <?=$edit?'value="'.$category[$lang]['name'].'"':''?>>
 		</div>
 		<div>
 			<label
 				class      = "ui-label"
-				for        = "<?=$langcode?>_desc"
+				for        = "<?=$lang?>_desc"
 				data-count = "300"
 				title      =
 				"<b>Descripción de la  Categoría para Buscadores</b>.
@@ -36,12 +38,12 @@
 				Una descripción muy corta puede afectar su posicionamiento; -
 				300 caracteres es lo máximo permitido por Google."
 				>Descripción</label>
-			<textarea class="desc ui-textarea" id="<?=$langcode?>_desc"></textarea>
+			<textarea class="desc ui-textarea" id="<?=$lang?>_desc"><?=$edit?$category[$lang]['desc']:''?></textarea>
 		</div>
 		<div>
 			<label
 				class      = "ui-label"
-				for        = "<?=$langcode?>_keyw"
+				for        = "<?=$lang?>_keyw"
 				data-count = "300"
 				title      =
 				"<b>Palabras Clave</b><br>
@@ -52,12 +54,12 @@
 				Es importante que las palabras esten directamente relacionadas -
 				con el contenido, descripición y nombre de la categoría."
 				>Keywords</label>
-			<textarea class="keyw ui-textarea" id="<?=$langcode?>_keyw"></textarea>
+			<textarea class="keyw ui-textarea" id="<?=$lang?>_keyw"><?=$edit?$category[$lang]['keyw']:''?></textarea>
 		</div>
 
 	</fieldset>
 <?php endforeach ?>
-
+<?php if (!$edit):?>
 	<fieldset class="ui-inset small">
 		<label
 			for        = "class"
@@ -71,10 +73,12 @@
 			<i>Si el campo aparece en tono rojo, significa que otra categoría -
 			con ese nombre ya existe en la base de datos.</i>"
 		>Identificador</label>
-		<input id="class" class="ui-input" type="text">
+		<input id="class" class="ui-input" type="text" <?=$edit?'value="'.$category[$lang]['class'].'"':''?>>
 	</fieldset>
-
-	<div class="submit"><button class="ui-button" type="submit">Agregar</button></div>
+<?php else: ?>
+	<input type="hidden" id="class" value="<?=$category[$lang]['class']?>"/>
+<?php endif ?>
+	<div class="submit"><button class="ui-button" type="submit"><?=$edit?'Editar':'Agregar'?></button></div>
 
 </section>
 

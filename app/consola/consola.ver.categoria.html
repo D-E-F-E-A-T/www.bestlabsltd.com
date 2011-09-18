@@ -1,0 +1,37 @@
+<?php
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/17 09:46
+ */
+ include APP_PATH.APP_NAME.'.html'; # common.
+ ?>
+<section>
+	<table>
+		<caption></caption>
+		<thead>
+			<tr>
+				<th class="class" scope="col">Identificador</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach($categories as $category):?>
+			<tr class="<?=$category['class']?>">
+				<td class="class"><?=$category['class']?></td>
+			</tr>
+		<?php endforeach ?>
+		</tbody>
+	</table>
+</section>
+<nav id="action">
+	<ul>
+		<li class="update">Editar</li>
+		<li class="delete">Borrar</li>
+	</ul>
+</nav>
+<?php
+# TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
+#       in other words: consola.html should output buffer
+#       all calls to its childs, so it can "wrap" them.
+?>
+</div>

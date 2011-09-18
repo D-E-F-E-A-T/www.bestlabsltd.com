@@ -35,6 +35,61 @@ class consolaControl extends Control{
 	}
 
 	/**
+	 * @created 2011/SEP/17 11:48
+	 */
+	public function borrar($type=false, $target=false){
+		if (
+				!is_string($type)
+			||	!is_string($target)
+			||  !isset($_SERVER['HTTP_REFERER'])
+		) parent::error_403('Petición inválida.');
+		switch($type){
+			case 'categoria': $response = $this->model->category_delete($target); break;
+			case 'producto' : $response = $this->model->product_delete($target);  break;
+			default         : $response = 'Tipo inválido.';
+		}
+		if ($response !== true) parent::error_500($response);
+		# go back to original calling page.
+		$this->reload($_SERVER['HTTP_REFERER']);
+	}
+
+	/**
+	 * @created 2011/SEP/17 19:53
+	 */
+	public function editar($tipo=false, $target=false){
+		if (!is_string($tipo) || !is_string($target))	
+			parent::error_403('Petición inválida.');
+		switch($tipo){
+			case 'categoria': $type = 'category'; break;
+			case 'producto' : $type = 'product'; break;
+			default         : parent::error_500('Petición Inválida.');			
+		}
+		# render view.
+		if (empty($_POST)){
+			$this->view->$type = $this->model->$type($target);
+			if (!is_array($this->view->$type)) parent::error_500($this->view->$type);
+			$this->common();
+			$this->view->class = 'editar_'.$tipo;
+			$this->view->title = $this->view->tag_title = 'Editar '.ucwords($tipo);
+			$this->view->render('agregar.'.$tipo);
+		}
+		# check request
+		if (isset($_POST['action'])){
+			$action = $type.'_check';
+			if (!($response = $this->model->$action())) parent::error_500('Invalid Value');
+			# an empty response means all ok.
+			if ($response === true) stop();
+			stop('found');
+		}
+		# update request.
+		$action = $type.'_update';
+		if ($type == 'category') $success = 'Categoría actualizada con éxito.';
+		if ($type == 'product')  $success = 'Producto actualizado con éxito.';
+		if ( ($response = $this->model->$action()) === true) stop($success);
+		parent::error_500($response);	
+	}
+
+	/**
 	 * Close sesion.
 	 * @created 2011/SEP/02 17:12
 	 */
@@ -61,6 +116,14 @@ class consolaControl extends Control{
 
 
 ####################################################################################################
+
+	/**
+	 * @created 2011/SEP/17 10:14
+	 */
+	private function ver_categoria(){
+		$this->view->tag_title = $this->view->title = 'Categoría';
+		$this->view->render('ver.categoria');
+	}
 
 	/**
 	 * @created 2011/SEP/04 01:16
