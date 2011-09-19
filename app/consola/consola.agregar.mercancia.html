@@ -6,7 +6,7 @@
  */
  include APP_PATH.APP_NAME.'.html'; # common.
  ?>
-<section id="mercancia-add">
+<section id="mercancia-add" class="mainsect">
 
 	<div class="product">
 		<label  class="ui-label" for="product">Producto</label>
@@ -30,7 +30,19 @@
 			>Cantidad</label>
 			<input id="cantidad" type="text" class="ui-input">
 		</div>
+		<div class="date">
+			<label
+				for="expires"
+				class="ui-label"
+				data-limit="[0-9\-]"
+				data-count="8"
+				title="Fecha de expiración del lote (AA-MM-DD)."
+			>Expira</label>
+			<input id="expires" type="text" class="ui-input">
+		</div>
 	</fieldset>
+
+
 
 	<div class="submit"><button class="ui-button" type="submit">Agregar</button></div>
 

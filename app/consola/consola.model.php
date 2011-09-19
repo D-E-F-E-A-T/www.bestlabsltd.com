@@ -68,6 +68,92 @@ class consolaModel extends Model{
 		return true;
 	}
 
+
+	/**
+	 * 
+	 * @created 2011/SEP/19 14:49
+	 */
+	public function stock_add(){
+		if (
+			 empty($_POST)
+		||	 count($_POST) != 3
+		||	!isset($_POST['product'])
+		||	!isset($_POST['cantidad'])
+		||	!isset($_POST['expires'])
+		) return 'Datos Incorrectos';
+		# obtain latest id from database.
+		$id = $this->db->select('stock','id','ORDER BY `id` DESC LIMIT 1');
+		if (empty($id)) $id = 0;
+		else $id = $this->stock_id_decode($id);
+		if ($id === false) return "No fue posible determinar el índice del stock.";
+		$id++;
+		$stock = array();
+		foreach(range($id, $id+((int)$_POST['cantidad']-1)) as $id) $stock[] = array(
+			'id'      => $this->stock_id_encode($id),
+			'product' => $_POST['product'],
+			'created' => date(DATE_W3C),
+			'expires' => $_POST['expires']
+		);
+		$this->db->insert('stock', $stock);
+		return true;
+	}
+
+	/**
+	 * Determines the random order id will obtain.
+	 */
+	private $stock_key = array(
+		array(3,1,0,2),
+		array(2,3,1,0),
+		array(1,2,0,3),
+		array(1,3,0,2),
+		array(3,2,0,1),
+		array(2,3,0,1),
+		array(0,3,1,2),
+		array(1,2,3,0),
+		array(1,0,3,2),
+		array(2,1,3,0)
+	);
+
+	private $stock_base34 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWX';
+
+
+	/**
+	 * Determine the last available ID, to avoid collitions.
+	 * It's embedded on the serial:
+	 * Z{KEY}XXXXXXXXXXXXXY{ID}
+	 * @created 2011/SEP/19 16:02
+	 */
+	private function stock_id_decode($id=false){
+		$id = (string)$id;
+		if (!preg_match("/Z(\d)/", $id, $key)) return false;
+		$key   = $this->stock_key[$key[1]];
+		$chunk = str_split($id, 4);
+		$id    = array();
+		$i     = 0;
+		foreach($key as $key) $id[$key] = $chunk[$i++];
+		ksort($id);
+		$id = join('',$id);
+		return (int)base_convert(substr($id, strpos($id, 'Y')+1), 34, 10);
+	}
+
+	/**
+	 * generates a base34 string, and scrambles it to hide 
+	 * a little bit, the design pattern.
+	 * @created 2011/SEP/19 16:24
+	 */
+	private function stock_id_encode($id=false){
+		$id    = base_convert((int)$id, 10, 34);
+		$len   = ($len = strlen($id)) + ($len%2);
+		$id    = strtoupper(str_pad($id, $len, '0', STR_PAD_LEFT));
+		$base  = '';
+		foreach(range(0,12-$len) as $_) $base .= $this->stock_base34{mt_rand(0,33)};
+		$rand  = mt_rand(0,9);
+		$chunk = str_split("Z{$rand}{$base}Y{$id}",4);
+		$id    = array();
+		foreach($this->stock_key[$rand] as $i) $id[] = $chunk[$i];
+		return join('', $id);
+	}
+
 ####################################################################################################
 
 

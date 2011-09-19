@@ -46,7 +46,7 @@ var ø = {};
 	}
 
 	// force a listener for resize events on textarea.
-	$('textarea').each(function(){
+	$('.mainsect textarea').each(function(){
 		var $t = $(this);
 		$t.data('oW', $t.outerWidth());
 		$t.data('oH', $t.outerHeight());
@@ -61,11 +61,13 @@ var ø = {};
 		});
 	}).resize(function(){});
 
-
-	if (page == 'agregar_producto')  return ø.agregar.producto();
-	if (page == 'agregar_categoria') return ø.agregar.categoria();
-	if (page == 'editar_categoria')  return ø.editar.categoria();
-	if (page == 'editar_producto')    return ø.editar.producto();
+	switch(page){
+		case 'agregar_producto'  : return ø.agregar.producto();
+		case 'agregar_categoria' : return ø.agregar.categoria();
+		case 'agregar_mercancia' : return ø.agregar.mercancia();
+		case 'editar_producto'   : return ø.editar.producto();
+		case 'editar_categoria'  : return ø.editar.categoria();
+	}
 	if (page.indexOf('ver_') !== -1){
 
 		// en las acciones "ver"
@@ -180,7 +182,6 @@ var ø = {};
  * @created 2011/SEP/05 13:14
  */
 ø.resize.run = function(){
-	console.info('run');
 	for (var i in ø.resize.fn)
 		if (typeof ø.resize.fn[i] == 'function')
 			ø.resize.fn[i]();
@@ -254,6 +255,42 @@ var ø = {};
 
 ø.agregar = {};
 
+ø.agregar.mercancia = function(){
+	// validate form.
+	var $button = $('.submit button');
+	var removerr = function(){
+		$(this).parent().removeClass('error');
+	};
+	
+	$('.mainsect input').keypress(removerr);
+	$('.mainsect select').change(removerr);
+
+	$button.click(function(){
+		var pass = true;
+		var data = { token: TOKEN_PUBLIC };
+		var val, $this;
+		$('.mainsect input, .mainsect select').each(function(){
+			$this = $(this);
+			$this.$parent = $this.parent();
+			val = $this.val();
+			if (!val.length || $this.$parent.hasClass('error')) {	
+				$this.$parent.addClass('error');
+				return pass = false; // breaks
+			}
+			$this.$parent.removeClass('error');
+			data[$this.attr('id')] = val;
+		});
+		if (!pass) return $button.ui('sayno');
+		// validate YY/MM/DD
+		if (!$('#expires').val().match(/([1-9][0-9])\-(0[1-9]|1[1-2])\-(0[1-9]|[1-2][0-9]|3[0-1])/)){
+			$('#expires').parent().addClass('error');
+			return false;
+		}
+		$.ui.loader.show();
+		$.post('', data, ø.success).error(ø.error);
+	});
+};
+
 /**
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
@@ -272,8 +309,9 @@ var ø = {};
 		size : 3*1024*1024,                             // maximum size [3Mb]
 		type : ['image/jpg','image/jpeg','image/png'],	// allowed mimetypes
 		change:function(){
-			ø.modal.settings.footer = false;
 			ø.modal.settings.close  = false;
+			ø.modal.settings.submit = null;
+			ø.modal.settings.cancel = null;
 			ø.modal.title = 'Subiendo Fotografía…';
 			ø.modal.show();
 		},
@@ -286,7 +324,7 @@ var ø = {};
 			try {
 				this.name = $.parseJSON(this.xhr.responseText).image;
 			} catch (e){
-				$('section').html(this.xhr.responseText);
+				alert(this.xhr.responseText);
 			}
 			this.element.parentsUntil('section').last().removeClass('error');
 			ø.candivide = false; // don't call divide while doing this.
@@ -318,8 +356,9 @@ var ø = {};
 		error:function(e, complete, message){
 			// remove all existing images
 			$ph.removeClass('hasimg').find('img').remove();
-			ø.modal.settings.footer = false;
 			ø.modal.settings.close  = true;
+			ø.modal.settings.submit = null;
+			ø.modal.settings.cancel = null;
 			if (!complete) {
 				ø.modal.hide();
 				ø.modal.title = 'Error';
@@ -347,8 +386,8 @@ var ø = {};
 	var removerr = function(){
 		$(this).parent().removeClass('error');
 	};
-	$('select').change(removerr);
-	$('input,textarea').keypress(removerr);
+	$('.mainsect select').change(removerr);
+	$('.mainsect input, .mainsect textarea').keypress(removerr);
 
 	// enable class checker
 	ø.classcheck();
@@ -358,7 +397,7 @@ var ø = {};
 		var data = { token: TOKEN_PUBLIC };
 		var pass = true;
 		var $this, val, isfile;
-		$('input,textarea,select').each(function(){
+		$('.mainsect input, .mainsect textarea, .mainsect select').each(function(){
 			$this = $(this);
 			$this.$parent = $this.parent();
 			isfile = $this.is('[type=file]');
@@ -401,7 +440,7 @@ var ø = {};
 	var removerr = function(){
 		$(this).parent().removeClass('error');
 	};
-	$('input,textarea').keypress(removerr);
+	$('.mainsect input, .mainsect textarea').keypress(removerr);
 
 	// validate category identifier
 	ø.classcheck();
@@ -410,7 +449,7 @@ var ø = {};
 		var pass = true;
 		var data = { token: TOKEN_PUBLIC };
 		var val, $this;
-		$('input,textarea').each(function(){
+		$('.mainsect input, .mainsect textarea').each(function(){
 			$this = $(this);
 			$this.$parent = $this.parent();
 			val = $this.val();

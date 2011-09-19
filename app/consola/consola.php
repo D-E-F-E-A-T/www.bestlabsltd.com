@@ -207,6 +207,10 @@ class consolaControl extends Control{
 			$this->view->tag_title = $this->view->title = 'Agregar Mercancía';
 			$this->view->render('agregar.mercancia');
 		}
+		# a stockl add request.
+		if ( ($response = $this->model->stock_add()) === true) stop('Mercancía agregada con éxito.');
+		parent::error_500($response);
+
 	}
 
 ####################################################################################################
@@ -247,7 +251,7 @@ class consolaControl extends Control{
 		$bt = debug_backtrace();
 		$this->view->class = $method = "{$bt[1]['function']}_{$method}";
 		# if private method is defined run it. else, show error.
-		if (method_exists($this, $method)) $this->$method();
+		if (method_exists($this, $method)) return $this->$method();
 		parent::error_404("La página que ingresó, no existe.");
 	}
 

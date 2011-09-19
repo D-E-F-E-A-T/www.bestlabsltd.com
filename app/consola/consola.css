@@ -168,7 +168,12 @@ fieldset.small {
 	min-width:175px;
 	margin:0 auto;
 }
-#mercancia-add div.cantidad { width:8em; }
+
+#mercancia-add div.cantidad   { width:8em; }
+#mercancia-add div.date       { width:8em; margin-left:1em;}
+#mercancia-add fieldset > div { display:inline-block; }
+
+
 #product-upload { padding-top:1.5em; }
 #product-upload > * { vertical-align:top; padding-bottom:0 !important; }
 

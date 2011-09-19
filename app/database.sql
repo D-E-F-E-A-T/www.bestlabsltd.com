@@ -36,7 +36,7 @@ CREATE TABLE `category` (
 /**
  * @author Hector Menendez <h@cun.mx>
  * @licence http://etor.mx/licence.txt
- * @updayed 2011/SEP/16 03:37 Fixed error, removed `class` as UNIQUE.
+ * @updated 2011/SEP/16 03:37 Fixed error, removed `class` as UNIQUE.
  * @created 2011/SEP/03 04:09
  */
 DROP TABLE IF EXISTS `product`;
@@ -58,3 +58,19 @@ CREATE TABLE `product`(
   INDEX(`categ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/19 13:26
+ */
+DROP TABLE IF EXISTS `stock`;
+CREATE TABLE `stock`(
+  `id`         CHAR(16) NOT NULL,
+  `product` VARCHAR(44) NOT NULL,
+  `created`    DATETIME NOT NULL,
+  `expires`    DATETIME NOT NULL,
+  `valided`  TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  `printed`  TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY(`id`),
+  INDEX(`product`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
