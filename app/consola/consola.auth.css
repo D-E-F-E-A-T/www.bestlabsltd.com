@@ -4,15 +4,12 @@
 
 html.no-js .consola { display:none; }
 
-section { max-width:12em; }
-
-footer {
-padding-top:0 !important;
+form > div { 
+	width:12em;
+	margin-bottom:.5em;
 }
+form > div:nth-child(2) { margin-bottom:0 !important;  }
 
-form > div{
-	width:100%;
-}
 p {
 	position:absolute;
 	overflow:visible;

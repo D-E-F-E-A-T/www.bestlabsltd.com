@@ -35,6 +35,14 @@ class consolaControl extends Control{
 	}
 
 	/**
+	 * @created 2011/SEP/19 01:35
+	 */
+	public function admin($type=false){
+		$this->common();
+		$this->route($type);
+	}
+
+	/**
 	 * @created 2011/SEP/17 11:48
 	 */
 	public function borrar($type=false, $target=false){
@@ -139,6 +147,9 @@ class consolaControl extends Control{
 		$this->view->render('ver.producto');
 	}
 
+####################################################################################################
+
+
 	/**
 	 * @created 2011/SEP/04 00:35
 	 */
@@ -196,6 +207,16 @@ class consolaControl extends Control{
 			$this->view->tag_title = $this->view->title = 'Agregar Mercancía';
 			$this->view->render('agregar.mercancia');
 		}
+	}
+
+####################################################################################################
+
+	private function admin_password(){
+		if (($response = $this->model->password_change()) !== true) {
+			Core::header(500);
+			stop($response);
+		}
+		stop();
 	}
 
 

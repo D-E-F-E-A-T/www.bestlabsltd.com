@@ -25,6 +25,16 @@ var ø = {};
 	var curr = '.ui-menubar .'+page.replace('_',' .');
 	curr = $(curr).addClass('ui-menubar-current');
 
+	$(window).resize(ø.resize);
+	$('html').removeClass('no-js');
+
+	// enable global modal
+	ø.modal = $.ui.enable('modal', $('<div>').appendTo(ø.$body));
+
+
+	// enable changepassword modal.
+	$('.ui-menubar .admin .password').click(ø.admin.password);
+
 	// enable inset style for title.
 	$('h1.ui-inset').ui({low:0.6});
 	$('fieldset.ui-inset').ui({low:0.85});
@@ -35,36 +45,22 @@ var ø = {};
 		ø.resize.fn.divide = ø.divide;
 	}
 
-	$(window).resize(ø.resize);
-	$('html').removeClass('no-js');
+	// force a listener for resize events on textarea.
+	$('textarea').each(function(){
+		var $t = $(this);
+		$t.data('oW', $t.outerWidth());
+		$t.data('oH', $t.outerHeight());
+		$t.mouseup(function(){
+			 var $this = $(this);
+			 if (
+			 	$this.outerWidth()  != $this.data('oW') ||
+			 	$this.outerHeight() != $this.data('oH')
+			 )  $this.trigger('resize');
+	 		$this.data('oW', $this.outerWidth());
+			$this.data('oH', $this.outerHeight());
+		});
+	}).resize(function(){});
 
-	// enable global modal
-	ø.modal = $.ui.enable('modal', $('<div>').appendTo(ø.$body));
-
-	ø.error = function(e){
-		var ert = $(e.responseText);
-		$.ui.loader.hide();
-		ø.modal.settings.close  = true;
-		ø.modal.settings.submit = null;
-		ø.modal.settings.cancel = null;
-		ø.modal.title   = ert.filter('h1').text();
-		ø.modal.content = ert.filter('h2').text();
-		ø.modal.show();
-	};
-
-	ø.success = function(data){
-		$.ui.loader.hide();
-		ø.modal.settings.close  = false;
-		ø.modal.settings.cancel = null;
-		ø.modal.settings.submit = function(){
-			ø.modal.hide();
-			$.ui.loader.show();
-			window.location.reload();
-		};
-		ø.modal.title   = 'La página será recargada.';
-		ø.modal.content =  data;
-		ø.modal.show();
-	};
 
 	if (page == 'agregar_producto')  return ø.agregar.producto();
 	if (page == 'agregar_categoria') return ø.agregar.categoria();
@@ -135,6 +131,32 @@ var ø = {};
 	}
 };
 
+ø.error = function(e){
+	var ert = $(e.responseText);
+	$.ui.loader.hide();
+	ø.modal.settings.close  = true;
+	ø.modal.settings.submit = null;
+	ø.modal.settings.cancel = null;
+	ø.modal.title   = ert.filter('h1').text();
+	ø.modal.content = ert.filter('h2').text();
+	ø.modal.show();
+};
+
+ø.success = function(data){
+	$.ui.loader.hide();
+	ø.modal.settings.close  = false;
+	ø.modal.settings.cancel = null;
+	ø.modal.settings.submit = function(){
+		ø.modal.hide();
+		$.ui.loader.show();
+		window.location.reload();
+	};
+	ø.modal.title   = 'La página será recargada.';
+	ø.modal.content =  data;
+	ø.modal.show();
+};
+
+
 /**
  * Do stuff when window resized.
  * @author Hector Menendez <h@cun.mx>
@@ -142,7 +164,10 @@ var ø = {};
  * @created 2011/SEP/05 12:29
  */
 ø.resize = function(e){
-	if (ø.resize.to) clearTimeout(ø.resize.to);
+	if (ø.resize.to) {
+		clearTimeout(ø.resize.to);
+		//ø.resize.to = null;
+	}
 	ø.resize.to = setTimeout(ø.resize.run, 150);
 };
 ø.resize.to = null;
@@ -155,6 +180,7 @@ var ø = {};
  * @created 2011/SEP/05 13:14
  */
 ø.resize.run = function(){
+	console.info('run');
 	for (var i in ø.resize.fn)
 		if (typeof ø.resize.fn[i] == 'function')
 			ø.resize.fn[i]();
@@ -235,7 +261,7 @@ var ø = {};
  */
 ø.agregar.producto = function(){
 	// insert progressbar into modal.
-	ø.upbar  = $.ui.enable('progressbar', $('<div>').appendTo(ø.modal.$section).height('30px'));
+	ø.upbar  = $.ui.enable('progressbar', $('<div>').appendTo(ø.modal.$content).height('30px'));
 	var $pu = $('#product-upload');
 	var $fu = $pu.find('.ui-fileupload').first();
 	var $ph = $pu.find('.placeholder').first();
@@ -405,6 +431,87 @@ var ø = {};
 
 ø.editar.categoria = ø.agregar.categoria;
 ø.editar.producto = ø.agregar.producto;
+
+ø.admin = {};
+
+/**
+ * @created 2011/SEP/18 20:55
+ */
+ø.admin.password = function(){
+	var to;
+	var keydown = function(e){
+		// only do this when new and confirmation have values.
+		var $old = ø.modal.$content.find('#pass_orig');
+		var $new = ø.modal.$content.find('#pass_new');
+		var $cnf = ø.modal.$content.find('#pass_conf');
+		if (to) {
+			clearTimeout(to);
+			to = undefined;
+		}
+		to = setTimeout(function(){
+			$new.val = $new.val();
+			$cnf.val = $cnf.val();
+			$old.val = $old.val();
+			// new pwd is the same as old.
+			if ($new.val === $old.val){
+				$new.parent().addClass('error');
+				if ($cnf.length) $cnf.parent().addClass('error');
+				return;
+			} else $new.add($cnf).parent().removeClass('error');
+			// confirmation differs from new.
+			if (!$new.val.length || !$cnf.val.length) return;
+			if ($new.val === $cnf.val) $cnf.parent().removeClass('error');
+			else $cnf.parent().addClass('error');			
+		},50);
+	};
+	ø.modal.title = "Cambiar contraseña"
+	ø.modal.content = $('#admin-password').html();
+	ø.modal.settings.close = false;
+	ø.modal.settings.cancel = function(){
+		ø.modal.$content.unbind('keydown', keydown);
+		ø.modal.hide();
+	};
+	ø.modal.settings.submit = function(){
+		var pass = true;
+		var data = { token: TOKEN_PUBLIC };
+		ø.modal.$content.find('input').each(function(){
+			$this = $(this);
+			if (!$this.val().length || $this.parent().hasClass('error'))
+				return pass = false;
+			data[$this.attr('id')] = $this.val();
+			
+		});
+		if (!pass) {
+			ø.modal.element.ui('sayno');
+			return false;
+		}
+		$.post(APP_URL+'admin/password', data, function(data){
+			ø.modal.hide();
+			ø.modal.title   = 'Se cerrará la sesión';
+			ø.modal.content = 'Contraseña cambiada.';
+			ø.modal.settings.cancel = null;
+			ø.modal.settings.close  = false;
+			ø.modal.settings.submit = function(){
+				ø.modal.hide();
+				$.ui.loader.show();
+				window.location.href = APP_URL + 'logout';
+				return false;
+			};
+			ø.modal.show();
+		}).error(function(e){
+			ø.modal.$content.find('#admin-password-message').html(e.responseText).show();
+			ø.modal.element.ui('sayno');
+		});
+		return false;	
+	};
+	ø.modal.show();
+
+	ø.modal.$content.bind('keydown',keydown);
+	return false;
+	
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $.ui.core.defaults.debug = false;
 $(document).ready(ø.init);

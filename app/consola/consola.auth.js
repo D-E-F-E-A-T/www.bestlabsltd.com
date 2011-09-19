@@ -14,12 +14,12 @@ $(document).ready(function(){
 
 		submit : function(){
 			var pass = true;
-			this.$section.find('input:not([type="hidden"])').each(function(){
+			this.$content.find('input:not([type="hidden"])').each(function(){
 				if (!this.value.length) pass = false;
 			});
 			if (!pass) return $auth.ui('sayno');
 			// all is clear, find the form and submit.
-			this.$section.find('form').submit();
+			this.$content.find('form').submit();
 		}
 	});
 });

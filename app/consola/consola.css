@@ -1,5 +1,5 @@
-/* MENUBAR */
 
+/* MENUBAR */
 .ui-menubar { position:fixed !important; top:0; left:0; width:100%; }
 body { padding-top:1.75em; }
 
@@ -244,3 +244,23 @@ div.submit {
 }
 
 
+.internals { display:none !important; }
+
+div.admin-password {
+	padding-bottom:.5em;
+	width:12em;
+}
+
+#admin-password-message {
+	display:none;
+	font-size:.85em;
+	border:1px solid #933;
+	border-radius:4px;
+	background:#FDD;
+	text-align:center;
+	color:#944;
+	padding:.5em 1em;
+	margin:0 auto;
+	position:relative;
+	margin-top:.5em;
+}

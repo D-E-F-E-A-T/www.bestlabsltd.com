@@ -46,6 +46,31 @@ class consolaModel extends Model{
 
 ####################################################################################################
 
+
+	/**
+	 * @created 2011/SEP/19 02:31
+	 */
+	public function password_change(){
+		if (
+			 empty($_POST)
+		||	 count($_POST) != 3
+		||	!isset($_POST['pass_orig'])
+		||	!isset($_POST['pass_new'])
+		||	!isset($_POST['pass_conf'])
+		) return 'Datos Incorrectos';
+		if ($_POST['pass_new'] !== $_POST['pass_conf'])
+			return 'La confirmación de constraseña, no concuerda.';
+		if (!$a = $this->auth->password($_POST['pass_orig']))
+			return 'Contraseña actual inválida.';
+		# everything in order, change password.
+		if (true !== $this->auth->password(true, $_POST['pass_new']))
+			return 'Error desconocido.';
+		return true;
+	}
+
+####################################################################################################
+
+
 	/**
 	 * @created 2011/SEP/15 01:59
 	 */
@@ -271,14 +296,14 @@ class consolaModel extends Model{
 			!isset($_SERVER['HTTP_X_FILE_SIZE'])
 		) 	return 'Headers inválidos.';
 		# shorthands
-		$name = $_SERVER['HTTP_X_FILE_NAME'];
-		$type = $_SERVER['HTTP_X_FILE_TYPE'];
+		$name = strtolower($_SERVER['HTTP_X_FILE_NAME']);
+		$type = strtolower($_SERVER['HTTP_X_FILE_TYPE']);
 		$size = $_SERVER['HTTP_X_FILE_SIZE'];
 		$data = file_get_contents('php://input');
 		# we did the type checking on client-side.
 		# TODO: Don't be lazy and sanitize here too, don't trust the client.
-		$ext = pathinfo($_SERVER['HTTP_X_FILE_NAME'], PATHINFO_EXTENSION);
-		if (!$ext) $ext = '.'.strtolower(str_replace('image/', '', $type));
+		$ext = pathinfo($name, PATHINFO_EXTENSION);
+		if (!$ext) $ext = '.'.str_replace('image/', '', $type);
 		else $ext = '.'.$ext;
 		$id = str_replace('.', '', (string)BMK);
 		// save original and reduced;

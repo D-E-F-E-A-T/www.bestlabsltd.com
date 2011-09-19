@@ -3,6 +3,23 @@
 	var APP_URL = "<?=APP_URL?>";
 	var PUB_URL = "<?=PUB_URL?>";
 </script>
+<div id="admin-password" class="internals">
+	<div class="admin-password">
+		<label for="pass_orig" data-count="12">Contraseña Actual</label>
+		<input id="pass_orig" type="password">
+	</div>
+	<div class="admin-password">
+		<label for="pass_new" data-count="12">Contraseña Nueva</label>
+		<input id="pass_new" type="password">
+	</div>
+	<div class="admin-password">
+		<label for="pass_conf" data-count="12">Confirmar Contraseña</label>
+		<input id="pass_conf" type="password">
+	</div>
+	<div class="admin-password" id="admin-password-message" >
+		&nbsp;
+	</div>
+</div>
 <nav>
 	<ul class="ui-menubar">
 		<li class="agregar">
@@ -40,10 +57,10 @@
 				<li class="mercancia"><a href="<?=APP_URL?>ver/mercancia">Mercancía</a></li>
 			</ul>
 		</li>
-		<li>
+		<li class="admin">
 			<a>Admin</a>
 			<ul>
-				<li><a href="#">Password</a></li>
+				<li class="password"><a href="#">Password</a></li>
 			</ul>
 		</li>
 		<li class="ui-menubar-exit"><a href="<?=APP_URL?>logout" title="Salir">Salir</a>
