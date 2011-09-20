@@ -67,6 +67,7 @@ var ø = {};
 		case 'agregar_mercancia' : return ø.agregar.mercancia();
 		case 'editar_producto'   : return ø.editar.producto();
 		case 'editar_categoria'  : return ø.editar.categoria();
+		case 'admin_etiqueta'    : return ø.admin.etiqueta();
 	}
 	if (page.indexOf('ver_') !== -1){
 
@@ -462,6 +463,7 @@ var ø = {};
 		});
 		if (!pass) return $button.ui('sayno');
 		$.ui.loader.show();
+		console.info(data);
 		$.post('', data, ø.success).error(ø.error);
 	});
 }
@@ -472,6 +474,8 @@ var ø = {};
 ø.editar.producto = ø.agregar.producto;
 
 ø.admin = {};
+
+ø.admin.etiqueta = ø.agregar.categoria;
 
 /**
  * @created 2011/SEP/18 20:55

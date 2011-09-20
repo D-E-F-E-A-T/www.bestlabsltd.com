@@ -119,6 +119,67 @@ class consolaModel extends Model{
 		return true;
 	}
 
+	private $stock_config = array(
+		'cols'          => '8',
+		'rows'          => '14',
+		'font'          => '07.90',
+		'scale'         => '00.46',
+		'width'         => '22.50',
+		'height'        => '15.30',
+		'margin-left'   => '01.00',
+		'margin-top'    => '00.20',			
+		'margin-right'  => '00.90',
+		'margin-bottom' => '00.10',
+		'space-x'       => '00.20',
+		'space-y'       => '00.30'
+	);
+
+	/**
+	 * @created 2011/SEP/20 09:15
+	 */
+	public function stock_config_load(){
+		$path = APP_PATH.'admin.etiqueta.config';
+		if (!file_exists(APP_PATH.'admin.etiqueta.config')) return $this->stock_config;
+		$arr = unserialize(file_get_contents($path));
+		if (
+			!isset($arr['cols'])          
+		||	!isset($arr['rows'])          
+		||	!isset($arr['font'])          
+		||	!isset($arr['scale'])         
+		||	!isset($arr['width'])         
+		||	!isset($arr['height'])        
+		||	!isset($arr['margin-left'])   
+		||	!isset($arr['margin-top'])    
+		||	!isset($arr['margin-right'])  
+		||	!isset($arr['margin-bottom']) 
+		||	!isset($arr['space-x'])        
+		||	!isset($arr['space-y'])        
+		) return false;
+		return $arr;
+	}
+
+	/**
+	 * @created 2011/SEP/20 09:29
+	 */
+	public function stock_config_save(){
+		if (
+			!isset($_POST['cols'])          
+		||	!isset($_POST['rows'])          
+		||	!isset($_POST['font'])          
+		||	!isset($_POST['scale'])         
+		||	!isset($_POST['width'])         
+		||	!isset($_POST['height'])        
+		||	!isset($_POST['margin-left'])   
+		||	!isset($_POST['margin-top'])    
+		||	!isset($_POST['margin-right'])  
+		||	!isset($_POST['margin-bottom']) 
+		||	!isset($_POST['space-x'])        
+		||	!isset($_POST['space-y'])        
+		) return 'Datos Incompletos.';
+		file_put_contents(APP_PATH.'admin.etiqueta.config', serialize($_POST));
+		return true;
+	}
+
 	/**
 	 * Determines the random order id will obtain.
 	 */

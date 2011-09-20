@@ -7,14 +7,6 @@
  */
 class consolaControl extends Control{
 
-
-	public function activar(){
-		$this->common();
-		$this->view->title = $this->view->tag_title = 'Activar';
-		$this->view->class = 'activar';
-		$this->view->render('activar');
-	}
-
 	/**
 	 * Constructor
 	 * @created 2011/AGO/23 23:14
@@ -241,6 +233,22 @@ class consolaControl extends Control{
 		stop();
 	}
 
+
+	/**
+	 * @created 2011/SEP/20 08:59
+	 */
+	private function admin_etiqueta(){
+		if (empty($_POST)){
+			$this->view->title  = $this->view->tag_title = 'Configurar Etiquetas';
+			if (!($this->view->config = $this->model->stock_config_load()))
+				parent::error_500('Error Cargando configuraciones.');
+			$this->view->render('admin.etiqueta');
+		}
+		# save config
+		if (($response = $this->model->stock_config_save()) === true) stop('Configuración salvada');
+		parent::error_500($response);
+
+	}
 
 ####################################################################################################
 

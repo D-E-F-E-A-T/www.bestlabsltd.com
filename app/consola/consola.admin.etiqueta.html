@@ -1,0 +1,280 @@
+<?php
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/20 00:46
+ */
+ include APP_PATH.APP_NAME.'.html'; # common.
+ ?>
+<section class="mainsect">
+
+<style scoped>
+	#sheet { 
+		position:absolute !important;
+		border:1px solid #DDD;
+		box-shadow:0 0 1em rgba(0,0,0,.2);
+		border-radius:.2em;
+		overflow:visible !important;
+	}
+
+	#sheet .body {
+		position:relative;
+		top:0;
+		left:0;
+		overflow:hidden;
+	}
+
+	#sheet,
+	#sheet .body {
+		background:#FAF6F6;
+	}
+
+	#sheet:hover,
+	#sheet:hover .body {
+		background:#CCDCFF;
+	}
+	#sheet .body  div { position:relative; overflow:hidden; white-space:nowrap !important; }
+	#sheet .body .row { font-size:0; display:block;   }
+	#sheet .body .col {
+		font-size:13px;
+		display:inline-block;
+		background:#FFF !important;
+		text-align:center;
+		border-radius:.2em;
+		font-family: "Monaco", "Andale Mono", "Lucida Console", monospace;
+	}
+
+	#form { text-align:center; }
+
+	#form fieldset { width:28em; }
+
+	#form fieldset:not(:first-child){
+		border-top-left-radius:0  !important;
+		border-top-right-radius:0 !important;
+	}
+
+	#form fieldset:not(:last-child){
+		border-bottom-left-radius:0  !important;
+		border-bottom-right-radius:0 !important;
+	}
+
+	#form fieldset > div {
+		
+		display:inline-block;
+		width:6em;
+		margin-right:1em;
+	}
+
+	#form fieldset > div:last-child { margin-right:0 !important; }
+
+	.submit { display:block !important; text-align:right; margin-top:1.5em;  width:31em; }
+
+</style>
+
+<script>
+$(document).ready(function(){
+
+	var letter = { width:21.59, height:27.94 }
+
+	var $form    = $('#form');
+
+	var $font    = $('#font');
+	var $scale   = $('#scale');
+	var $width   = $('#width');
+	var $height  = $('#height');
+	var $cols    = $('#cols');
+	var $rows    = $('#rows');
+	var $itemw   = $('#itemw');
+	var $itemh   = $('#itemh');
+	var $marginl = $('#margin-left');
+	var $marginr = $('#margin-right');
+	var $margint = $('#margin-top');
+	var $marginb = $('#margin-bottom');
+	var $spacex  = $('#space-x');
+	var $spacey  = $('#space-y');
+
+	var update = function(){
+		var $body = this.find('.body');
+
+		var cols    = parseInt($cols.val(),10);
+		var rows    = parseInt($rows.val(),10);
+		var font    = (parseFloat($font.val())*$.ui.inch) / 72;
+		var scale   = parseFloat($scale.val());
+
+	 	    font    = $.ui.twodec(font*scale);
+		var cm      = $.ui.cm * (scale * ($.ui.inch/72));
+
+		var width   = parseFloat($width.val())   * cm;
+		var height  = parseFloat($height.val())  * cm;
+		var itemw   = parseFloat($itemw.val())   * cm;
+		var itemh   = parseFloat($itemh.val())   * cm;
+		var marginl = parseFloat($marginl.val()) * cm;
+		var marginr = parseFloat($marginr.val()) * cm;
+		var margint = parseFloat($margint.val()) * cm;
+		var marginb = parseFloat($marginb.val()) * cm;
+		var spacex  = parseFloat($spacex.val())  * cm;
+		var spacey  = parseFloat($spacey.val())  * cm;
+		// set margin
+		$body.css({
+			marginLeft   : $.ui.twodec(marginl),
+			marginRight  : $.ui.twodec(marginr),
+			marginTop    : $.ui.twodec(margint),
+			marginBottom : $.ui.twodec(marginb),
+		})	
+		// generate items
+		var html = '';
+		var str;
+		for (var i=1; i<=rows; i++){
+			html += '<div class="row">';
+			for (var j=1; j<=cols; j++) {
+				var str1 = '';
+				var str2 = '';
+				var str  = '';
+				for(var l=0; l < 8; l++){
+					str1 = String.fromCharCode(Math.floor(Math.random() *(57-48)+48));
+					str2 = String.fromCharCode(Math.floor(Math.random() *(91-65)+65));
+					str  += str1 + str2;
+				}
+				html +='<div class="col">'+ str +'</div>';
+			}
+			html += '</div>';
+		}
+		$body.html(html);
+		// Calculate correct innerHeight and
+		innerHeight = Math.abs(height - (margint + marginb));
+		innerWidth  = Math.abs(width  - (marginl + marginr));
+		// calculate item dimention
+		itemw =  (innerWidth  - ( (cols-1) * spacex )) / cols;
+		itemh =  (innerHeight - ( (rows-1) * spacey )) / rows;
+		$body.find('.col').css({
+			'font-size'  : font + 'px !important',
+			'width'      : $.ui.twodec(itemw),
+			'height'     : $.ui.twodec(itemh),
+			lineHeight   : $.ui.twodec(itemh)  + 'px',
+			marginLeft   : $.ui.twodec(spacex) + 'px',
+			marginTop    : $.ui.twodec(spacey) + 'px'
+		});
+		$body.find('.row').each(function(){
+			var $this = $(this);
+			if (typeof arguments.callee.done == 'undefined')
+				arguments.callee.done = $this.find('.col').css({ marginTop : 0 });
+			$this.find('.col').first().css({ marginLeft : 0 });
+		});
+		//	.find('.row :first-child').css('margin-left','0 !important').end()
+		//	.find('.row').first().find('.col').css('margin-top','0 !important');
+		// correct position options
+		$form.css({ marginLeft: this.outerWidth(true) + ($.ui.em*1.5) });
+
+	};
+
+	var $sheet = $('#sheet');
+
+	update.call($sheet);
+
+	$('.mainsect input').each(function(){
+		var $this = $(this);
+		$.data($this.get(0), 'orig', $this.val());
+	})
+	.keyup(function(){
+		var $this = $(this);
+		if (arguments.callee.to) {
+			clearTimeout(arguments.callee.to)
+			arguments.callee.to = undefined;
+		}
+		arguments.callee.to = setTimeout(function(){
+			var l = $this.val();
+			if (!l || !l.length) {
+				$this.val($.data($this.get(0), 'orig'));
+			}
+			update.call($sheet);		
+		},250);
+	})
+
+
+});
+</script>
+
+
+<div id="sheet">
+	<div class="body"></div>
+</div>
+
+<div id="form">
+
+	<fieldset id="size" class="ui-inset">
+		<legend>Principal</legend>
+		<div>
+			<label class="ui-label" for="font" data-limit="[0-9\.]" title="Tamaño de la letra en <b>puntos</b>">Letra</label>
+			<input class="ui-input"  id="font" type="text" value="<?=$config['font']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="scale" data-limit="[0-9\.]">Escala</label>
+			<input class="ui-input"  id="scale" type="text" value="<?=$config['scale']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="width" data-limit="[0-9\.]">Ancho</label>
+			<input class="ui-input"  id="width" type="text" value="<?=$config['width']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="height" data-limit="[0-9\.]">Alto</label>
+			<input class="ui-input"  id="height" type="text" value="<?=$config['height']?>">
+		</div>
+	</fieldset>
+
+	<fieldset id="colsrows" class="ui-inset">
+		<legend>Columnas y Filas</legend>
+		<div>
+			<label class="ui-label" for="cols" data-limit="[0-9]">Columnas</label>
+			<input class="ui-input"  id="cols" type="text" value="<?=$config['cols']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="rows" data-limit="[0-9]">Filas</label>
+			<input class="ui-input"  id="rows" type="text" value="<?=$config['rows']?>">
+		</div>
+	</fieldset>
+
+
+	<fieldset id="margin" class="ui-inset">
+		<legend>Márgenes</legend>
+		<div>
+			<label class="ui-label" for="margin-left" data-limit="[0-9\.]">Izquierdo</label>
+			<input class="ui-input" id="margin-left" type="text" value="<?=$config['margin-left']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="margin-top" data-limit="[0-9\.]">Superior</label>
+			<input class="ui-input" id="margin-top" type="text" value="<?=$config['margin-top']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="margin-right" data-limit="[0-9\.]">Derecho</label>
+			<input class="ui-input" id="margin-right" type="text" value="<?=$config['margin-right']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="margin-bottom" data-limit="[0-9\.]">Inferior</label>
+			<input class="ui-input" id="margin-bottom" type="text" value="<?=$config['margin-bottom']?>">
+		</div>
+	</fieldset>
+
+	<fieldset id="space" class="ui-inset">
+		<legend>Espaciado</legend>
+		<div>
+			<label class="ui-label" for="space-y" data-limit="[0-9\.]">Vertical</label>
+			<input class="ui-input" id="space-y" type="text" value="<?=$config['space-y']?>">
+		</div>
+		<div>
+			<label class="ui-label" for="space-x" data-limit="[0-9\.]">Horizontal</label>
+			<input class="ui-input" id="space-x" type="text" value="<?=$config['space-x']?>">
+		</div>
+	</fieldset>
+
+	<div class="submit"><button class="ui-button" type="submit">Guardar</button></div>
+
+</div>
+
+</section>
+
+<?php
+# TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
+#       in other words: consola.html should output buffer
+#       all calls to its childs, so it can "wrap" them.
+?>
+</div>
