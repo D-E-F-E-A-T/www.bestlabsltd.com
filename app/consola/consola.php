@@ -29,7 +29,7 @@ class consolaControl extends Control{
 	/**
 	 * @created 2011/SEP/04 01:14
 	 */
-	public function ver($type=false){
+	public function ver($type=false, $offset=0){
 		$this->common();
 		$this->route($type);
 	}
@@ -146,6 +146,16 @@ class consolaControl extends Control{
 		$this->view->tag_title = $this->view->title = 'Productos';
 		$this->view->render('ver.producto');
 	}
+
+	/**
+	 * @created 2011/SEP/19 22:59
+	 */
+	private function ver_mercancia(){
+		$this->view->tag_title = $this->view->title = 'Mercancia';
+		$this->view->stocks = $this->model->stocks();
+		$this->view->render('ver.mercancia');
+	}
+
 
 ####################################################################################################
 

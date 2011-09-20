@@ -68,6 +68,27 @@ class consolaModel extends Model{
 		return true;
 	}
 
+####################################################################################################
+
+
+	/**
+	 * @created 2011/SEP/16 05:41
+	 */
+	public function stocks(){
+		return $this->db->query(
+		'  SELECT
+				  product,
+				  expires,
+				  COUNT(*)                                   AS total, 
+				  SUM(CASE WHEN printed=1 THEN 1 ELSE 0 END) AS actived,
+				  SUM(CASE WHEN valided=1 THEN 1 ELSE 0 END) AS valided
+			 FROM stock 
+			WHERE expires > CURDATE()
+		 GROUP BY product, expires
+		 ORDER BY expires DESC
+		'
+		);
+	}
 
 	/**
 	 * 
@@ -259,9 +280,6 @@ class consolaModel extends Model{
 
 ####################################################################################################
 
-	/**
-	 * @created 2011/SEP/16 05:41
-	 */
 	public function products(){
 		return $this->db->select('product','*','GROUP BY `class` ORDER BY `class` DESC');
 	}
@@ -410,19 +428,19 @@ class consolaModel extends Model{
 	private function &product_image_sharpen(&$img){
 		# mild sharpen.
 		$matrix = array( 
-            array(-1.2, -01.0, -1.2), 
-            array(-1.0, +20.0, -1.0), 
-            array(-1.2, -01.0, -1.2) 
-        );
+			array(-1.2, -01.0, -1.2), 
+			array(-1.0, +20.0, -1.0), 
+			array(-1.2, -01.0, -1.2) 
+		);
 		# Reference
 		# http://loriweb.pair.com/8udf-sharpen.html
-        # $matrix = array(-1,-1,-1,-1,16,-1,-1,-1,-1); // subtle sharpen.
-        # calculate the sharpen divisor 
-        $divisor = array_sum(array_map('array_sum', $matrix));
-        $offset = 0; 
-        // apply the matrix 
-        imageconvolution($img, $matrix, $divisor, $offset);
-        return $img;
+		# $matrix = array(-1,-1,-1,-1,16,-1,-1,-1,-1); // subtle sharpen.
+		# calculate the sharpen divisor 
+		$divisor = array_sum(array_map('array_sum', $matrix));
+		$offset = 0; 
+		// apply the matrix 
+		imageconvolution($img, $matrix, $divisor, $offset);
+		return $img;
 	}
 
 	/**

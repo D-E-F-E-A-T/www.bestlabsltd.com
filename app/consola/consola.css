@@ -70,20 +70,25 @@ td:last-child  { border-right:1px solid rgba(0,0,0,0.2); }
 	border:1px solid;
 }
 
-#action li.update { 
+#action li:last-child { border-radius:0 .25em .25em 0; }
+
+
+#action li.update,
+#action li.active
+{ 
 	background:#3A9;
 	border-left:none;
 	border-color:#166 rgba(255,255,255,0.5); 
 }
+#action li.update:hover,
+#action li.active:hover { background:#4CB; }
+
 
 #action li.delete {
 	background:#E44;
-	border-radius:0 .25em .25em 0;
 	border-left:none;
 	border-color:#C22;
 }
-
-#action li.update:hover { background:#4CB; }
 #action li.delete:hover { background:#F44; }
 
 tr:hover td, 

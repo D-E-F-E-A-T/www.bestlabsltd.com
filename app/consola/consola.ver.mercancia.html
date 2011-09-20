@@ -1,0 +1,45 @@
+<?php
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/19 23:01
+ */
+ include APP_PATH.APP_NAME.'.html'; # common.
+ ?>
+<section class="mainsect">
+	<table>
+		<caption></caption>
+		<thead>
+			<tr>
+				<th class="class" scope="col">Producto</th>
+				<th class="categ" scope="col">Expira</th>
+				<th class="categ" scope="col">Total</th>
+				<th class="categ" scope="col">Activados</th>
+				<th class="categ" scope="col">Validados</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach($stocks as $stock):
+			  $stock['expires'] = substr($stock['expires'], 0,10);?>
+			<tr class="<?=$stock['product']?>" data-expires="<?=$stock['expires']?>">
+				<td class="class"><?=$stock['product']?></td>
+				<td class="categ"><?=$stock['expires']?></td>
+				<td class="categ"><?=$stock['total']?></td>
+				<td class="categ"><?=$stock['actived']?></td>
+				<td class="categ"><?=$stock['valided']?></td>
+			</tr>
+		<?php endforeach ?>
+		</tbody>
+	</table>
+</section>
+<nav id="action">
+	<ul>
+		<li class="active">Activar</li>
+	</ul>
+</nav>
+<?php
+# TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
+#       in other words: consola.html should output buffer
+#       all calls to its childs, so it can "wrap" them.
+?>
+</div>
