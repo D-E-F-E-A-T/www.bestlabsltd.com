@@ -7,6 +7,14 @@
  */
 class consolaControl extends Control{
 
+
+	public function activar(){
+		$this->common();
+		$this->view->title = $this->view->tag_title = 'Activar';
+		$this->view->class = 'activar';
+		$this->view->render('activar');
+	}
+
 	/**
 	 * Constructor
 	 * @created 2011/AGO/23 23:14

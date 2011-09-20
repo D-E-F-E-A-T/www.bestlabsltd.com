@@ -1,0 +1,145 @@
+<?php
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/20 00:46
+ */
+ include APP_PATH.APP_NAME.'.html'; # common.
+ ?>
+<section class="mainsect">
+
+<style scoped>
+	#sheet { 
+		position:absolute !important;
+		background:#FFF;
+		border:1px solid #DDD;
+		box-shadow:0 0 1em rgba(0,0,0,.2);
+		border-radius:.2em;
+	}
+
+	#form { text-align:center; }
+
+	#form fieldset:not(:first-child){
+		border-top-left-radius:0  !important;
+		border-top-right-radius:0 !important;
+	}
+
+	#form fieldset:not(:last-child){
+		border-bottom-left-radius:0  !important;
+		border-bottom-right-radius:0 !important;
+	}
+
+	#form fieldset > div {
+		
+		display:inline-block;
+		width:6em;
+		margin-right:1em;
+	}
+
+	#form fieldset > div:last-child { margin-right:0 !important; }
+
+	.block  { display:block !important; margin-bottom:1.5em; }
+	.submit { display:block !important; text-align:center; margin-top:1.5em; }
+
+</style>
+
+<script>
+$(document).ready(function(){
+var scale = .6;
+var cm    = $.ui.cm*scale;
+
+var letter = { width:21.59*cm, height:27.94*cm }
+
+$('#sheet').css({
+	width  : letter.width,
+	height : letter.height
+});
+
+$('#form').css({
+	marginLeft: letter.width + ($.ui.em*1.5)
+})
+	
+});
+</script>
+
+
+<div id="sheet"></div>
+<div id="form">
+
+	<fieldset id="size" class="ui-inset">
+		<legend>Dimensiones</legend>
+		<div class="block">
+			<label class="ui-label" for="font" data-limit="[0-9]" data-count="2" title="Tamaño de la letra en <b>puntos</b>">Letra</label>
+			<input class="ui-input"  id="font" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="cols" data-limit="[0-9]" data-count="2">Columnas</label>
+			<input class="ui-input"  id="cols" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="rows" data-limit="[0-9]" data-count="2">Filas</label>
+			<input class="ui-input"  id="rows" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="width" data-limit="[0-9]" data-count="2">Ancho</label>
+			<input class="ui-input"  id="width" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="height" data-limit="[0-9]" data-count="2">Alto</label>
+			<input class="ui-input"  id="height" type="text" value="">
+		</div>
+	</fieldset>
+
+
+	<fieldset id="margin" class="ui-inset">
+		<legend>Márgenes</legend>
+		<div>
+			<label class="ui-label" for="margin-left" data-limit="[0-9]" data-count="2">Izquierdo</label>
+			<input class="ui-input" id="margin-left" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="margin-top" data-limit="[0-9]" data-count="2">Superior</label>
+			<input class="ui-input" id="margin-top" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="margin-right" data-limit="[0-9]" data-count="2">Derecho</label>
+			<input class="ui-input" id="margin-right" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="margin-bottom" data-limit="[0-9]" data-count="2">Inferior</label>
+			<input class="ui-input" id="margin-bottom" type="text" value="">
+		</div>
+	</fieldset>
+
+	<fieldset id="space" class="ui-inset">
+		<legend>Espaciado</legend>
+		<div>
+			<label class="ui-label" for="space-left" data-limit="[0-9]" data-count="2">Izquierdo</label>
+			<input class="ui-input" id="space-left" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="space-top" data-limit="[0-9]" data-count="2">Superior</label>
+			<input class="ui-input" id="space-top" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="space-right" data-limit="[0-9]" data-count="2">Derecho</label>
+			<input class="ui-input" id="space-right" type="text" value="">
+		</div>
+		<div>
+			<label class="ui-label" for="space-bottom" data-limit="[0-9]" data-count="2">Inferior</label>
+			<input class="ui-input" id="space-bottom" type="text" value="">
+		</div>
+	</fieldset>
+
+	<div class="submit"><button class="ui-button" type="submit">Actualizar</button></div>
+
+</div>
+
+</section>
+
+<?php
+# TODO: THIS SHOULD BE ADDED FROM THE MAIN TEMPLATE
+#       in other words: consola.html should output buffer
+#       all calls to its childs, so it can "wrap" them.
+?>
+</div>
