@@ -98,10 +98,10 @@ $(document).ready(function(){
 
 		var cols    = parseInt($cols.val(),10);
 		var rows    = parseInt($rows.val(),10);
-		var font    = (parseFloat($font.val())*$.ui.inch) / 72;
+		var font    = parseFloat($font.val());
 		var scale   = parseFloat($scale.val());
 
-	 	    font    = $.ui.twodec(font*scale);
+ 	    font    = $.ui.twodec(((font*$.ui.inch)/72)*scale);
 		var cm      = $.ui.cm * (scale * ($.ui.inch/72));
 
 		var width   = parseFloat($width.val())   * cm;
@@ -147,13 +147,16 @@ $(document).ready(function(){
 		itemw =  (innerWidth  - ( (cols-1) * spacex )) / cols;
 		itemh =  (innerHeight - ( (rows-1) * spacey )) / rows;
 		$body.find('.col').css({
-			'font-size'  : font + 'px !important',
+			'font-size'  : Math.round(font) + 'px',
 			'width'      : $.ui.twodec(itemw),
 			'height'     : $.ui.twodec(itemh),
 			lineHeight   : $.ui.twodec(itemh)  + 'px',
 			marginLeft   : $.ui.twodec(spacex) + 'px',
 			marginTop    : $.ui.twodec(spacey) + 'px'
 		});
+
+		console.info(font);
+
 		$body.find('.row').each(function(){
 			var $this = $(this);
 			if (typeof arguments.callee.done == 'undefined')
@@ -187,7 +190,7 @@ $(document).ready(function(){
 				$this.val($.data($this.get(0), 'orig'));
 			}
 			update.call($sheet);		
-		},250);
+		},1000);
 	})
 
 
