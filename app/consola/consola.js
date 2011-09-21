@@ -327,7 +327,7 @@ var ø = {};
  */
 ø.agregar.producto = function(){
 	// insert progressbar into modal.
-	ø.upbar  = $.ui.enable('progressbar', $('<div>').appendTo(ø.modal.$content).height('30px'));
+	ø.upbar = {};
 	var $pu = $('#product-upload');
 	var $fu = $pu.find('.ui-fileupload').first();
 	var $ph = $pu.find('.placeholder').first();
@@ -341,13 +341,20 @@ var ø = {};
 			ø.modal.settings.close  = false;
 			ø.modal.settings.submit = null;
 			ø.modal.settings.cancel = null;
-			ø.modal.title = 'Subiendo Fotografía…';
+			ø.modal.title   = 'Subiendo Fotografía…';
+			ø.modal.content = ''
 			ø.modal.show();
+			$upbar = $('<div>').appendTo(ø.modal.$content).height('30px');
+			ø.upbar = $.ui.enable('progressbar', $upbar);
+			$.ui.overlay.show();
 		},
 		progress:function(percentage){
 			ø.upbar.value(percentage)
 		},
-		complete:function(){ ø.modal.hide(); },
+		complete:function(){
+			ø.modal.hide(); 
+			$.ui.loader.show();
+		},
 		success :function(e){
 			// update the name of the image.
 			try {
@@ -383,6 +390,7 @@ var ø = {};
 			*/
 		},
 		error:function(e, complete, message){
+			$.ui.loader.hide();
 			// remove all existing images
 			$ph.removeClass('hasimg').find('img').remove();
 			ø.modal.settings.close  = true;
