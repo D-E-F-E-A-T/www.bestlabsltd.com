@@ -74,6 +74,11 @@ var ø = {};
 		// en las acciones "ver"
 		// add action rows.
 		var $action = $('#action');
+		$active = $action.find('li.active');
+		if ($active.length) {
+			var html = $active.html();
+			$.data($active, 'html', html);
+		}
 		var timeout = null;
 		var lastrow = null;
 		var type = $.trim(page.replace('ver_',''));
@@ -81,11 +86,13 @@ var ø = {};
 		$action
 			.hover(
 				function(){
-					$action.add(lastrow).addClass('hover'); 
+					$action.add(lastrow).addClass('hover');
+					$active.html($.data($active, 'curr'));
 				},
 				function(){
 					$action.add(lastrow).removeClass('hover');
 					$action.hide();
+					$active.html($.data($active, 'html'));
 				}
 			)
 			.find('li').click(function(){
@@ -104,12 +111,20 @@ var ø = {};
 					ø.modal.content = 
 						"<p>¿Seguro que desea borrar <b>" + target + "</b>?</p>" +
 						gonnadelete +
-						"<p>Ésta acción es irreversible.</p>";
+						"<p>Ésta acción es irreversible .</p>";
 					ø.modal.show();
 					return false;
+				} else if (action == 'update'){
+					// update
+					window.location.href = APP_URL + 'editar/' + type + '/' + target;
+				} else if (action == 'active'){
+					$.ui.loader.show();
+					window.location.href = APP_URL + 'activar/' + target + '/' + lastrow.attr('data-expires');
+					/*setTimeout(function(){
+						window.location.href = APP_URL + 'ver/' + type;
+					}, 5000);
+					*/
 				}
-				// update
-				window.location.href = APP_URL + 'editar/' + type + '/' + target;
 			})
 		;
 		$('table tbody tr').hover(
@@ -120,11 +135,24 @@ var ø = {};
 				lastrow = $this;
 				var pos = $this.offset();
 				pos.left += $this.outerWidth()-1;
-
+				if (type=='mercancia'){
+					var diff   = Math.abs(
+						parseInt($this.find('.total').html(),10) - parseInt($this.find('.actived').html(),10)
+					);
+					if (!diff) {
+						$action.hide();
+						return false;
+					}
+					var plural =  diff > 1? 's' : '';
+					$action.find('li.active').html(
+						$.data($active, 'curr', html.replace('%d', diff).replace('%s', plural))
+					);
+				}
 				$action.show().offset(pos);
 			},
 			// mouseout
 			function(){
+				if ($active.length) $active.html($.data($active, 'html'));
 				timeout = setTimeout(function(){
 					if (!$action.hasClass('hover')) $action.hide();
 				},50);

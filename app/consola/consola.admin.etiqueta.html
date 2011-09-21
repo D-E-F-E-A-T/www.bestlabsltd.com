@@ -41,7 +41,7 @@
 		background:#FFF !important;
 		text-align:center;
 		border-radius:.2em;
-		font-family: "Monaco", "Andale Mono", "Lucida Console", monospace;
+		font-family: "Andale Mono", "Lucida Console", monospace;
 	}
 
 	#form { text-align:center; }
@@ -101,8 +101,9 @@ $(document).ready(function(){
 		var font    = parseFloat($font.val());
 		var scale   = parseFloat($scale.val());
 
- 	    font    = $.ui.twodec(((font*$.ui.inch)/72)*scale);
 		var cm      = $.ui.cm * (scale * ($.ui.inch/72));
+
+		font = (font*0.03527)*cm;
 
 		var width   = parseFloat($width.val())   * cm;
 		var height  = parseFloat($height.val())  * cm;
@@ -144,19 +145,16 @@ $(document).ready(function(){
 		innerHeight = Math.abs(height - (margint + marginb));
 		innerWidth  = Math.abs(width  - (marginl + marginr));
 		// calculate item dimention
-		itemw =  (innerWidth  - ( (cols-1) * spacex )) / cols;
-		itemh =  (innerHeight - ( (rows-1) * spacey )) / rows;
+		itemw =  $.ui.twodec((innerWidth  - ( (cols-1) * spacex )) / cols);
+		itemh =  $.ui.twodec((innerHeight - ( (rows-1) * spacey )) / rows);
 		$body.find('.col').css({
 			'font-size'  : Math.round(font) + 'px',
-			'width'      : $.ui.twodec(itemw),
-			'height'     : $.ui.twodec(itemh),
+			'width'      : itemw,
+			'height'     : itemh,
 			lineHeight   : $.ui.twodec(itemh)  + 'px',
 			marginLeft   : $.ui.twodec(spacex) + 'px',
 			marginTop    : $.ui.twodec(spacey) + 'px'
 		});
-
-		console.info(font);
-
 		$body.find('.row').each(function(){
 			var $this = $(this);
 			if (typeof arguments.callee.done == 'undefined')

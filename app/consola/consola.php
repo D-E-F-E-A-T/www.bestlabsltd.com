@@ -42,6 +42,21 @@ class consolaControl extends Control{
 		$this->route($type);
 	}
 
+
+	/**
+	 * @created 2011/SEP/20 15:55
+	 */
+	public function activar($product=false, $expires=false){
+		if (!is_string($product) || !is_string($expires))
+			parent::error_403('Acceso denegado');
+		$response = $this->model->stock_activate($product, $expires);
+		if ($response instanceof FPDF) {
+			$response->Output($expires.'_'.$product.'.pdf', 'I');
+			stop();
+		}
+		parent::error_500($response);
+	}
+
 	/**
 	 * @created 2011/SEP/17 11:48
 	 */
