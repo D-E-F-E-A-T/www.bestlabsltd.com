@@ -24,7 +24,7 @@
 	<fieldset id="product-upload" class="ui-inset">
 		<legend>Imagen</legend>
 		<div class="placeholder<?=$edit?' hasimg':''?>"><?php
-			if ($edit) echo '<img src="'.$product['es']['image'].'">';
+			if ($edit) echo '<img src="'.$product['es']['urli'].'">';
 		?></div>
 		<div class="ui-fileupload ui-button <?=$edit?'isedit':''?>"><img src="<?=PUB_URL?>consola.camara.png" alt="subir foto" width="36"></div>
 	</fieldset>
@@ -114,7 +114,7 @@
 	</fieldset>
 <?php else: ?>
 	<input type="hidden" id="class" value="<?=$product[$lang]['class']?>"/>
-	<script>var ORIGINALUPFILE = "<?=$product[$lang]['class'].'.'.pathinfo($product[$lang]['image'], PATHINFO_EXTENSION);?>"; </script>
+	<script>var ORIGINALUPFILE = "<?=$product[$lang]['class'].'.'.pathinfo($product[$lang]['urli'], PATHINFO_EXTENSION);?>"; </script>
 <?php endif ?>
 	<div class="submit"><button class="ui-button" type="submit"><?=$edit?'Editar':'Agregar'?></button></div>
 </section>

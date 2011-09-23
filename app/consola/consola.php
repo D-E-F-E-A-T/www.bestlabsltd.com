@@ -272,6 +272,8 @@ class consolaControl extends Control{
 	 * @created 2011/AGO/23 23:14
 	 */
 	private function common(){
+		# use custom template 
+		$this->view->template = true;
 		$this->view->tag_link('stylesheet',PUB_URL.'ui/ui.css');
 		$this->view->tag_jsini(PUB_URL.'ui/ui.js');
 		if (!$this->model->auth->logged) return $this->auth(false);

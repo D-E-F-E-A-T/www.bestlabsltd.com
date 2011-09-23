@@ -17,15 +17,14 @@
 	<![endif]-->
 	<link rel="shortcut icon" href='<?=PUB_URL?>favicon.ico'>
 	<link rel='stylesheet' type='text/css' href='<?=PUB_URL?>normalize.css'>
+	<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
 	<%link%>
 	<%jsini%>
-	<%js%>
 </head>
 <body class="<?=APP_NAME?>">
 <%before%>
 <%content%>
 <%after%>
-<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
 <%jsend%>
 <%analytics%>
 </body>

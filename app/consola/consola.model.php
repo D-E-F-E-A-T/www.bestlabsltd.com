@@ -37,6 +37,22 @@ class consolaModel extends Model{
 			$languages[$l['id']] = $l['name'];
 		return $this->languages = $languages;
 	}
+
+	/**
+	 * @created 2011/SEP/15 01:59
+	 */
+	public function categories(){
+		return $this->db->select('category', '*','GROUP BY `class` ORDER BY `class` DESC');
+	}
+
+	/**
+	 * @created 2011/SEP/18 01:46
+	 */
+	public function products(){
+		return $this->db->select('product','*','GROUP BY `class` ORDER BY `class` DESC');
+	}
+
+
 ####################################################################################################
 
 	/**
@@ -275,12 +291,7 @@ class consolaModel extends Model{
 		return join('', $id);
 	}
 ####################################################################################################
-	/**
-	 * @created 2011/SEP/15 01:59
-	 */
-	public function categories(){
-		return $this->db->select('category', '*','GROUP BY `class` ORDER BY `class` DESC');
-	}
+
 	/**
 	 * @created 2011/SEP/17 20:18
 	 */
@@ -314,6 +325,7 @@ class consolaModel extends Model{
 				'lang'  => 'es',
 				'class' => $class,
 				'name'  => $es_name,
+				'url'   => Utils::urlify($es_name),
 				'desc'  => $es_desc,
 				'keyw'  => $es_keyw
 			),
@@ -321,6 +333,7 @@ class consolaModel extends Model{
 				'lang'  => 'en',
 				'class' => $class,
 				'name'  => $en_name,
+				'url'   => Utils::urlify($en_name),
 				'desc'  => $en_desc,
 				'keyw'  => $en_keyw
 			)
@@ -335,11 +348,13 @@ class consolaModel extends Model{
 		foreach($_POST as $key => $val) $$key = $val;
 		$this->db->update('category', array(
 			'name'  => $es_name,
+			'url'   => Utils::urlify($es_name),
 			'desc'  => $es_desc,
 			'keyw'  => $es_keyw
 		), "lang='es' AND class=?", $class);
 		$this->db->update('category', array(
 			'name'  => $en_name,
+			'url'   => Utils::urlify($en_name),
 			'desc'  => $en_desc,
 			'keyw'  => $en_keyw
 		), "lang='en' AND class=?", $class);
@@ -367,10 +382,9 @@ class consolaModel extends Model{
 		) return false;
 		return true;
 	}
+
 ####################################################################################################
-	public function products(){
-		return $this->db->select('product','*','GROUP BY `class` ORDER BY `class` DESC');
-	}
+
 	/**
 	 * @created 2011/SEP/18 01:46
 	 */
@@ -401,8 +415,10 @@ class consolaModel extends Model{
 		# generate urls
 		foreach($this->product_urls() as $key => $val) $$key = $val;
 		# obtain source file's path
-		if (!is_array($tmp = $this->product_image_move($es_image, $en_image)))
+		if (!is_array($tmp = $this->product_image_move($es_url, $en_url)))
 			return 'Error procesando imagen.';
+		$es_url = explode('/', $es_url);
+		$en_url = explode('/', $en_url);
 		foreach($tmp as $key => $val) $$key = $val;
 		# insert data;
 		$this->db->insert('product',array(
@@ -410,23 +426,25 @@ class consolaModel extends Model{
 				'lang'  => 'es',
 				'categ' => $category,
 				'class' => $class,
-				'image' => $es_image,
-				'path'  => $es_path,
 				'name'  => $es_name,
 				'cont'  => $es_cont,
 				'keyw'  => $es_keyw,
-				'desc'  => $es_desc
+				'desc'  => $es_desc,
+				'urli'  => $es_image,
+				'urln'  => $es_url[1],
+				'urlc'  => $es_url[0]
 			),
 			array(
 				'lang'  => 'en',
 				'categ' => $category,
 				'class' => $class,
-				'image' => $en_image,
-				'path'  => $en_path,
 				'name'  => $en_name,
 				'cont'  => $en_cont,
 				'keyw'  => $en_keyw,
-				'desc'  => $en_desc
+				'desc'  => $en_desc,
+				'urli'  => $en_image,
+				'urln'  => $en_url[1],
+				'urlc'  => $en_url[0]
 			)
 		));
 		return true;
@@ -438,27 +456,31 @@ class consolaModel extends Model{
 		# generate urls
 		foreach($this->product_urls() as $key => $val) $$key = $val;
 		# obtain source file's path
-		if (!is_array($tmp = $this->product_image_move($es_image, $en_image)))
+		if (!is_array($tmp = $this->product_image_move($es_url, $en_url)))
 			return 'Error procesando imagen.';
+		$es_url = explode('/', $es_url);
+		$en_url = explode('/', $en_url);
 		foreach($tmp as $key => $val) $$key = $val;
 		# update data;
 		$this->db->update('product', array(
 			'categ' => $category,
-			'image' => $es_image,
-			'path'  => $es_path,
 			'name'  => $es_name,
 			'cont'  => $es_cont,
 			'keyw'  => $es_keyw,
-			'desc'  => $es_desc
+			'desc'  => $es_desc,
+			'urli'  => $es_image,
+			'urln'  => $es_url[1],
+			'urlc'  => $es_url[0]
 		), "lang='es' AND class=?", $class);
 		$this->db->update('product', array(
 			'categ' => $category,
-			'image' => $en_image,
-			'path'  => $en_path,
 			'name'  => $en_name,
 			'cont'  => $en_cont,
 			'keyw'  => $en_keyw,
-			'desc'  => $en_desc
+			'desc'  => $en_desc,
+			'urli'  => $en_image,
+			'urln'  => $en_url[1],
+			'urlc'  => $en_url[0]
 		), "lang='en' AND class=?", $class);
 		return true;
 	}
@@ -525,7 +547,7 @@ class consolaModel extends Model{
 	/**
 	 * @created 2011/SEP/18 07:22
 	 */
-	private function product_image_move($es_image, $en_image){
+	private function product_image_move($es_url, $en_url){
 		try {
 			if (substr($_POST['file'], 0, 8) == '__same__'){
 				$file = str_replace('__same__', '',$_POST['file']);
@@ -539,18 +561,16 @@ class consolaModel extends Model{
 				rename($orig, ($orig = $this->image_orig.$_POST['class'].$ext));
 				rename($path, ($path = $this->image_path.$_POST['class'].$ext));
 			}
-		} catch (Exception $e) { return false; }
-		$en_image.=$ext;
-		$es_image.=$ext;
-		# generate symlinks
-		try {
+			# generate symlinks
 			# english
+			$en_image = PUB_URL."en/$en_url$ext";
 			$image_path_full = str_replace(PUB_URL, PUB, $en_image);
 			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
 			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
 			if (file_exists($image_path_full)) unlink($image_path_full);
 			symlink($path, $image_path_full);
 			# spanish
+			$es_image = PUB_URL."es/$es_url.$ext";
 			$image_path_full = str_replace(PUB_URL, PUB, $es_image);
 			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
 			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
@@ -599,13 +619,11 @@ class consolaModel extends Model{
 			'name',
 			'lang=? AND class=? LIMIT 1','es', $_POST['category']
 		));
-		$es = "es/$es_cate/$es_name";
-		$en = "es/$en_cate/$en_name";
+		$es = "$es_cate/$es_name";
+		$en = "$en_cate/$en_name";
 		return array(
-			'es_path'  => $es,
-			'es_image' => PUB_URL.$es,
-			'en_path'  => $en,
-			'en_image' => PUB_URL.$en
+			'es_url'  => $es,
+			'en_url'  => $en
 		);
 	}
 }

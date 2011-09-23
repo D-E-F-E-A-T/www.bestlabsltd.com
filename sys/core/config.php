@@ -42,8 +42,14 @@ return array(
 	# you MUST specify a delimiter ie "/ /", otherwise you'll get an error.
 	# example: /(en|es)/ => main/$1
 	'routes'		=> array(
-		'/[A-Z]/'   => '404', # will show "404 not found" for upppercased URIs
-							  # since 404 controller doesn't exist.
+		# if an uppercase is sent, 404
+		'/[A-Z]/'   => 'notfound', 
+		# if it starts with something  differnt than es | en | consola : 404
+		'%^(?!consola)([^e]|e(?!s|n)){1,2}.*$%' => 'notfound',
+		# if the section has anything different from a-z\- : 404
+		'%^.{2}/[^/]*[^a-z\-/]/?%' => 'notfound',
+		# everything to main
+		'%^(?!consola)(.{2})(/[^/]+)?(/[^/]+)?/?%' => 'main/$1$2$3'
 	),
 
 	# DEFAULT HTML TEMPLATE

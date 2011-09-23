@@ -1,0 +1,35 @@
+
+<section id="catwalk">
+	<?php if ($ishome):?>
+	<h2><?=$subtitle?></h2>
+	<?php endif?>
+	<div id="banner">
+		<img src="<?=PUB_URL?>banner/bestlabs-001.jpg" alt=""/>
+		<img src="<?=PUB_URL?>banner/bestlabs-002.jpg" alt=""/>
+		<img src="<?=PUB_URL?>banner/bestlabs-003.jpg" alt=""/>
+		<img src="<?=PUB_URL?>banner/bestlabs-004.jpg" alt=""/>
+	</div>
+
+</section>
+
+<section id="content" <?=$ishome? '' : 'class="force"'?>>
+	<div>
+	<?php foreach($products as $category => $product):?>
+		<aside class="<?=$category?>">
+			<h2>
+				<a rel="index" href="<?=URL.$language.'/'.$categories[$category]['url']?>">
+				<?=ucwords($categories[$category]['name'])?>
+				</a>
+			</h2>
+			<ul>
+			<?php foreach ($product as $product):?>
+				<li><a
+					rel="chapter"
+					href="<?=URL."{$language}/{$product['urlc']}/{$product['urln']}"?>"
+				><?=ucwords($product['name'])?></a></li>
+			<?php endforeach ?>
+			</ul>
+		</aside>
+	<?php endforeach ?>
+	</div>
+</section>

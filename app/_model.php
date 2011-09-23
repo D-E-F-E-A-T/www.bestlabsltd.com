@@ -9,5 +9,4 @@ class Model extends Application_Model {
 		# Enable TOKENS for site, halt if not set correctly.
 		if (!$this->token()) parent::error_403('Invalid Data.');
 	}
-
 }

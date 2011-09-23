@@ -1,0 +1,33 @@
+<div id="body" class="<?="{$language}_{$current}"?>">
+
+
+<header>
+	<h1><a href="<?=URL?>">BESTLABS</a></h1>
+	<nav>
+		<ul class="bottom">
+		<?php foreach ($pages as $page):?>
+			<li>
+				<a 	id   = "<?=$page['class']?>"
+					rel  = "<?=$page['class'] == 'products'? 'start' : 'section'?>"
+					href = "<?=$page['class'] == 'products'? URL.$language : URL.$language.'/'.$page['url']?>"
+				><?=ucwords($page['name'])?></a>
+			</li>
+		<?php endforeach?>
+		<?php if ($language == 'es'):?>
+			<li><a id="en" rel="alternate" href="<?=URL.'en'?>">English</a></li>
+		<?php else:?>
+			<li><a id="es" rel="alternate" href="<?=URL.'es'?>">Español</a></li>
+		<?php endif?>
+			<li id="twitter" class="social"><a rel="me" href="http://twitter.com/bestlabs">Twitter</a></li>
+			<li id="facebook" class="social"><a rel="me" href="http://www.facebook.com/pages/bestlabsltdcom/174808032565141">Facebook</a></li>
+		</ul>
+	</nav>
+</header>
+
+<?php ob_start(); include Application::path(".$current.html"); ob_end_flush(); ?>
+
+<footer>
+	<div><span>BESTLABS <?=date('Y')?></span></div>
+</footer>
+
+</div> 

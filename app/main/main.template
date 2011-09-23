@@ -16,16 +16,16 @@
 		<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/ie7-squish.js" type="text/javascript"></script>
 	<![endif]-->
 	<link rel="shortcut icon" href='<?=PUB_URL?>favicon.ico'>
-	<link rel='stylesheet' type='text/css' href='<?=PUB_URL?>normalize.css'>
+	<link rel='stylesheet' type='text/css' href='<?=PUB_URL?>reset.css'>
 	<%link%>
-	<%jsini%>
+	<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
 	<%js%>
+	<%jsini%>
 </head>
 <body class="<?=APP_NAME?>">
 <%before%>
 <%content%>
 <%after%>
-<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
 <%jsend%>
 <%analytics%>
 </body>

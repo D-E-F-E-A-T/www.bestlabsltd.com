@@ -1,0 +1,176 @@
+<?php
+
+define('FONTS', PUB_URL.'fonts/');
+
+$color = array();
+$color['bg']          = '#222';
+$color['white']       = '#FFF';
+$color['border']      = '#C00';
+$color['second']      = '#0AD';
+$color['borderBG']    = '#600';
+$color['linkHead']    = '#DDD';
+$color['linkProduct'] = '#DDD';
+
+$bodyWidth = 942;
+$contentSpace = 50;
+$bannerBorder = "10px solid {$color['border']}";
+$headerHeight = 100;
+$headerFontSize = 3;
+$headerNavFontSize = 1;
+
+$prod = array(array(), array());
+$prodMargin = $contentSpace/8;
+
+$prod[0]['columns'] = 2;
+$prod[1]['columns'] = 1;
+
+?>
+
+body, html {
+    width:100%;
+    height:100%;
+}
+
+body {
+    background:
+    black url(<?=PUB_URL?>main.background.jpg) center;
+}
+
+@font-face {
+    font-family:'KoratakiRegular';
+    src:    url('<?=FONTS?>korataki-webfont.eot');
+    src:    url('<?=FONTS?>korataki-webfont.eot?#iefix') format('embedded-opentype'),
+            url('<?=FONTS?>korataki-webfont.woff') format('woff'),
+            url('<?=FONTS?>korataki-webfont.ttf') format('truetype'),
+            url('<?=FONTS?>korataki-webfont.svg#KoratakiRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+b { font-weight:bold;}
+
+#body                       { position:absolute; width:<?=$bodyWidth?>px; height:100%; background:<?=$color['bg']?>; left:50%; margin-left:-<?=$bodyWidth/2?>px; }
+#body > *                   { position:relative; width:100%;  }
+#body > header              { height:<?=$headerHeight?>px; }
+#body > header > *          { position:absolute;  top:50%; font-family:'KoratakiRegular';}
+#body > header   a          { text-decoration:none; color:<?=$color['linkHead']?>; } 
+#body > header h1           { left: <?=$contentSpace/2?>px; font-size:<?=$headerFontSize-.6?>em; line-height:1em; margin-top:-.5em; }
+#body > header h1 a:hover   { color:<?=$color['second']?>;}
+#body > header h1 span      { display:none; }
+#body > header nav          { right:<?=$contentSpace/2?>px; overflow:hidden; font-size:<?=$headerNavFontSize?>em; line-height:2em; margin-top:-1em }
+#body > header nav li       { line-height:inherit; font-size:inherit; position:relative; display:block; float:left; margin-left:.5em; }
+#body > header nav  a.curr  { color:<?=$color['second']?>;}
+#body > header nav  a       { line-height:inherit; display:block; font-size:inherit; padding:0 .5em; }
+#body > header nav  a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
+
+
+.social,
+#products       { width:26px; height:26px; overflow:hidden; padding:0 !important; margin:0; font-size:0 !important; }
+
+#products         { background:url(home.png) !important; }
+#products a:hover { background:url(home.png) <?=$color['border']?> !important; }
+#facebook,
+#facebook a:hover { background:url(facebook.png) !important; }
+#twitter,
+#twitter  a:hover { background:url(twitter.png) !important;  }
+
+#twitter { margin:0 10px 0 10px !important; }
+
+
+
+#catwalk                         { border:<?=$bannerBorder?>; background:<?=$color['white']?>; border-left:0; border-right:0; cursor:default !important; }
+
+#catwalk aside                   { float:left; padding-right:<?=$contentSpace/2?>px;  }
+#catwalk header                  { text-align:right; padding-bottom:<?=$contentSpace/2?>px; font-family:'KoratakiRegular'; font-size:<?=$headerFontSize/1.5?>em; color:<?=$color['bg']?>; }
+#catwalk section                 { font-size:1.1em; color:<?=$color['bg']?>; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
+#catwalk section p               { margin-bottom:1em; }
+
+#catwalk .product                { padding:<?=$contentSpace/2?>px; overflow:hidden; }
+#catwalk .product aside img      { max-height:400px; }
+#catwalk .product header a       { text-decoration:none; }
+#catwalk .product header         { font-size:1em; }
+#catwalk .product header h2      { font-size:<?=$headerFontSize/1.5?>em; }
+#catwalk .product header h3      { font-size:<?=$headerFontSize/2.5?>em; }
+#catwalk .product header h2 a    { color:<?=$color['bg']?>;  }
+#catwalk .product header h3 a    { color:<?=$color['second']?>; }
+#catwalk .product header a:hover { color:<?=$color['border']?>; }
+#catwalk .product section        { padding-bottom:<?=$contentSpace?>px; }
+#catwalk .product footer         { position:absolute; bottom:<?=$contentSpace/2?>px; right:<?=$contentSpace/2?>px; margin-top:1.5em; }
+#catwalk .product footer a       { font-family:'KoratakiRegular'; color:<?=$color['bg']?>; text-decoration:none; padding:.5em; }
+#catwalk .product footer a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
+
+.static { display:none; }
+
+#static                          { height:auto; overflow:hidden; position:relative; width:<?=$bodyWidth-$contentSpace?>px; margin:<?=$contentSpace/2?>px; background:url(<?=PUB_URL?>loading.gif) center no-repeat; }
+#static.authentic                { height:360px; overflow:hidden; }
+#static.authentic h2             { z-index:9; position:absolute; font-family:'KoratakiRegular'; color:#222; font-size:1.2em;  }
+#static.authentic div            { z-index:1; background:white; height:360px; float:left; width:50%; overflow:hidden; }
+#statuc.authentic div img        { display:block; }
+#static.authentic div.two img    { position:relative; float:right; }
+#static.authentic div.one        { background:url(<?=PUB_URL?>arrow.png) no-repeat right center white; }
+#static.authentic div.one img    { position:absolute; top:50%; margin-top:-103px; }
+
+#static.contact-us,
+#static.contacto                 {  background:#FFF; }
+#static.contact-us header        { padding:0;}
+#static.contact-us form { display:block; padding-left:59%; width:40%; }
+#static.contact-us input,
+#static.contact-us select,
+#static.contact-us textarea      { display:block; width:100%; margin-bottom:.5em; border:1px solid #999; background:#FFF; line-height:1.5em;}
+#static.contact-us h3            { color:#666;}
+#static.contact-us aside img.logo{ margin-left:130px; margin-top:100px;}
+
+#submit                          { background-color:<?=$color['second']?> !important; border:0 !important; margin-top:<?=$contentSpace/2?>px !important; margin-bottom:0 !important; font-weight:bold; color:#FFF; line-height:1.5em; }
+
+#banner img                      { display:none; width:100%; }
+#banner img:first-child          { display:block; }
+
+
+<?php 
+$prodCols = 0;
+foreach($prod as $p) $prodCols += $p['columns'];
+
+$prodTotal     = ($bodyWidth - $contentSpace)/$prodCols;
+$prodBaseTotal = ($bodyWidth - $contentSpace) - $prodTotal - $prodMargin;
+$prodBaseWidth = $prodTotal-($prodMargin*3);
+$prodWidth     = $prodBaseWidth + ($prodMargin*2);
+$prodSection   = ($bodyWidth - $contentSpace);
+
+?>
+
+#content                         { margin-top:0; border:0; background:<?=$color['white']?>; }
+#content > div                   { padding:0 <?=$contentSpace/2?>px; padding-top:<?=$contentSpace/2?>px; padding-bottom:<?=$contentSpace?>px; overflow:hidden; }
+
+#content aside h2                { font-family:'KoratakiRegular'; }
+#content aside                   { position:relative; float:left; width:<?=$prodTotal?>px; }
+#content aside:first-child       { width:<?=$prodBaseTotal?>px; }
+#content.force aside:first-child { width:<?=$prodSection?>px; }
+#content aside > *               { position:relative; display:block; width:auto; }
+#content aside h2 a              { color:<?=$color['bg'];?>; text-decoration:none; margin-left:.5em; }
+#content aside h2 a:hover        { color:<?=$color['second']?>; }
+#content aside ul                { overflow:hidden; }
+#content aside li                { width:<?=$prodWidth?>px; display:block; position:relative; float:left; margin:<?=$prodMargin?>px; }
+#content aside:first-child li    { width:<?=$prodBaseWidth?>px; }
+#content aside li a              { width:auto; font-weight:bold; display:block; line-height:1em; padding:1em; border-radius:.25em; color:<?=$color['bg']?>; background-color:<?=$color['linkHead']?>; display:block; text-decoration:none; font-size:1.1em; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
+#content aside li a:hover        { color:<?=$color['white']?>; background-color:<?=$color['border']?>; }
+
+#body > footer      { text-align:center; color:<?=$color['linkHead']?>; background:<?=$color['bg']?>; cursor:default !important; padding:<?=$contentSpace/2?>px 0; }
+#body > footer div  { margin-bottom:1em; }
+#body > footer span { font-family:'KoratakiRegular'; opacity:.1; }
+
+
+#body > header nav a:hover,
+#catwalk .product footer a:hover,
+#submit,
+#content aside li a                       { -moz-border-radius:5px;  -khtml-border-radius:5px; -webkit-border-radius:5px;  border-radius:5px;  }
+
+/*
+html.ie7 #body > header nav a:hover,
+html.ie8 #body > header nav a:hover, 
+html.ie7 #catwalk .product footer a:hover,
+html.ie8 #catwalk .product footer a:hover,
+html.ie7 #submit,
+html.ie8 #submit,
+html.ie7 #content aside li a,
+html.ie8 #content aside li a              { behavior:url(http://bestlabsltd.com/pub/border-radius.htc);  background:red;}
+*/

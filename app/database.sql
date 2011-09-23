@@ -26,11 +26,13 @@ CREATE TABLE `category` (
   `lang`      CHAR(2) NOT NULL,
   `class` VARCHAR(22) NOT NULL,
   `name`  VARCHAR(22) NOT NULL,
-  `keyw`  VARCHAR(300) NOT NULL,
-  `desc`  VARCHAR(300) NOT NULL,
+  `url`   VARCHAR(22) NOT NULL,
+  `keyw` VARCHAR(300) NOT NULL,
+  `desc` VARCHAR(300) NOT NULL,
   PRIMARY KEY(`id`),
   INDEX(`lang`),
-  INDEX(`class`)
+  INDEX(`class`),
+  INDEX(`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 /**
@@ -49,13 +51,16 @@ CREATE TABLE `product`(
   `cont`    MEDIUMTEXT NOT NULL,
   `keyw`  VARCHAR(300) NOT NULL,
   `desc`  VARCHAR(300) NOT NULL,
-  `path`  VARCHAR(512) NOT NULL, /*       URI */
-  `image` VARCHAR(512) NOT NULL, /* Image URL */
+  `urln`  VARCHAR(128) NOT NULL, /* url safe name     */
+  `urlc`   VARCHAR(22) NOT NULL, /* url safe category */
+  `urli`  VARCHAR(512) NOT NULL, /* url image         */
   `price` DECIMAL(9,2) NOT NULL DEFAULT 0,
   PRIMARY KEY(`id`),
   INDEX(`class`),
   INDEX(`lang`),
-  INDEX(`categ`)
+  INDEX(`categ`),
+  INDEX(`urln`),
+  INDEX(`urlc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 /**
@@ -74,3 +79,31 @@ CREATE TABLE `stock`(
   PRIMARY KEY(`id`),
   INDEX(`product`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/**
+ * @author Hector Menendez <h@cun.mx>
+ * @licence http://etor.mx/licence.txt
+ * @created 2011/SEP/21 15:00
+ */
+DROP TABLE IF EXISTS `static`;
+CREATE TABLE `static`(
+  `id`         INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `class` VARCHAR(12) NOT NULL,
+  `lang`      CHAR(2) NOT NULL,
+  `name`  VARCHAR(24) NOT NULL,
+  `keyw` VARCHAR(300) NOT NULL,
+  `desc` VARCHAR(300) NOT NULL,
+  PRIMARY KEY(`id`),
+  INDEX(`class`),
+  INDEX(`lang`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+INSERT INTO `static` (`lang`,`class`,`name`,`keyw`,`desc`) VALUES
+  ('es','products'  ,'productos'   ,' ', ' '),
+  ('en','products'  ,'products'    ,' ', ' '),
+  ('es','authentic' ,'autenticidad',' ', ' '),
+  ('en','authentic' ,'authenticity',' ', ' '),
+  ('es','about-us'  ,'nosotros'    ,' ', ' '),
+  ('en','about-us'  ,'about us'    ,' ', ' '),
+  ('es','contact-us','contacto'    ,' ', ' '),
+  ('en','contact-us','contact us'  ,' ', ' ')
+;
