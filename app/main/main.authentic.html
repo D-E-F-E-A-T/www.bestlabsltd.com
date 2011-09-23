@@ -1,0 +1,47 @@
+<section id="page">
+	<div class="inline left">
+		<div>
+		<?php if ($language == 'es'):?>
+			<h3>Holograma no-reusable</h3>
+		<?php else: ?>
+			<h3>Non-reusable Hologram</h3>
+		<?php endif ?>
+		</div>
+		<div class="image">
+			<img alt="" src="<?=PUB_URL?>authentic-hologram-holograma-autentico.gif" height="200"/>
+			<img alt="" src="<?=PUB_URL?>arrow.png" class="arrow"                    height="66"/>
+			<img alt="" src="<?=PUB_URL?>authentic-bottle-botella-autentica.jpg"     height="330"/>
+			<img alt="" src="<?=PUB_URL?>authentic-box-caja-autentica.jpg"           height="330"/>
+		</div>
+	</div>
+	<div class="inline right">
+		<header class="cont"><h2><?=$subtitle?></h2></header>
+		<form id="verify">
+		<?php if ($language == 'es'):?>
+			<h3>Verificar Producto</h3>
+		<?php else: ?>
+			<h3>Verify Product</h3>
+		<?php endif ?>
+			<label class="input">
+			<?php if ($language == 'es'):?>
+				<span>Código Externo</span>
+			<?php else: ?>
+				<span>External Code</span>
+			<?php endif ?>
+				<input type="text">
+			</label>
+			<label class="input">
+			<?php if ($language == 'es'):?>
+				<span>Código Interno</span>
+			<?php else: ?>
+				<span>internal Code</span>
+			<?php endif ?>
+				<input type="text">
+			</label>
+			<label class="submit">
+				<input type="submit" value="<?=$language=='es'? 'Enviar' : 'Submit'?>">
+			</label>
+		</form>
+	</div>
+
+</section>

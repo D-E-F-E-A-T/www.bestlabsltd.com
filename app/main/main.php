@@ -15,7 +15,7 @@ class mainControl extends Control {
 		$this->language = $this->model->language = $this->view->language = $lang;
 		# run this before render
 		$this->view->onrender = function($view){#use ($self){ #  $self is a copy of $this.
-			if (isset($view->ishome)) $view->tag_title = "BESTLABS LTD, {$view->subtitle}";
+			if ($view->ishome) $view->tag_title = "BESTLABS LTD. {$view->subtitle}";
 			else $view->tag_title = $view->subtitle." | BESTLABS";
 			$view->tag_meta('description', $view->description);
 			$view->tag_meta('keywords',    $view->keywords);
@@ -33,9 +33,9 @@ class mainControl extends Control {
 		# main index
 		$this->view->tag_jsini(PUB_URL.'jquery.ubillboard.min.js');
  		$this->view->products    = $this->model->products();
-		$this->view->description = $this->pages['products']['desc'];
-		$this->view->keywords    = $this->pages['products']['keyw'];
-		$this->view->subtitle    = $this->pages['products']['name'];
+		$this->view->description = $this->view->pages['products']['desc'];
+		$this->view->keywords    = $this->view->pages['products']['keyw'];
+		$this->view->subtitle    = 'Productos farmacéuticos para atletas.';
 		$this->view->current     = 'index';
 		$this->view->ishome      = true;
 	}

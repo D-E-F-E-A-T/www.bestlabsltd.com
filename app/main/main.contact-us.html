@@ -1,0 +1,65 @@
+<?php
+$ui = array(
+	'es' => array(
+		'name'    => 'Nombre Completo',
+		'email'   => 'Correo Electrónico',
+		'phone'   => 'Número Telefónico',
+		'country' => 'País',
+		'city'    => 'Ciudad',
+		'product' => 'Producto',
+		'comment'=> 'Comentarios',
+		'submit'  => 'Enviar'
+	),
+	'en' => array(
+		'name'    => 'Full Name',
+		'email'   => 'Email',
+		'phone'   => 'Phone Number',
+		'country' => 'Country',
+		'city'    => 'City',
+		'product' => 'Product',
+		'comment'=> 'Comments',
+		'submit'  => 'Submit'
+	)
+);
+include Application::path('country');
+?>
+<section id="page" class="contact-us">
+	<aside class="image"></aside>
+	<div class="cont">
+		<header>
+			<h2><?=$subtitle?></h2>
+		</header>
+		<form action="<?=URL?>" method="post">
+			<label>
+				<span><?=$ui[$language]['name']?></span>
+				<input type="text" name="name">
+			</label>
+			<label>
+				<span><?=$ui[$language]['email']?></span>
+				<input type="text" name="email">
+			</label>
+			<label>
+				<span><?=$ui[$language]['phone']?></span>
+				<input type="text" name="phone">
+			</label>
+			<label>
+				<span><?=$ui[$language]['country']?></span>
+				<select name="country">
+				<?php foreach ($country[$language] as $code=>$name):?>
+					<option class="<?=$code?>" value="<?=$name?>" <?=($code=='MX')?'selected':''?>><?=$name?></option> 
+				<?php endforeach; ?>
+				</select>
+			</label>
+			<label>
+				<span><?=$ui[$language]['city']?></span>
+				<input type="text" name="city">
+			</label>
+			<label>
+				<span><?=$ui[$language]['comment']?></span>
+				<textarea name="comment" rows="5"></textarea>
+			</label>
+			<input type="hidden" name="token" value="<?=TOKEN_PUBLIC?>">
+			<input id="submit" type="submit" value="<?=$ui[$language]['submit']?>"/>
+		</form>
+	</div>
+</section>

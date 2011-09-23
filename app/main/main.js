@@ -2,7 +2,7 @@ var ø = function(){
 	
 	this.$body   = $('#body');
 	// main vars
-	var tmp = this.$body.attr('class').split('_');
+	var tmp = this.$body.get(0).className.split(' ');
 	this.language = tmp[0];
 	this.current  = tmp[1];
 	if (typeof this[this.current] == 'function') {
@@ -10,6 +10,11 @@ var ø = function(){
 		new this[this.current]();
 	}
 };
+
+ø.prototype['contact-us'] = function(){
+	$aside = $('aside');
+	$aside.height($aside.parent().height());
+}
 
 // Main Page.
 ø.prototype.index = function(){

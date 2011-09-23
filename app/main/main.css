@@ -11,12 +11,12 @@ $color['borderBG']    = '#600';
 $color['linkHead']    = '#DDD';
 $color['linkProduct'] = '#DDD';
 
-$bodyWidth = 942;
+$bodyWidth = 950;
 $contentSpace = 50;
 $bannerBorder = "10px solid {$color['border']}";
 $headerHeight = 100;
-$headerFontSize = 3;
-$headerNavFontSize = 1;
+$headerFontSize = 2.8;
+$headerNavFontSize = .96;
 
 $prod = array(array(), array());
 $prodMargin = $contentSpace/8;
@@ -63,114 +63,78 @@ b { font-weight:bold;}
 #body > header nav  a       { line-height:inherit; display:block; font-size:inherit; padding:0 .5em; }
 #body > header nav  a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
 
-
-.social,
-#products       { width:26px; height:26px; overflow:hidden; padding:0 !important; margin:0; font-size:0 !important; }
-
-#products         { background:url(home.png) !important; }
-#products a:hover { background:url(home.png) <?=$color['border']?> !important; }
-#facebook,
-#facebook a:hover { background:url(facebook.png) !important; }
-#twitter,
-#twitter  a:hover { background:url(twitter.png) !important;  }
-
-#twitter { margin:0 10px 0 10px !important; }
-
-
-
-#catwalk                         { border:<?=$bannerBorder?>; background:<?=$color['white']?>; border-left:0; border-right:0; cursor:default !important; }
-
-#catwalk aside                   { float:left; padding-right:<?=$contentSpace/2?>px;  }
-#catwalk header                  { text-align:right; padding-bottom:<?=$contentSpace/2?>px; font-family:'KoratakiRegular'; font-size:<?=$headerFontSize/1.5?>em; color:<?=$color['bg']?>; }
-#catwalk section                 { font-size:1.1em; color:<?=$color['bg']?>; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
-#catwalk section p               { margin-bottom:1em; }
-
-#catwalk .product                { padding:<?=$contentSpace/2?>px; overflow:hidden; }
-#catwalk .product aside img      { max-height:400px; }
-#catwalk .product header a       { text-decoration:none; }
-#catwalk .product header         { font-size:1em; }
-#catwalk .product header h2      { font-size:<?=$headerFontSize/1.5?>em; }
-#catwalk .product header h3      { font-size:<?=$headerFontSize/2.5?>em; }
-#catwalk .product header h2 a    { color:<?=$color['bg']?>;  }
-#catwalk .product header h3 a    { color:<?=$color['second']?>; }
-#catwalk .product header a:hover { color:<?=$color['border']?>; }
-#catwalk .product section        { padding-bottom:<?=$contentSpace?>px; }
-#catwalk .product footer         { position:absolute; bottom:<?=$contentSpace/2?>px; right:<?=$contentSpace/2?>px; margin-top:1.5em; }
-#catwalk .product footer a       { font-family:'KoratakiRegular'; color:<?=$color['bg']?>; text-decoration:none; padding:.5em; }
-#catwalk .product footer a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
-
-.static { display:none; }
-
-#static                          { height:auto; overflow:hidden; position:relative; width:<?=$bodyWidth-$contentSpace?>px; margin:<?=$contentSpace/2?>px; background:url(<?=PUB_URL?>loading.gif) center no-repeat; }
-#static.authentic                { height:360px; overflow:hidden; }
-#static.authentic h2             { z-index:9; position:absolute; font-family:'KoratakiRegular'; color:#222; font-size:1.2em;  }
-#static.authentic div            { z-index:1; background:white; height:360px; float:left; width:50%; overflow:hidden; }
-#statuc.authentic div img        { display:block; }
-#static.authentic div.two img    { position:relative; float:right; }
-#static.authentic div.one        { background:url(<?=PUB_URL?>arrow.png) no-repeat right center white; }
-#static.authentic div.one img    { position:absolute; top:50%; margin-top:-103px; }
-
-#static.contact-us,
-#static.contacto                 {  background:#FFF; }
-#static.contact-us header        { padding:0;}
-#static.contact-us form { display:block; padding-left:59%; width:40%; }
-#static.contact-us input,
-#static.contact-us select,
-#static.contact-us textarea      { display:block; width:100%; margin-bottom:.5em; border:1px solid #999; background:#FFF; line-height:1.5em;}
-#static.contact-us h3            { color:#666;}
-#static.contact-us aside img.logo{ margin-left:130px; margin-top:100px;}
-
-#submit                          { background-color:<?=$color['second']?> !important; border:0 !important; margin-top:<?=$contentSpace/2?>px !important; margin-bottom:0 !important; font-weight:bold; color:#FFF; line-height:1.5em; }
-
-#banner img                      { display:none; width:100%; }
-#banner img:first-child          { display:block; }
-
-
-<?php 
-$prodCols = 0;
-foreach($prod as $p) $prodCols += $p['columns'];
-
-$prodTotal     = ($bodyWidth - $contentSpace)/$prodCols;
-$prodBaseTotal = ($bodyWidth - $contentSpace) - $prodTotal - $prodMargin;
-$prodBaseWidth = $prodTotal-($prodMargin*3);
-$prodWidth     = $prodBaseWidth + ($prodMargin*2);
-$prodSection   = ($bodyWidth - $contentSpace);
-
-?>
-
-#content                         { margin-top:0; border:0; background:<?=$color['white']?>; }
-#content > div                   { padding:0 <?=$contentSpace/2?>px; padding-top:<?=$contentSpace/2?>px; padding-bottom:<?=$contentSpace?>px; overflow:hidden; }
-
-#content aside h2                { font-family:'KoratakiRegular'; }
-#content aside                   { position:relative; float:left; width:<?=$prodTotal?>px; }
-#content aside:first-child       { width:<?=$prodBaseTotal?>px; }
-#content.force aside:first-child { width:<?=$prodSection?>px; }
-#content aside > *               { position:relative; display:block; width:auto; }
-#content aside h2 a              { color:<?=$color['bg'];?>; text-decoration:none; margin-left:.5em; }
-#content aside h2 a:hover        { color:<?=$color['second']?>; }
-#content aside ul                { overflow:hidden; }
-#content aside li                { width:<?=$prodWidth?>px; display:block; position:relative; float:left; margin:<?=$prodMargin?>px; }
-#content aside:first-child li    { width:<?=$prodBaseWidth?>px; }
-#content aside li a              { width:auto; font-weight:bold; display:block; line-height:1em; padding:1em; border-radius:.25em; color:<?=$color['bg']?>; background-color:<?=$color['linkHead']?>; display:block; text-decoration:none; font-size:1.1em; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
-#content aside li a:hover        { color:<?=$color['white']?>; background-color:<?=$color['border']?>; }
-
-#body > footer      { text-align:center; color:<?=$color['linkHead']?>; background:<?=$color['bg']?>; cursor:default !important; padding:<?=$contentSpace/2?>px 0; }
+#body > footer      { text-align:center; color:#DDD; background:#222; cursor:default !important; padding:25px 0; }
 #body > footer div  { margin-bottom:1em; }
 #body > footer span { font-family:'KoratakiRegular'; opacity:.1; }
 
+.social                      { width:24px; height:24px; overflow:hidden; padding:0 !important; margin:0; font-size:0 !important;   }
+#facebook, #facebook a:hover { background:url(facebook.png) center center  !important; background-size:24px 24px !important; }
+#twitter,  #twitter  a:hover { background:url(twitter.png)  center center !important;  background-size:24px 24px !important; }
+#twitter                     { margin:0 10px 0 10px !important; }
+
+#page         { overflow:hidden; font-size:0; border:<?=$bannerBorder?>; background:<?=$color['white']?>; border-left:0; border-right:0; }
+#page .image, 
+#page .cont   { display:inline-block; vertical-align:top; margin-right:<?=$contentSpace/2?>px; }
+
+.ie-lt8 #page .cont,
+.ie8    #page .cont { zoom:1; display:inline; }
+
+
+#page .image  { width:500px; }
+#page .cont   { width:<?=($bodyWidth-500 - $contentSpace )?>px;  color:<?=$color['bg']?>;  font-size:13px; padding-bottom: <?=$contentSpace/3?>px }
+#page p       { font-size:1.1em; margin-bottom:1em; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
+#page h2      { text-align:right; margin:<?=$contentSpace/3?>px 0 <?=$contentSpace/2?>px; font-family:'KoratakiRegular'; font-size:<?=$headerFontSize/1.5?>em; color:<?=$color['bg']?>; }
+
+#body.index #banner                          { cursor:default !important; }
+#body.index #banner img                      { display:none; width:100%;  }
+#body.index #banner img:first-child          { display:block; }
+#body.index h2                               { position:absolute; }
+#body.index #content                         { margin-top:0; border:0; background:#FFF; }
+#body.index #content > div                   { padding:0 25px; padding-top:25px; padding-bottom:50px; overflow:hidden; }
+#body.index #content aside h2                { font-family:'KoratakiRegular'; }
+#body.index #content aside                   { position:relative; float:left; width:300px; }
+#body.index #content aside:first-child       { width:593.75px; }
+#body.index #content.force aside:first-child { width:900px; }
+#body.index #content aside > *               { position:relative; display:block; width:auto; }
+#body.index #content aside h2 a              { color:#222; text-decoration:none; margin-left:.5em; }
+#body.index #content aside h2 a:hover        { color:#0AD; }
+#body.index #content aside ul                { overflow:hidden; }
+#body.index #content aside li                { width:293.75px; display:block; position:relative; float:left; margin:6.25px; }
+#body.index #content aside:first-child li    { width:281.25px; }
+#body.index #content aside li a              { width:auto; font-weight:bold; display:block; line-height:1em; padding:1em; border-radius:.25em; color:#222; background-color:#DDD; display:block; text-decoration:none; font-size:1.1em; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
+#body.index #content aside li a:hover        { color:#FFF; background-color:#C00; }
+
+#body.contact-us h2          { margin-bottom:0; }
+#body.contact-us form        { display:block; width:100%; }
+#body.contact-us input,
+#body.contact-us select,
+#body.contact-us textarea    { display:block; width:100%; margin-bottom:.5em; border:1px solid #999; background:#FFF; line-height:1.5em;}
+#body.contact-us label span  { color:#666;}
+#body.contact-us #submit     { background-color:<?=$color['second']?> !important; border:0 !important; font-weight:bold; color:#FFF; line-height:1.5em; width:auto !important; font-size:1.2em; position:relative; margin:0 auto; }
+#body.contact-us .image      { height:100%; background:url(logo.gif) center no-repeat; }
+
+
+#body.authentic .left          { width:673px; margin-left:20px; padding:25px 0; float:left; }
+#body.authentic .left .cont h2 { margin-right:25px; margin-bottom:0;}
+#body.authentic .left h3 { color:#999; font-family:'KoratakiRegular'; font-size:14px; position:absolute; width:10.5em; text-align:center; left:195px; top:230px;}
+
+#body.authentic .arrow { margin:0 <?=$contentSpace/3?>px; }
+#body.authentic .image,
+#body.authentic .cont      { width:100%;  display:block; }
+#body.authentic .image     { height:100%; margin:0; }
+#body.authentic .image img { vertical-align:middle; }
+
+#body.authentic .right        { width:211px; float:right; margin-right:25px;   }
+#body.authentic .right h3     { margin-bottom:15px; width:100%; text-align:center;  font-family:'KoratakiRegular';  color:#FFF; font-weight:1.1em; }
+#body.authentic #verify       { width:180px; background:<?=$color['border']?>; margin-top:15px; display:block; position:relative; font-size:13px; padding:15px; }
+#body.authentic #verify label { margin-top:5px; display:block; position:relative; width:100%; font-weight:bold; color:<?=$color['bg']?>}
+#body.authentic #verify .input  input { border:1px solid <?=$color['bg']?>; width:100%; font-family: "Andale Mono", "Lucida Console", monospace; font-size:1.3em}
+#body.authentic #verify .submit       { text-align:center; }
+#body.authentic #verify .submit input { border:0; background:<?=$color['second']?>; font-weight:bold; font-size:1.2em; padding-top:.25em; color:#FFF; margin-top:10px; }
 
 #body > header nav a:hover,
-#catwalk .product footer a:hover,
-#submit,
-#content aside li a                       { -moz-border-radius:5px;  -khtml-border-radius:5px; -webkit-border-radius:5px;  border-radius:5px;  }
+#body.authentic #verify
+{ 
+    -moz-border-radius:5px;  -khtml-border-radius:5px; -webkit-border-radius:5px;  border-radius:5px;
+}
 
-/*
-html.ie7 #body > header nav a:hover,
-html.ie8 #body > header nav a:hover, 
-html.ie7 #catwalk .product footer a:hover,
-html.ie8 #catwalk .product footer a:hover,
-html.ie7 #submit,
-html.ie8 #submit,
-html.ie7 #content aside li a,
-html.ie8 #content aside li a              { behavior:url(http://bestlabsltd.com/pub/border-radius.htc);  background:red;}
-*/

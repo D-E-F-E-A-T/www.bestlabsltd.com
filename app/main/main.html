@@ -1,4 +1,4 @@
-<div id="body" class="<?="{$language}_{$current}"?>">
+<div id="body" class="<?="$language $current"?>">
 
 
 <header>
@@ -7,9 +7,9 @@
 		<ul class="bottom">
 		<?php foreach ($pages as $page):?>
 			<li>
-				<a 	id   = "<?=$page['class']?>"
-					rel  = "<?=$page['class'] == 'products'? 'start' : 'section'?>"
-					href = "<?=$page['class'] == 'products'? URL.$language : URL.$language.'/'.$page['url']?>"
+				<a 	class = "<?=$page['class']?>"
+					rel   = "<?=$page['class'] == 'products'? 'start' : 'section'?>"
+					href  = "<?=$page['class'] == 'products'? URL.$language : URL.$language.'/'.$page['url']?>"
 				><?=ucwords($page['name'])?></a>
 			</li>
 		<?php endforeach?>
