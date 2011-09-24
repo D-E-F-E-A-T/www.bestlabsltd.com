@@ -55,9 +55,14 @@ class mainModel extends Model {
 	public function product($name, $category){
 		return $this->db->select(
 			'product',
-			'class, name, cont, keyw, desc, urli',
+			'class, categ, name, cont, keyw, desc, urli',
 			'lang=? AND urlc=? AND urln=?', $this->language, $category, $name
 		);
+	}
+
+	public function category($name){
+		$x = $this->db->select('category','*','lang=? AND class=?', $this->language, $name);
+		return array_shift($x);
 	}
 
 	/**
@@ -86,11 +91,9 @@ class mainModel extends Model {
 
 	/**
 	 * It's hard to explain, you better use it to understand the cooolness of this.	 
-	 * @author Hector Menendez <h@cun.mx>
-	 * @licence http://etor.mx/licence.txt
 	 * @created 2011/SEP/22 10:56
 	 */
-	private function col2key($key, $array, $reduce_if_one=false){
+	public function col2key($key, $array, $reduce_if_one=false){
 		$result = array();
 		foreach($array as $k=>$v) {
 			if (!isset($v[$key])) error('The specified column does not exist.');
@@ -103,6 +106,18 @@ class mainModel extends Model {
 		foreach($result as $key=>$val) 
 			if (count($val) == 1) $result[$key] = $val[0];
 		return $result;
+	}
+
+	/**
+	 * @created 2011/SEP/24 02:47
+	 */
+	public function htmlify($content){
+
+		$content = explode("\n", $content);
+		array_walk($content, function(&$val){ 
+			$val = "<p>$val</p>";
+		});
+		return implode('', $content);
 	}
 
 }

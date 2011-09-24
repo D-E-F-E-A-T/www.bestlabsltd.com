@@ -1,13 +1,17 @@
-<div class="product" id="">
-	<aside>
-		<a href="" title=""><img src="" alt=""/></a>
-	</aside>
-	<header>
-		<h2><a href=""></a></h2>
-		<h3><a rel="prev" href=""></a></h3>
-	</header>
-	<section></section>
-	<footer><ul>
-		<li><a href=""></a></li>
-	</ul></footer>
+<div id="page">
+	<a class="image" href="<?=$image?>" title="<?=$subtitle?>"><img src="<?=$image?>" alt="<?=$subtitle?>"/></a>
+	<div class="cont">
+		<header>
+			<h2><a href=""><?=$subtitle?></a></h2>
+			<h3>
+				<a rel="index" href="<?=URL.$language.'/'.$category['info']['url']?>">
+				<?=ucwords($category['info']['name'])?>
+				</a>
+			</h3>
+		</header>
+		<section><?=$content?></section>
+		<footer><ul>
+			<li><a href="">Mas información</a></li>
+		</ul></footer>
+	</div>
 </div>

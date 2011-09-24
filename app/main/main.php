@@ -57,15 +57,25 @@ class mainControl extends Control {
 		$this->view->current  = 'index';
 	}
 
-
+	/**
+	 * @created 2011/SEP/24 01:25
+	 */
 	private function product($product){
-		print_r($product);
-		stop();
-	}
-
-
-	private function common(){
-		
+		$product = $product[0];
+		$this->view->subtitle    = ucwords($product['name']);
+		$this->view->content     = $this->model->htmlify($product['cont']);
+		$this->view->image       = $product['urli'];
+		$this->view->description = $product['desc'];
+		$this->view->keywords    = $product['keyw'];
+		$this->view->current     = 'product';
+		# obtain similar products
+		$category = $this->model->products($product['categ']);
+		$category = $this->model->col2key('class', array_shift($category), true);
+		unset($category[$product['class']]);
+		$this->view->category = array(
+			'info'     => $this->model->category($product['categ']),
+			'products' => $category
+		);
 	}
 
 }

@@ -79,12 +79,11 @@ b { font-weight:bold;}
 .ie-lt8 #page .cont,
 .ie8    #page .cont { zoom:1; display:inline; }
 
-
 #page .image  { width:500px; }
 #page .cont   { width:<?=($bodyWidth-500 - $contentSpace )?>px;  color:<?=$color['bg']?>;  font-size:13px; padding-bottom: <?=$contentSpace/3?>px }
 #page p       { font-size:1.1em; margin-bottom:1em; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
-#page h2      { text-align:right; margin:<?=$contentSpace/3?>px 0 <?=$contentSpace/2?>px; font-family:'KoratakiRegular'; font-size:<?=$headerFontSize/1.5?>em; color:<?=$color['bg']?>; }
-
+#page h2      { text-align:right; margin:20px 0 <?=$contentSpace/2?>px; font-family:'KoratakiRegular'; font-size:<?=$headerFontSize/1.5?>em; color:<?=$color['bg']?>; }
+#page h3      { font-family:'KoratakiRegular'; font-size:14px;}
 #body.index #banner                          { cursor:default !important; }
 #body.index #banner img                      { display:none; width:100%;  }
 #body.index #banner img:first-child          { display:block; }
@@ -116,7 +115,7 @@ b { font-weight:bold;}
 
 #body.authentic .left          { width:673px; margin-left:20px; padding:25px 0; float:left; }
 #body.authentic .left .cont h2 { margin-right:25px; margin-bottom:0;}
-#body.authentic .left h3 { color:#999; font-family:'KoratakiRegular'; font-size:14px; position:absolute; width:10.5em; text-align:center; left:195px; top:230px;}
+#body.authentic .left h3 { color:#999; position:absolute; width:10.5em; text-align:center; left:195px; top:100px;}
 
 #body.authentic .arrow { margin:0 <?=$contentSpace/3?>px; }
 #body.authentic .image,
@@ -131,6 +130,21 @@ b { font-weight:bold;}
 #body.authentic #verify .input  input { border:1px solid <?=$color['bg']?>; width:100%; font-family: "Andale Mono", "Lucida Console", monospace; font-size:1.3em}
 #body.authentic #verify .submit       { text-align:center; }
 #body.authentic #verify .submit input { border:0; background:<?=$color['second']?>; font-weight:bold; font-size:1.2em; padding-top:.25em; color:#FFF; margin-top:10px; }
+
+
+#body.product .image { margin-top:25px; margin-left:25px; margin-bottom:25px; }
+#body.product .cont  { width:375px; }
+#body.product .cont header { text-align:right; text-transform:uppercase; margin-bottom:25px; }
+#body.product .cont header a:hover { color:<?=$color['border']?> }
+#body.product .cont header h2 { margin-bottom:0; }
+#body.product .cont header h2 a { color:<?=$color['bg']?> }
+#body.product .cont header h3 a { color:<?=$color['second']?>; font-size:15px;}
+#body.product .cont header a { text-decoration:none;  }
+
+#body.product .cont footer         { position:absolute; bottom:<?=$contentSpace/2?>px; right:<?=$contentSpace/2?>px; margin-top:1.5em; }
+#body.product .cont footer a       { font-family:'KoratakiRegular'; color:<?=$color['bg']?>; text-decoration:none; padding:.5em; }
+#body.product .cont footer a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
+
 
 #body > header nav a:hover,
 #body.authentic #verify
