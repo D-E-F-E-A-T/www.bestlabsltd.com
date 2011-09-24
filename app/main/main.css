@@ -123,24 +123,24 @@ b { font-weight:bold;}
 #body.authentic .image     { height:100%; margin:0; }
 #body.authentic .image img { vertical-align:middle; }
 
-#body.authentic .right        { width:211px; float:right; margin-right:25px;   }
-#body.authentic .right h3     { margin-bottom:15px; width:100%; text-align:center;  font-family:'KoratakiRegular';  color:#FFF; font-weight:1.1em; }
-#body.authentic #verify       { width:180px; background:<?=$color['border']?>; margin-top:15px; display:block; position:relative; font-size:13px; padding:15px; }
-#body.authentic #verify label { margin-top:5px; display:block; position:relative; width:100%; font-weight:bold; color:<?=$color['bg']?>}
+#body.authentic .right                { width:211px; float:right; margin-right:25px;   }
+#body.authentic .right h3             { margin-bottom:15px; width:100%; text-align:center;  font-family:'KoratakiRegular';  color:#FFF; font-weight:1.1em; }
+#body.authentic #verify               { width:180px; background:<?=$color['border']?>; margin-top:15px; display:block; position:relative; font-size:13px; padding:15px; }
+#body.authentic #verify label         { margin-top:5px; display:block; position:relative; width:100%; font-weight:bold; color:<?=$color['bg']?>}
 #body.authentic #verify .input  input { border:1px solid <?=$color['bg']?>; width:100%; font-family: "Andale Mono", "Lucida Console", monospace; font-size:1.3em}
 #body.authentic #verify .submit       { text-align:center; }
 #body.authentic #verify .submit input { border:0; background:<?=$color['second']?>; font-weight:bold; font-size:1.2em; padding-top:.25em; color:#FFF; margin-top:10px; }
 
-
-#body.product .image { margin-top:25px; margin-left:25px; margin-bottom:25px; }
-#body.product .cont  { width:375px; }
-#body.product .cont header { text-align:right; text-transform:uppercase; margin-bottom:25px; }
+#body.product .image               { margin-top:25px; margin-left:25px; margin-bottom:25px; }
+#body.product .cont                { width:375px; }
+#body.product .cont em             { font-style:italic; }
+#body.product .cont ins            { text-decoration:underline; }
+#body.product .cont header         { text-align:right; margin-bottom:25px; }
 #body.product .cont header a:hover { color:<?=$color['border']?> }
-#body.product .cont header h2 { margin-bottom:0; }
-#body.product .cont header h2 a { color:<?=$color['bg']?> }
-#body.product .cont header h3 a { color:<?=$color['second']?>; font-size:15px;}
-#body.product .cont header a { text-decoration:none;  }
-
+#body.product .cont header h2      { margin-bottom:0; }
+#body.product .cont header h2 a    { color:<?=$color['bg']?> }
+#body.product .cont header h3 a    { color:<?=$color['second']?>; font-size:15px; text-transform:uppercase;}
+#body.product .cont header a       { text-decoration:none;  }
 #body.product .cont footer         { position:absolute; bottom:<?=$contentSpace/2?>px; right:<?=$contentSpace/2?>px; margin-top:1.5em; }
 #body.product .cont footer a       { font-family:'KoratakiRegular'; color:<?=$color['bg']?>; text-decoration:none; padding:.5em; }
 #body.product .cont footer a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }

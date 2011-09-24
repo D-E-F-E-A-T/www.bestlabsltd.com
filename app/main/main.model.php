@@ -6,6 +6,25 @@
  */
 class mainModel extends Model {
 
+
+	/**
+	 * @created 2011/SEP/24 07:12
+	 */
+	public function alternate($uri){
+		$uri = explode('/', $uri);
+		$lang = $this->language == 'es'? 'en' : 'es';
+		# products
+		if (count($uri) == 2)
+			$uri[1] = $this->db->select('product','urln','lang=? AND class=? LIMIT 1',$lang, $uri[1]);
+		if (count($uri) > 0 && $uri[0]){
+			$x = explode('_', $uri[0]);
+			$x[0] = $x[0] == 'pages'? 'static' : 'category';
+			$uri[0] = '/'.$this->db->select($x[0],'url','lang=? and class=? LIMIT 1',$lang, $x[1]);
+		}
+		return URL.$lang.implode('/', $uri);
+	}
+
+
 	/**
 	 * @created 2011/SEP/21 17:13
 	 */
@@ -17,7 +36,7 @@ class mainModel extends Model {
 				'static',' class, url, name, keyw, desc', 'lang=?', $this->language
 			), true);
 		# return both languages
-		$all = $this->db->select('static','lang,class, url, name, keyw, desc');
+		$all = $this->db->select('static','lang, class, url, name, keyw, desc');
 		$new = array();
 		foreach ($this->col2key('lang', $all) as $k=>$v)
 			$new[$k] = $this->col2key('class', $v, true);
@@ -52,13 +71,27 @@ class mainModel extends Model {
 	/**
 	 * @created 2011/SEP/22 06:22
 	 */
-	public function product($name, $category){
+	public function product($urln, $urlc){
 		return $this->db->select(
 			'product',
 			'class, categ, name, cont, keyw, desc, urli',
-			'lang=? AND urlc=? AND urln=?', $this->language, $category, $name
+			'lang=? AND urlc=? AND urln=?', $this->language, $urlc, $urln
 		);
 	}
+
+	/**
+	 * @created 2011/SEP/24 08:46
+	 */
+	public function product_list(){
+		$x = $this->col2key('class', 
+			$this->db->select('product','class,name','lang=?', $this->language), true
+		);
+		array_walk($x, function(&$val){
+			$val = $val['name'];
+		});
+		return $x;
+	}
+
 
 	public function category($name){
 		$x = $this->db->select('category','*','lang=? AND class=?', $this->language, $name);
@@ -113,8 +146,14 @@ class mainModel extends Model {
 	 */
 	public function htmlify($content){
 
-		$content = explode("\n", $content);
+		$content = preg_split("/[\r\n]{2,}/m", $content);
 		array_walk($content, function(&$val){ 
+			$val = preg_replace('/[\r\n]/m', '<br>', $val);
+			$val = preg_replace('/\*\*([^\*]+)\*\*/m', '<strong>$1</strong>', $val);
+			$val = preg_replace('/\*([^\*]+)\*/m', '<em>$1</em>', $val);
+			$val = preg_replace('/--([^\-]+)--/m', '<del>$1</del>', $val);
+			$val = preg_replace('/__([^_]+)__/m', '<ins>$1</ins>', $val);
+			$val = preg_replace('/\[([^\[]+)\]\(([^\)]+)\)/', '<a href="$2">$1</a>',$val);
 			$val = "<p>$val</p>";
 		});
 		return implode('', $content);

@@ -13,11 +13,7 @@
 				><?=ucwords($page['name'])?></a>
 			</li>
 		<?php endforeach?>
-		<?php if ($language == 'es'):?>
-			<li><a id="en" rel="alternate" href="<?=URL.'en'?>">English</a></li>
-		<?php else:?>
-			<li><a id="es" rel="alternate" href="<?=URL.'es'?>">Español</a></li>
-		<?php endif?>
+			<li><a id="en" rel="alternate" href="<?=$alternate?>"><?=$language=='es'? 'English' : 'Español'?></a></li>
 			<li id="twitter" class="social"><a rel="me" href="http://twitter.com/bestlabs">Twitter</a></li>
 			<li id="facebook" class="social"><a rel="me" href="http://www.facebook.com/pages/bestlabsltdcom/174808032565141">Facebook</a></li>
 		</ul>

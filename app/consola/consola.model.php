@@ -570,7 +570,7 @@ class consolaModel extends Model{
 			if (file_exists($image_path_full)) unlink($image_path_full);
 			symlink($path, $image_path_full);
 			# spanish
-			$es_image = PUB_URL."es/$es_url.$ext";
+			$es_image = PUB_URL."es/$es_url$ext";
 			$image_path_full = str_replace(PUB_URL, PUB, $es_image);
 			$image_path_dir  = pathinfo($image_path_full, PATHINFO_DIRNAME);
 			if (!file_exists($image_path_dir)) mkdir($image_path_dir, 0777, true);
@@ -617,7 +617,7 @@ class consolaModel extends Model{
 		$en_cate = Utils::urlify($this->db->select(
 			'category',
 			'name',
-			'lang=? AND class=? LIMIT 1','es', $_POST['category']
+			'lang=? AND class=? LIMIT 1','en', $_POST['category']
 		));
 		$es = "$es_cate/$es_name";
 		$en = "$en_cate/$en_name";

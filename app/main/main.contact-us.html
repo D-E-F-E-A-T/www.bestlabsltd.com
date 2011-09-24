@@ -29,7 +29,7 @@ include Application::path('country');
 		<header>
 			<h2><?=$subtitle?></h2>
 		</header>
-		<form action="<?=URL?>" method="post">
+		<form action="<?=URI?>" method="post">
 			<label>
 				<span><?=$ui[$language]['name']?></span>
 				<input type="text" name="name">
@@ -53,6 +53,15 @@ include Application::path('country');
 			<label>
 				<span><?=$ui[$language]['city']?></span>
 				<input type="text" name="city">
+			</label>
+			<label>
+				<span><?=$ui[$language]['product']?></span>
+				<select name="country">
+					<option value=""></option> 
+				<?php foreach ($products as $class => $name):?>
+					<option class="<?=$class?>" value="<?=$name?>"><?=$name?></option> 
+				<?php endforeach; ?>
+				</select>
 			</label>
 			<label>
 				<span><?=$ui[$language]['comment']?></span>
