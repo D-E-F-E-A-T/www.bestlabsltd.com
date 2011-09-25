@@ -16,7 +16,7 @@
 	</div>
 	<div class="inline right">
 		<header class="cont"><h2><?=$subtitle?></h2></header>
-		<form id="verify">
+		<form id="verify" method="post">
 		<?php if ($language == 'es'):?>
 			<h3>Verificar Producto</h3>
 		<?php else: ?>
@@ -28,7 +28,7 @@
 			<?php else: ?>
 				<span>External Code</span>
 			<?php endif ?>
-				<input type="text">
+				<input name="external" type="text">
 			</label>
 			<label class="input">
 			<?php if ($language == 'es'):?>
@@ -36,9 +36,10 @@
 			<?php else: ?>
 				<span>internal Code</span>
 			<?php endif ?>
-				<input type="text">
+				<input name="internal" type="text">
 			</label>
 			<label class="submit">
+				<input type="hidden" name="token" value="<?=TOKEN_PUBLIC?>">
 				<input type="submit" value="<?=$language=='es'? 'Enviar' : 'Submit'?>">
 			</label>
 		</form>

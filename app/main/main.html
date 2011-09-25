@@ -2,12 +2,14 @@
 
 
 <header>
-	<h1><a href="<?=URL?>">BESTLABS</a></h1>
+	<h1><a href="<?=URL.$language?>">BESTLABS</a></h1>
 	<nav>
 		<ul class="bottom">
-		<?php foreach ($pages as $page):?>
+		<?php 
+			$tmp = $current == 'index'? 'products' : $current;
+			foreach ($pages as $page):?>
 			<li>
-				<a 	class = "<?=$page['class']?>"
+				<a 	class = "<?=$page['class'].($page['class'] == $tmp? ' curr' : '')?>"
 					rel   = "<?=$page['class'] == 'products'? 'start' : 'section'?>"
 					href  = "<?=$page['class'] == 'products'? URL.$language : URL.$language.'/'.$page['url']?>"
 				><?=ucwords($page['name'])?></a>
@@ -25,5 +27,7 @@
 <footer>
 	<div><span>BESTLABS <?=date('Y')?></span></div>
 </footer>
-
-</div> 
+</div>
+<div id="overlay" class="<?="$current"?>">
+	<div></div>
+</div>

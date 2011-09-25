@@ -51,7 +51,7 @@ class consolaControl extends Control{
 			parent::error_403('Acceso denegado');
 		$response = $this->model->stock_activate($product, $expires);
 		if ($response instanceof FPDF) {
-			$response->Output($expires.'_'.$product.'.pdf', 'I');
+			$response->Output($expires.'_'.$product.'.pdf', 'D');
 			stop();
 		}
 		parent::error_500($response);

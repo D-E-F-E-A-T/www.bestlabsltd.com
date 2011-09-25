@@ -85,10 +85,10 @@ class consolaModel extends Model{
 		return $this->db->query(
 		'  SELECT
 				  product,
-				  expires,
-				  COUNT(*)                                   AS total,
-				  SUM(CASE WHEN printed=1 THEN 1 ELSE 0 END) AS actived,
-				  SUM(CASE WHEN valided=1 THEN 1 ELSE 0 END) AS valided
+				  DATE_FORMAT(expires, "%Y-%m")                                      AS expires,
+				  CAST(COUNT(*)/2 AS UNSIGNED INT)                                   AS total,
+				  CAST(SUM(CASE WHEN printed=1 THEN 1 ELSE 0 END)/2 AS UNSIGNED INT) AS actived,
+				  CAST(SUM(CASE WHEN valided=1 THEN 1 ELSE 0 END)/2 AS UNSIGNED INT) AS valided
 			 FROM stock
 			WHERE expires > CURDATE()
 		 GROUP BY product, expires
@@ -115,15 +115,17 @@ class consolaModel extends Model{
 		if ($id === false) return "No fue posible determinar el índice del stock.";
 		$id++;
 		$stock = array();
-		foreach(range($id, $id+((int)$_POST['cantidad']-1)) as $id) $stock[] = array(
+		foreach(range($id, $id+(((int)$_POST['cantidad']*2)-1)) as $id) $stock[] = array(
 			'id'      => $this->stock_id_encode($id),
 			'product' => $_POST['product'],
 			'created' => date(DATE_W3C),
-			'expires' => $_POST['expires']
+			'expires' => Date::convert('Y-m-d', $_POST['expires'])
 		);
 		$this->db->insert('stock', $stock);
 		return true;
 	}
+
+
 	private $stock_config = array(
 		'cols'          => '8',
 		'rows'          => '14',
@@ -217,7 +219,7 @@ class consolaModel extends Model{
 			'product  = ? AND 
 			 expires  = ? AND
 			 printed <> 1 
-			 ORDER BY created DESC', $product, $expires
+			 ORDER BY created DESC', $product, DATE::convert('Y-m-d',$expires)
 		);
 		$total = count($qry);
 		if (!$total) return 'No existe mercancía sin validación en este lote.';

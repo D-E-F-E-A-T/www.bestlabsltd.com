@@ -57,7 +57,21 @@ class mainControl extends Control {
 		# is static page
 		if (array_pop($section)) {
 			if ($section['class'] == 'contact-us'){
-				$this->view->products = $this->model->product_list();
+				if (empty($_POST)) return $this->view->products = $this->model->product_list();
+				# contact form sent.
+				if (($response = $this->model->mail()) !== true) {
+					Core::header(403);
+					echo $response;
+				}
+				stop();
+			}
+			if ($section['class'] == 'authentic' && !empty($_POST)){
+				if (!is_array($product = $this->model->authentic())) {
+					Core::header(403);
+					stop();
+				}
+				echo str_replace('\/', '/', json_encode($product));
+				stop();
 			}
 			return;
 		}
@@ -80,7 +94,7 @@ class mainControl extends Control {
 		$this->view->subtitle    = ucwords($product['name']);
 		$this->view->content     = $this->model->htmlify($product['cont']);
 		$this->view->image       = $product['urli'];
-		$this->view->current     = 'product';
+		$this->view->current     = 'products';
 		# obtain similar products
 		$category = $this->model->products($product['categ']);
 		$category = $this->model->col2key('class', array_shift($category), true);

@@ -95,6 +95,7 @@ var ø = {};
 					$active.html($.data($active, 'html'));
 				}
 			)
+			// acciones
 			.find('li').click(function(){
 				var target = $.trim(lastrow.attr('class').replace(/\s*hover\s*/,''));
 				var action = $(this).attr('class');
@@ -117,9 +118,22 @@ var ø = {};
 				} else if (action == 'update'){
 					// update
 					window.location.href = APP_URL + 'editar/' + type + '/' + target;
+				// activar mercancia
 				} else if (action == 'active'){
-					$.ui.loader.show();
+					ø.modal.settings.close = false;
+					ø.modal.settings.submit = function(){
+						ø.modal.hide();
+						$.ui.loader.show();
+						window.location.reload();
+					}
+					ø.modal.settings.cancel = null;
+					ø.modal.title   = "Mercancía Activada";
+					ø.modal.content = "Se descargará un archivo imprimible <br/>" +
+									  "con las etiquetas correspondientes a la <br/>" +
+									  "mercancía activada.";
+					ø.modal.show();
 					window.location.href = APP_URL + 'activar/' + target + '/' + lastrow.attr('data-expires');
+
 					/*setTimeout(function(){
 						window.location.href = APP_URL + 'ver/' + type;
 					}, 5000);
@@ -310,8 +324,8 @@ var ø = {};
 			data[$this.attr('id')] = val;
 		});
 		if (!pass) return $button.ui('sayno');
-		// validate YY/MM/DD
-		if (!$('#expires').val().match(/([1-9][0-9])\-(0[1-9]|1[1-2])\-(0[1-9]|[1-2][0-9]|3[0-1])/)){
+		// validate YYYY/MM
+		if (!$('#expires').val().match(/(20[1-9][0-9])\-(0[1-9]|1[1-2])/)){
 			$('#expires').parent().addClass('error');
 			return false;
 		}

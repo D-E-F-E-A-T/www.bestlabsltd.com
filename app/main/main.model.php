@@ -6,7 +6,6 @@
  */
 class mainModel extends Model {
 
-
 	/**
 	 * @created 2011/SEP/24 07:12
 	 */
@@ -84,7 +83,7 @@ class mainModel extends Model {
 	 */
 	public function product_list(){
 		$x = $this->col2key('class', 
-			$this->db->select('product','class,name','lang=?', $this->language), true
+			$this->db->select('product','class,name','lang=? ORDER BY `class`', $this->language), true
 		);
 		array_walk($x, function(&$val){
 			$val = $val['name'];
@@ -157,6 +156,83 @@ class mainModel extends Model {
 			$val = "<p>$val</p>";
 		});
 		return implode('', $content);
+	}
+
+	/**
+	 * @created 2011/SEP/25 08:27
+	 */
+	public function authentic(){
+		$rx = "/^[a-zA-Z0-9]{16}$/";
+		if (
+			!isset($_POST['external'])
+		||	!isset($_POST['internal'])
+		||	!preg_match($rx, $_POST['external'])
+		||	!preg_match($rx, $_POST['internal'])
+		) return false;
+		$ext = $this->db->select('stock','product, expires','id=? AND valided=0', $_POST['external']);
+		$int = $this->db->select('stock','product, expires','id=? AND valided=0', $_POST['internal']);
+		if (empty($ext) || empty($int) || $ext !== $int) return false;
+		# houston we've a match.
+		# Mark it as validated and get product info.
+		$this->db->update('stock', array('valided' => 1), 'id=?', $_POST['external']);
+		$this->db->update('stock', array('valided' => 1), 'id=?', $_POST['internal']);
+		return $this->db->select(
+			'product',
+			'name, urli',
+			'class=? AND lang=? LIMIT 1', $ext[0]['product'], $this->language
+		);
+	}
+
+	/**
+	 * @created 2011/SEP/24 23:36
+	 */
+	public function mail(){
+		$self_content = '';
+		while(list($key,$val) = @each($_POST)) {
+			if (empty($val)) continue;
+			$v[$key] = addslashes($val);
+			$self_content .= "$key: $val\n";
+		}
+		if (!isset($v['email']) || !filter_var($v['email'], FILTER_VALIDATE_EMAIL))
+			return $this->language == 'es'?	'Correo Inválido' : 'Invalid Mail';
+		$email_self = 'info@bestlabsltd.com';#'info@bestlabsltd.com';
+		$email_from = 'BESTLABS LTD <info@bestlabsltd.com>';
+		$ui = array(
+			'es' => array(
+				'self_subject' => 'Solicitud de contácto',
+				'self_header'  => 'Datos:',
+				'self_content' => $self_content,
+				'self_footer'  => '',
+				'them_subject' => 'Confirmación de contacto en bestlabsltd.com',
+				'them_footer'  => '',
+				'them_header'  => 'Hola,',
+				'them_content' => 'Esta es una confirmación de que su correo ha sido procesado con éxito. Un agente de ventas se comunicará con usted a la brevedad.',
+				'them_footer'  => '¡Estamos a sus órdenes!',
+			),
+			'en' => array(
+				'self_subject' => 'Contact request',
+				'self_header'  => 'Data:',
+				'self_content' => $self_content,
+				'self_footer'  => '',
+				'them_subject' => 'Contact confirmation in bestlabsltd.com',
+				'them_header'  => 'Hi,',
+				'them_content' => 'This is a confirmation that our server processed your request succesfully, A sales representative will get in touch with you shortly.',
+				'them_footer'  => 'Thanks for contacting us!',
+			)
+		);
+		$ui = $ui[$this->language];
+		$self_content = $ui['self_header']."\n\n".$ui['self_content']."\n\n".$ui['self_footer'];
+		$them_content = $ui['them_header']."\n\n".$ui['them_content']."\n\n".$ui['them_footer'];
+		$them_content = $ui['them_header']."\n\n".$ui['them_content']."\n\n".$ui['them_footer'];
+		try {
+			mail($email_self, $ui['self_subject'], $self_content, "From: $email_from");
+			mail($v['email'], $ui['them_subject'], $them_content, "From: $email_from");
+		} catch (Exception $e) {
+			Core::error(500);
+			echo $this->language == 'es'? 'Error Interno del servidor' : 'Internal server error';
+			return true;
+		}
+		return true;
 	}
 
 }

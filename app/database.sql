@@ -168,12 +168,12 @@ CREATE TABLE `static`(
   INDEX(`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 INSERT INTO `static` (`lang`,`class`,`name`,`url`,`keyw`,`desc`) VALUES
-  ('es','products'  ,'productos'   , 'products'  , ' ', ' '),
-  ('en','products'  ,'products'    , 'products'  , ' ', ' '),
-  ('es','authentic' ,'autenticidad', 'authentic' , ' ', ' '),
-  ('en','authentic' ,'authenticity', 'authentic' , ' ', ' '),
-  ('es','about-us'  ,'nosotros'    , 'about-us'  , ' ', ' '),
-  ('en','about-us'  ,'about us'    , 'about-us'  , ' ', ' '),
-  ('es','contact-us','contacto'    , 'contact-us', ' ', ' '),
-  ('en','contact-us','contact us'  , 'contact-us', ' ', ' ')
+ ('en', 'products'  , 'products'    , 'products'     , ' '  , ' '),
+ ('en', 'authentic' , 'authenticity', 'authenticity' , ' '  , ' '),
+ ('en', 'about-us'  , 'about us'    , 'about-us'     , ' '  , ' '),
+ ('en', 'contact-us', 'contact us'  , 'contact-us'   , ' '  , ' '),
+ ('es', 'products'  , 'productos'   , 'productos'    , ' '  , ' '),
+ ('es', 'authentic' , 'autenticidad', 'autenticidad' , ' '  , ' '),
+ ('es', 'about-us'  , 'nosotros'    , 'nosotros'     , ' '  , ' '),
+ ('es', 'contact-us', 'contacto'    , 'contacto'     , ' '  , ' ')
 ;

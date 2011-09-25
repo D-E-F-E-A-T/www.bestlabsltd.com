@@ -49,6 +49,9 @@ body {
 
 b { font-weight:bold;}
 
+#overlay       { z-index:9999; position:absolute; text-align:center !important; top:0; left:0; width:100%; height:100%; background:<?=$color['bg']?>; display:none;}
+#overlay > div { position:absolute; top:50%; left:50%; padding:30px; background:#FFF; font-family:'KoratakiRegular'; color:<?=$color['bg']?>; border:10px solid <?=$color['border']?> }
+
 #body                       { position:absolute; width:<?=$bodyWidth?>px; height:100%; background:<?=$color['bg']?>; left:50%; margin-left:-<?=$bodyWidth/2?>px; }
 #body > *                   { position:relative; width:100%;  }
 #body > header              { height:<?=$headerHeight?>px; }
@@ -111,7 +114,7 @@ b { font-weight:bold;}
 #body.contact-us label span  { color:#666;}
 #body.contact-us #submit     { background-color:<?=$color['second']?> !important; border:0 !important; font-weight:bold; color:#FFF; line-height:1.5em; width:auto !important; font-size:1.2em; position:relative; margin:0 auto; }
 #body.contact-us .image      { height:100%; background:url(logo.gif) center no-repeat; }
-
+#overlay.contact-us          { font-size:2em; }
 
 #body.authentic .left          { width:673px; margin-left:20px; padding:25px 0; float:left; }
 #body.authentic .left .cont h2 { margin-right:25px; margin-bottom:0;}
@@ -131,23 +134,28 @@ b { font-weight:bold;}
 #body.authentic #verify .submit       { text-align:center; }
 #body.authentic #verify .submit input { border:0; background:<?=$color['second']?>; font-weight:bold; font-size:1.2em; padding-top:.25em; color:#FFF; margin-top:10px; }
 
-#body.product .image               { margin-top:25px; margin-left:25px; margin-bottom:25px; }
-#body.product .cont                { width:375px; }
-#body.product .cont em             { font-style:italic; }
-#body.product .cont ins            { text-decoration:underline; }
-#body.product .cont header         { text-align:right; margin-bottom:25px; }
-#body.product .cont header a:hover { color:<?=$color['border']?> }
-#body.product .cont header h2      { margin-bottom:0; }
-#body.product .cont header h2 a    { color:<?=$color['bg']?> }
-#body.product .cont header h3 a    { color:<?=$color['second']?>; font-size:15px; text-transform:uppercase;}
-#body.product .cont header a       { text-decoration:none;  }
-#body.product .cont footer         { position:absolute; bottom:<?=$contentSpace/2?>px; right:<?=$contentSpace/2?>px; margin-top:1.5em; }
-#body.product .cont footer a       { font-family:'KoratakiRegular'; color:<?=$color['bg']?>; text-decoration:none; padding:.5em; }
-#body.product .cont footer a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
+#overlay.authentic p  { font-size:14px !important; } 
+#overlay.authentic h3 { font-size:28px !important; margin-bottom:1em; } 
+#overlay.authentic h4 { font-size:20px !important; margin-bottom:1em; }
 
+#body.products .image               { margin-top:25px; margin-left:25px; margin-bottom:25px; }
+#body.products .cont                { width:375px; }
+#body.products .cont em             { font-style:italic; }
+#body.products .cont ins            { text-decoration:underline; }
+#body.products .cont header         { text-align:right; margin-bottom:25px; }
+#body.products .cont header a:hover { color:<?=$color['border']?> }
+#body.products .cont header h2      { margin-bottom:0; }
+#body.products .cont header h2 a    { color:<?=$color['bg']?> }
+#body.products .cont header h3 a    { color:<?=$color['second']?>; font-size:15px; text-transform:uppercase;}
+#body.products .cont header a       { text-decoration:none;  }
+#body.products .cont footer         { position:absolute; bottom:<?=$contentSpace/2?>px; right:<?=$contentSpace/2?>px; margin-top:1.5em; }
+#body.products .cont footer a       { font-family:'KoratakiRegular'; color:<?=$color['bg']?>; text-decoration:none; padding:.5em; }
+#body.products .cont footer a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
+#body.products .cont section        { padding-bottom:30px; }
 
 #body > header nav a:hover,
-#body.authentic #verify
+#body.authentic #verify,
+#overlay > div
 { 
     -moz-border-radius:5px;  -khtml-border-radius:5px; -webkit-border-radius:5px;  border-radius:5px;
 }
