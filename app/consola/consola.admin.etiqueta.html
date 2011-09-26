@@ -5,6 +5,9 @@
  * @created 2011/SEP/20 00:46
  */
  include APP_PATH.APP_NAME.'.html'; # common.
+
+ $key = unserialize(file_get_contents(APP_PATH.'llave.etiqueta.config'));
+ $key = count($key[0])*4;
  ?>
 <section class="mainsect">
 
@@ -74,6 +77,8 @@
 <script>
 $(document).ready(function(){
 
+	var STOCK_LENGTH = <?=$key?>
+
 	var letter = { width:21.59, height:27.94 }
 
 	var $form    = $('#form');
@@ -131,7 +136,7 @@ $(document).ready(function(){
 				var str1 = '';
 				var str2 = '';
 				var str  = '';
-				for(var l=0; l < 8; l++){
+				for(var l=0; l < parseInt(STOCK_LENGTH/2,10); l++){
 					str1 = String.fromCharCode(Math.floor(Math.random() *(57-48)+48));
 					str2 = String.fromCharCode(Math.floor(Math.random() *(91-65)+65));
 					str  += str1 + str2;

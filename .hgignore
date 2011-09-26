@@ -1,0 +1,10 @@
+README.rst
+.git*
+giro.changelog
+working.changelog
+tmp
+.sublime-project.*
+.todo
+pub/consola
+pub/en
+pub/es
