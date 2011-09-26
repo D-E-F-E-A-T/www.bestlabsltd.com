@@ -49,7 +49,9 @@ return array(
 		# if the section has anything different from a-z\- : 404
 		'%^.{2}/[^/]*[^a-z\-/]/?%' => 'notfound',
 		# everything to main
-		'%^(?!consola)(.{2})(/[^/]+)?(/[^/]+)?/?%' => 'main/$1$2$3'
+		'%^(?!consola)(.{2})(?:(?:(/[^/]+)(?:(/[^/]+)(/(?:informacion|information))?)?)?)$%' => 'main/$1$2$3$4',
+		# everything else is ignored.
+		'%^(?!consola).+$%' => 'notfound'
 	),
 
 	# DEFAULT HTML TEMPLATE

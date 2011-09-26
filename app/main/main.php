@@ -7,7 +7,7 @@ class mainControl extends Control {
 	/**
 	 * @created 2011/SEP/21 07:41
 	 */
-	public function main($lang='', $section='', $product=''){
+	public function main($lang='', $section='', $product='', $info=false){
 		# redirect to default language
 		if (!$lang) $this->reload('es',true);
 		# set language
@@ -25,6 +25,7 @@ class mainControl extends Control {
 			$view->alternate = $self->model->alternate($self->uri);
 		};
 		# every view is gonna need these.
+		$this->isinfo           = $info;
 		$this->view->ishome     = false;
 		$this->view->pages      = $this->model->pages();
 		$this->view->categories = $this->model->categories();
@@ -90,11 +91,20 @@ class mainControl extends Control {
 		$this->desc = $product['desc'];
 		$this->keyw = $product['keyw'];
 		$this->uri  = "categ_{$product['categ']}/{$product['class']}";
-		
-		$this->view->subtitle    = ucwords($product['name']);
-		$this->view->content     = $this->model->htmlify($product['cont']);
-		$this->view->image       = $product['urli'];
-		$this->view->current     = 'products';
+		if ($this->isinfo) {
+			$this->uri .= '/'.($language=='es'? 'informacion' : 'information');
+			$this->view->current  = 'contact-us';
+			$this->view->image    = $product['urli'];
+			$this->view->subtitle = 
+				($this->language=='es'? 'Información sobre ' : 'Information about ')
+				.ucwords($product['name']);
+			$this->view->products = array();
+			return;
+		}
+		$this->view->subtitle = ucwords($product['name']);
+		$this->view->content  = $this->model->htmlify($product['cont']);
+		$this->view->image    = $product['urli'];
+		$this->view->current  = 'products';
 		# obtain similar products
 		$category = $this->model->products($product['categ']);
 		$category = $this->model->col2key('class', array_shift($category), true);

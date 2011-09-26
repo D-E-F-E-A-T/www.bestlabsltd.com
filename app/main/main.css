@@ -87,6 +87,7 @@ b { font-weight:bold;}
 #page p       { font-size:1.1em; margin-bottom:1em; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; }
 #page h2      { text-align:right; margin:20px 0 <?=$contentSpace/2?>px; font-family:'KoratakiRegular'; font-size:<?=$headerFontSize/1.5?>em; color:<?=$color['bg']?>; }
 #page h3      { font-family:'KoratakiRegular'; font-size:14px;}
+
 #body.index #banner                          { cursor:default !important; }
 #body.index #banner img                      { display:none; width:100%;  }
 #body.index #banner img:first-child          { display:block; }
@@ -113,7 +114,9 @@ b { font-weight:bold;}
 #body.contact-us textarea    { display:block; width:100%; margin-bottom:.5em; border:1px solid #999; background:#FFF; line-height:1.5em;}
 #body.contact-us label span  { color:#666;}
 #body.contact-us #submit     { background-color:<?=$color['second']?> !important; border:0 !important; font-weight:bold; color:#FFF; line-height:1.5em; width:auto !important; font-size:1.2em; position:relative; margin:0 auto; }
-#body.contact-us .image      { height:100%; background:url(logo.gif) center no-repeat; }
+#body.contact-us aside.image { height:100%; background:url(logo.gif) center no-repeat; }
+#body.contact-us img.image   { margin:25px; width:475px; }
+
 #overlay.contact-us          { font-size:2em; }
 
 #body.authentic .left          { width:673px; margin-left:20px; padding:25px 0; float:left; }
@@ -149,13 +152,14 @@ b { font-weight:bold;}
 #body.products .cont header h3 a    { color:<?=$color['second']?>; font-size:15px; text-transform:uppercase;}
 #body.products .cont header a       { text-decoration:none;  }
 #body.products .cont footer         { position:absolute; bottom:<?=$contentSpace/2?>px; right:<?=$contentSpace/2?>px; margin-top:1.5em; }
-#body.products .cont footer a       { font-family:'KoratakiRegular'; color:<?=$color['bg']?>; text-decoration:none; padding:.5em; }
+#body.products .cont footer a       { color:<?=$color['bg']?>; text-decoration:none; padding:.5em; font-weight:bold; font-family:"lucida grande",tahoma,verdana,arial,sans-serif;  font-size:1.1em; }
 #body.products .cont footer a:hover { background:<?=$color['border']?>; color:<?=$color['white']?>; }
 #body.products .cont section        { padding-bottom:30px; }
 
 #body > header nav a:hover,
 #body.authentic #verify,
-#overlay > div
+#overlay > div,
+#body.products .cont footer a
 { 
     -moz-border-radius:5px;  -khtml-border-radius:5px; -webkit-border-radius:5px;  border-radius:5px;
 }

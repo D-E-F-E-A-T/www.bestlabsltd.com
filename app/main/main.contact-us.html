@@ -24,10 +24,22 @@ $ui = array(
 include Application::path('country');
 ?>
 <section id="page" class="contact-us">
+	<?php if (!isset($image)):?>
 	<aside class="image"></aside>
+	<?php else: ?>
+	<img class="image" src="<?=$image?>"/>
+	<?php endif ?>
 	<div class="cont">
 		<header>
+		<?php if (!isset($image)):?>
 			<h2><?=$subtitle?></h2>
+		<?php else: 
+			if ($language == 'es') 
+				 $pos = strpos($subtitle, 'sobre') + 5;
+			else $pos = strpos($subtitle, 'about') + 5;
+			$subtitle = substr_replace($subtitle, '<br/> ', $pos,1);?>
+			<h2><?=$subtitle?></h2>
+		<?php endif ?>
 		</header>
 		<form action="<?=URI?>" method="post">
 			<label>
@@ -54,17 +66,25 @@ include Application::path('country');
 				<span><?=$ui[$language]['city']?></span>
 				<input type="text" name="city">
 			</label>
+			<?php if (!isset($image)): ?>
 			<label>
 				<span><?=$ui[$language]['product']?></span>
-				<select name="country">
+				<select name="product">
 					<option value=""></option> 
 				<?php foreach ($products as $class => $name):?>
 					<option class="<?=$class?>" value="<?=$name?>"><?=$name?></option> 
 				<?php endforeach; ?>
 				</select>
 			</label>
+			<?php else: ?>
+				<input name="product" type="hidden" value="<?=substr($subtitle, $pos+6)?>">
+			<?php endif ?>
 			<label>
+				<?php if (!isset($image)): ?>
 				<span><?=$ui[$language]['comment']?></span>
+				<?php else: ?>
+				<span><?=($language=='es'? '¿Qué le gustaría saber?' : 'What would you like to know?')?></span>
+				<?php endif ?>
 				<textarea name="comment" rows="5"></textarea>
 			</label>
 			<input type="hidden" name="token" value="<?=TOKEN_PUBLIC?>">

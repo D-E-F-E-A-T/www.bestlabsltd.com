@@ -10,8 +10,12 @@
 			</h3>
 		</header>
 		<section><?=$content?></section>
-		<footer><ul>
-			<li><a href="">Mas información</a></li>
-		</ul></footer>
+		<footer>
+			<?php if ($language == 'es'):?>
+			<a href="<?=URI?>/informacion">Mas información sobre <?=$subtitle?></a>
+			<?php else: ?>
+			<a href="<?=URI?>/information">More information about <?=$subtitle?></a>
+			<?php endif ?>
+		</footer>
 	</div>
 </div>
