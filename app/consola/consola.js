@@ -119,7 +119,15 @@ var ø = {};
 					// update
 					window.location.href = APP_URL + 'editar/' + type + '/' + target;
 				// activar mercancia
-				} else if (action == 'active'){
+				} 
+				else if (action == 'active'  || action == 'download'){
+					if (action == 'download'){
+						ø.modal.title   = "Re-Descarga";	
+						var url = APP_URL + 'descargar/' + target + '/' + lastrow.attr('data-expires');
+					} else if (action == 'active'){
+						ø.modal.title   = "Mercancía Activada";	
+						var url = APP_URL + 'activar/' + target + '/' + lastrow.attr('data-expires');
+					}
 					ø.modal.settings.close = false;
 					ø.modal.settings.submit = function(){
 						ø.modal.hide();
@@ -127,20 +135,18 @@ var ø = {};
 						window.location.reload();
 					}
 					ø.modal.settings.cancel = null;
-					ø.modal.title   = "Mercancía Activada";
 					ø.modal.content = "Se descargará un archivo imprimible <br/>" +
 									  "con las etiquetas correspondientes a la <br/>" +
 									  "mercancía activada.";
 					ø.modal.show();
-					window.location.href = APP_URL + 'activar/' + target + '/' + lastrow.attr('data-expires');
-
-					/*setTimeout(function(){
-						window.location.href = APP_URL + 'ver/' + type;
-					}, 5000);
-					*/
+					setTimeout(function(){
+						window.location.href = url;
+					}, 1000);
+				// redownload all stickers
 				}
 			})
 		;
+		// table element hover
 		$('table tbody tr').hover(
 			// mouseover
 			function(e){
@@ -149,18 +155,26 @@ var ø = {};
 				lastrow = $this;
 				var pos = $this.offset();
 				pos.left += $this.outerWidth()-1;
+				// Update Title
 				if (type=='mercancia'){
+					$active   = $action.find('li.active').show();
+					$download = $action.find('li.download').show();
+					// determine how many products remain unactivated
 					var diff   = Math.abs(
 						parseInt($this.find('.total').html(),10) - parseInt($this.find('.actived').html(),10)
 					);
+					// everything is activated
 					if (!diff) {
-						$action.hide();
-						return false;
+						$active.hide();
+						$download.show();
+					} else {
+						$download.hide();
+						$active.show();
+						var plural =  diff > 1? 's' : '';
+						$active.html(
+							$.data($active, 'curr', html.replace('%d', diff).replace('%s', plural))
+						);						
 					}
-					var plural =  diff > 1? 's' : '';
-					$action.find('li.active').html(
-						$.data($active, 'curr', html.replace('%d', diff).replace('%s', plural))
-					);
 				}
 				$action.show().offset(pos);
 			},

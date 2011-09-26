@@ -12,6 +12,7 @@
 		<thead>
 			<tr>
 				<th class="product" scope="col">Producto</th>
+				<th class="added"   scope="col">Creado</th>
 				<th class="expires" scope="col">Expira</th>
 				<th class="total"   scope="col">Total</th>
 				<th class="actived" scope="col">Activados</th>
@@ -23,6 +24,7 @@
 			  $stock['expires'] = substr($stock['expires'], 0,10);?>
 			<tr class="<?=$stock['product']?>" data-expires="<?=$stock['expires']?>">
 				<td class="product"><?=$stock['product']?></td>
+				<td class="expires"><?=$stock['created']?></td>
 				<td class="expires"><?=$stock['expires']?></td>
 				<td class="total"  ><?=$stock['total']?></td>
 				<td class="actived"><?=$stock['actived']?></td>
@@ -34,6 +36,7 @@
 </section>
 <nav id="action">
 	<ul>
+		<li class="download">Descargar Etiquetas.</li>
 		<li class="active">Activar %d Producto%s.</li>
 	</ul>
 </nav>

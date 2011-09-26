@@ -42,19 +42,38 @@ class consolaControl extends Control{
 		$this->route($type);
 	}
 
-
 	/**
-	 * @created 2011/SEP/20 15:55
+	 * @created 2011/SEP/26 14:23
 	 */
 	public function activar($product=false, $expires=false){
+		$this->stock_pdf($product, $expires, true);
+	}
+
+	/**
+	 * @created 2011/SEP/26 14:23
+	 */
+	public function descargar($product=false, $expires=false){
+		$this->stock_pdf($product, $expires, false);
+	}
+
+	/**
+	 * @updated 2011/SEP/26 14:23   It was origginally "activar".
+	 * @created 2011/SEP/20 15:55
+	 */
+	private function stock_pdf($product=false, $expires=false, $activate=false){
 		if (!is_string($product) || !is_string($expires))
 			parent::error_403('Acceso denegado');
-		$response = $this->model->stock_activate($product, $expires);
+		$response = $this->model->stock_pdf($product, $expires, $activate);
 		if ($response instanceof FPDF) {
+			header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");   // any date in the past
+			header('Cache-Control: private, no-store, no-cache, must-revalidate');
+			header('Cache-Control: post-check=0, pre-check=0', false);
+			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // Always modified
 			$response->Output($expires.'_'.$product.'.pdf', 'D');
 			stop();
 		}
 		parent::error_500($response);
+
 	}
 
 	/**

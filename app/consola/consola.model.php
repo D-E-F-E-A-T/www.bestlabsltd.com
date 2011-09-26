@@ -85,6 +85,7 @@ class consolaModel extends Model{
 		return $this->db->query(
 		'  SELECT
 				  product,
+				  created,
 				  DATE_FORMAT(expires, "%Y-%m")                                      AS expires,
 				  CAST(COUNT(*)/2 AS UNSIGNED INT)                                   AS total,
 				  CAST(SUM(CASE WHEN printed=1 THEN 1 ELSE 0 END)/2 AS UNSIGNED INT) AS actived,
@@ -92,7 +93,7 @@ class consolaModel extends Model{
 			 FROM stock
 			WHERE expires > CURDATE()
 		 GROUP BY product, expires
-		 ORDER BY expires DESC
+		 ORDER BY created DESC
 		'
 		);
 	}
@@ -189,9 +190,10 @@ class consolaModel extends Model{
 	}
 
 	/**
+	 * @udpated 2011/SEP/26 14:24   Renamed. it was originalyy "stock_activate"
 	 * @created 2011/SEP/20 16:02
 	 */
-	public function stock_activate($product, $expires){
+	public function stock_pdf($product, $expires, $activate=false){
 		# load fpdf
 		define('FPDF_FONTPATH',APP_PATH.'fpdf');
 		include APP_PATH.'fpdf/fpdf.php';
@@ -217,12 +219,12 @@ class consolaModel extends Model{
 			'stock',
 			'id', 
 			'product  = ? AND 
-			 expires  = ? AND
-			 printed <> 1 
-			 ORDER BY created DESC', $product, DATE::convert('Y-m-d',$expires)
+			 expires  = ? '.
+			 ($activate? 'AND printed <> 1 ' : '').
+			'ORDER BY created DESC', $product, DATE::convert('Y-m-d',$expires)
 		);
 		$total = count($qry);
-		if (!$total) return 'No existe mercancía sin validación en este lote.';
+		if (!$total) return 'No existe mercancía válida en este lote.';
 		# traverse elements
 		for($i=0; $i<$total; $i++){
 			$tmp = $i % $cols;
@@ -235,7 +237,7 @@ class consolaModel extends Model{
 			$pdf->Cell($itemw,  $itemh, $qry[$i], 0, 0, 'C', 0);
 			$pdf->Cell($spacex, $itemh, '', 0); #spacer
 			# mark id as printed
-			$this->db->update('stock', array('printed' => 1), 'id=?', $qry[$i]);
+			if ($activate) $this->db->update('stock', array('printed' => 1), 'id=?', $qry[$i]);
 		}
 		return $pdf;
 	}

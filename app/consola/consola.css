@@ -72,14 +72,24 @@ td:last-child  { border-right:1px solid rgba(0,0,0,0.2); }
 
 #action li:last-child { border-radius:0 .25em .25em 0; }
 
-
 #action li.update,
-#action li.active
+#action li.active,
+#action li.download
 { 
 	background:#3A9;
 	border-left:none;
 	border-color:#166 rgba(255,255,255,0.5); 
 }
+
+#action li.download,
+#action li.active
+{ 
+	border-right:1px solid #166; 
+	border-top-right-radius:.25em;
+	border-bottom-right-radius:.25em;
+}
+
+
 #action li.update:hover,
 #action li.active:hover { background:#4CB; }
 
